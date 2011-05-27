@@ -1,0 +1,43 @@
+apply plugin: 'groovy'
+apply plugin: 'idea'
+
+def compatibilityVersion = 1.5
+sourceCompatibility = compatibilityVersion
+targetCompatibility = compatibilityVersion
+version = '0.1'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    groovy fileTree(dir: new File(gradle.gradleHomeDir, 'lib'), includes: ['**/groovy-all-*.jar'])
+    compile gradleApi()
+    testCompile "junit:junit:4.+"
+}
+
+jar {
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Cargo plugin',
+                   'Implementation-Version': version,
+                   'Built-By': System.getProperty("user.name"),
+                   'Built-Date': new Date(),
+                   'Built-JDK': System.getProperty("java.version")
+    }
+}
+
+ideaProject {
+    javaVersion = '1.6'
+  
+    withXml { provider ->
+        def node = provider.asNode()
+
+        // Use GIT
+        def vcsConfig = node.component.find { it.'@name' == 'VcsDirectoryMappings' }
+        vcsConfig.mapping[0].'@vcs' = 'Git'
+
+        // Set Gradle home
+        def gradleSettings = node.appendNode('component', [name: 'GradleSettings'])
+        gradleSettings.appendNode('option', [name: 'SDK_HOME', value: gradle.gradleHomeDir])
+    }
+}
