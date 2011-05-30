@@ -26,6 +26,7 @@ import org.gradle.api.Project
 class CargoProjectProperty {
     static final CARGO_HOME_DIR_PROJECT_PROPERTY = 'cargo.home.dir'
     static final CARGO_CONTAINER_ID_PROJECT_PROPERTY = 'cargo.container.id'
+    static final CARGO_PROTOCOL_PROJECT_PROPERTY = 'cargo.protocol'
     static final CARGO_HOSTNAME_PROJECT_PROPERTY = 'cargo.hostname'
     static final CARGO_PORT_PROJECT_PROPERTY = 'cargo.port'
     static final CARGO_USERNAME_PROJECT_PROPERTY = 'cargo.username'
@@ -47,6 +48,11 @@ class CargoProjectProperty {
     static String getContainerId(Project project, CargoPluginConvention cargoConvention) {
         String projectProperty = getProjectProperty(project, CARGO_CONTAINER_ID_PROJECT_PROPERTY)
         projectProperty ?: cargoConvention.containerId
+    }
+
+    static String getProtocol(Project project, CargoPluginConvention cargoConvention) {
+        String projectProperty = getProjectProperty(project, CARGO_PROTOCOL_PROJECT_PROPERTY)
+        projectProperty ?: cargoConvention.remote.protocol
     }
 
     static String getHostname(Project project, CargoPluginConvention cargoConvention) {

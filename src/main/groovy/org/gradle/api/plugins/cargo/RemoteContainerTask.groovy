@@ -25,6 +25,7 @@ import org.slf4j.LoggerFactory
  */
 class RemoteContainerTask extends AbstractContainerTask {
     static final Logger LOGGER = LoggerFactory.getLogger(RemoteContainerTask.class)
+    String protocol
     String hostname
     String username
     String password
@@ -32,12 +33,13 @@ class RemoteContainerTask extends AbstractContainerTask {
     @Override
     void runAction() {
         if(LOGGER.isInfoEnabled()) {
-            LOGGER.info "Starting action '${getAction()}' for remote container '${Container.getContainerForId(getContainerId()).description}' on '${getHostname()}:${getPort()}'"
+            LOGGER.info "Starting action '${getAction()}' for remote container '${Container.getContainerForId(getContainerId()).description}' on '${getProtocol()}://${getHostname()}:${getPort()}'"
         }
 
         ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)
         ant.cargo(containerId: getContainerId(), type: 'remote', action: getAction(), wait: getWait()) {
             configuration(type: 'runtime') {
+                property(name: 'cargo.protocol', value: getProtocol())
                 property(name: 'cargo.hostname', value: getHostname())
                 property(name: CARGO_SERVLET_PORT, value: getPort())
 

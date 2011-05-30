@@ -94,6 +94,7 @@ class CargoPlugin implements Plugin<Project> {
     private void setRemoteContainerConventionMapping(Project project, CargoPluginConvention cargoConvention, String action) {
         project.tasks.withType(RemoteContainerTask.class).whenTaskAdded { RemoteContainerTask remoteContainerTask ->
             remoteContainerTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action }
+            remoteContainerTask.conventionMapping.map('protocol') { CargoProjectProperty.getProtocol(project, cargoConvention) }
             remoteContainerTask.conventionMapping.map('hostname') { CargoProjectProperty.getHostname(project, cargoConvention) }
             remoteContainerTask.conventionMapping.map('username') { CargoProjectProperty.getUsername(project, cargoConvention) }
             remoteContainerTask.conventionMapping.map('password') { CargoProjectProperty.getPassword(project, cargoConvention) }

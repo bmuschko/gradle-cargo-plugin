@@ -4,7 +4,7 @@ apply plugin: 'idea'
 def compatibilityVersion = 1.5
 sourceCompatibility = compatibilityVersion
 targetCompatibility = compatibilityVersion
-version = '0.1'
+version = '0.2'
 
 repositories {
     mavenCentral()

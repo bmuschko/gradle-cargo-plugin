@@ -21,6 +21,7 @@ package org.gradle.api.plugins.cargo
  * @author Benjamin Muschko
  */
 class CargoRemoteTaskConvention {
+    String protocol = 'http'
     String hostname
     String username
     String password

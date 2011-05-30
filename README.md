@@ -24,7 +24,7 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
         }
 
         dependencies {
-            classpath ':gradle-cargo-plugin:0.1'
+            classpath ':gradle-cargo-plugin:0.2'
         }
     }
 
@@ -59,6 +59,7 @@ The Cargo plugin defines the following convention properties in the `cargo` clos
 
 Within `cargo` you can define properties for remote containers in a closure named `remote`:
 
+* `protocol`: The protocol of the remote container (defaults to `http`).
 * `hostname`: The hostname of the remote container.
 * `username`: The username credential for the remote container (optional).
 * `password`: The password credential for the remote container (optional).
@@ -94,6 +95,7 @@ The convention properties can be overridden by project properties via `gradle.pr
 * `cargo.port`: Overrides the convention property `port`.
 * `cargo.context`: Overrides the convention property `context`.
 * `cargo.wait`: Overrides the convention property `wait`.
+* `cargo.protocol`: Overrides the convention property `protocol`.
 * `cargo.hostname`: Overrides the convention property `hostname`.
 * `cargo.username`: Overrides the convention property `username`.
 * `cargo.password`: Overrides the convention property `password`.
