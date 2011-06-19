@@ -18,13 +18,13 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
         repositories {
             add(new org.apache.ivy.plugins.resolver.URLResolver()) {
                 name = 'GitHub'
-                addArtifactPattern 'http://cloud.github.com/downloads/bmuschko/gradle-cargo-plugin/[module]-[revision].[ext]'
+                addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
             }
             mavenCentral()
         }
 
         dependencies {
-            classpath ':gradle-cargo-plugin:0.2'
+            classpath 'bmuschko:gradle-cargo-plugin:0.2'
         }
     }
 
