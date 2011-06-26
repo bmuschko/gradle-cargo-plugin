@@ -37,7 +37,7 @@ class RemoteContainerTask extends AbstractContainerTask {
         }
 
         ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)
-        ant.cargo(containerId: getContainerId(), type: 'remote', action: getAction(), wait: getWait()) {
+        ant.cargo(containerId: getContainerId(), type: 'remote', action: getAction()) {
             configuration(type: 'runtime') {
                 property(name: 'cargo.protocol', value: getProtocol())
                 property(name: 'cargo.hostname', value: getHostname())

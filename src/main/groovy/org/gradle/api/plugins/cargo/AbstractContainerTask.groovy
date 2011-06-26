@@ -39,7 +39,6 @@ abstract class AbstractContainerTask extends ConventionTask {
     String action
     Integer port
     String context
-    Boolean wait
     @InputFiles FileCollection classpath
     @InputFile File webApp
 

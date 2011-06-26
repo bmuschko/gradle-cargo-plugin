@@ -21,7 +21,7 @@ package org.gradle.api.plugins.cargo
  * @author Benjamin Muschko
  */
 enum Action {
-    DEPLOY('deploy'), UNDEPLOY('undeploy'), REDEPLOY('redeploy'), START('start'), STOP('stop')
+    DEPLOY('deploy'), UNDEPLOY('undeploy'), REDEPLOY('redeploy'), RUN('run'), START('start'), STOP('stop')
 
     final String name
 

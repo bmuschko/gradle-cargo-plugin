@@ -36,7 +36,7 @@ class LocalContainerTask extends AbstractContainerTask {
         }
 
         ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)
-        ant.cargo(containerId: getContainerId(), home: getHomeDir().canonicalPath, action: getAction(), wait: getWait()) {
+        ant.cargo(containerId: getContainerId(), home: getHomeDir().canonicalPath, action: getAction()) {
             configuration {
                 property(name: CARGO_SERVLET_PORT, value: getPort())
 

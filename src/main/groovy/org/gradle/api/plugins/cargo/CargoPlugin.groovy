@@ -31,6 +31,7 @@ class CargoPlugin implements Plugin<Project> {
     static final String DEPLOY_REMOTE = 'cargoDeployRemote'
     static final String UNDEPLOY_REMOTE = 'cargoUndeployRemote'
     static final String REDEPLOY_REMOTE = 'cargoRedeployRemote'
+    static final String RUN_LOCAL = 'cargoRunLocal'
     static final String START_LOCAL = 'cargoStartLocal'
     static final String STOP_LOCAL = 'cargoStopLocal'
     static final String CARGO_CONFIGURATION_NAME = 'cargo'
@@ -50,6 +51,7 @@ class CargoPlugin implements Plugin<Project> {
         configureDeployRemoteContainerTask(project, cargoConvention)
         configureUndeployRemoteContainerTask(project, cargoConvention)
         configureRedeployRemoteContainerTask(project, cargoConvention)
+        configureRunLocalContainerTask(project, cargoConvention)
         configureStartLocalContainerTask(project, cargoConvention)
         configureStopLocalContainerTask(project, cargoConvention)
     }
@@ -62,7 +64,6 @@ class CargoPlugin implements Plugin<Project> {
             abstractContainerTask.conventionMapping.map('containerId') { CargoProjectProperty.getContainerId(project, cargoConvention) }
             abstractContainerTask.conventionMapping.map('port') { CargoProjectProperty.getPort(project, cargoConvention) }
             abstractContainerTask.conventionMapping.map('context') { CargoProjectProperty.getContext(project, cargoConvention) }
-            abstractContainerTask.conventionMapping.map('wait') { CargoProjectProperty.getWait(project, cargoConvention) }
         }
     }
 
@@ -81,9 +82,14 @@ class CargoPlugin implements Plugin<Project> {
         addRemoteContainerTask(project, REDEPLOY_REMOTE, 'Redeploys WAR to remote container')
     }
 
+    private void configureRunLocalContainerTask(Project project, CargoPluginConvention cargoConvention) {
+        setLocalContainerConventionMapping(project, cargoConvention, Action.RUN.name)
+        addLocalContainerTask(project, RUN_LOCAL, 'Starts the container, deploys WAR to it and wait for the user to press CTRL + C to stop')
+    }
+
     private void configureStartLocalContainerTask(Project project, CargoPluginConvention cargoConvention) {
         setLocalContainerConventionMapping(project, cargoConvention, Action.START.name)
-        addLocalContainerTask(project, START_LOCAL, 'Starts the container and deploys WAR to it')
+        addLocalContainerTask(project, START_LOCAL, 'Starts the container, deploys WAR to it and then do other tasks (for example, execute tests)')
     }
 
     private void configureStopLocalContainerTask(Project project, CargoPluginConvention cargoConvention) {
