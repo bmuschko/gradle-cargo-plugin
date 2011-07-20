@@ -39,6 +39,7 @@ class LocalContainerTask extends AbstractContainerTask {
         ant.cargo(containerId: getContainerId(), home: getHomeDir().canonicalPath, action: getAction()) {
             configuration {
                 property(name: CARGO_SERVLET_PORT, value: getPort())
+                property(name: CARGO_TOMCAT_AJP_PORT, value: getTomcatAjpPort())
 
                 if(getLogLevel()) {
                     property(name: 'cargo.logging', value: getLogLevel())

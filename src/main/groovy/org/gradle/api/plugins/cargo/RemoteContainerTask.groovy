@@ -42,6 +42,7 @@ class RemoteContainerTask extends AbstractContainerTask {
                 property(name: 'cargo.protocol', value: getProtocol())
                 property(name: 'cargo.hostname', value: getHostname())
                 property(name: CARGO_SERVLET_PORT, value: getPort())
+                property(name: CARGO_TOMCAT_AJP_PORT, value: getTomcatAjpPort())
 
                 if(getUsername() && getPassword()) {
                     property(name: 'cargo.remote.username', value: getUsername())

@@ -23,6 +23,7 @@ package org.gradle.api.plugins.cargo
 class CargoPluginConvention {
     String containerId
     Integer port = 8080
+    Integer tomcatAjpPort = 8009
     String context
     Boolean wait = false
     CargoRemoteTaskConvention remote = new CargoRemoteTaskConvention()

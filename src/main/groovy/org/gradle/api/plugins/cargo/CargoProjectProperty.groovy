@@ -29,6 +29,7 @@ class CargoProjectProperty {
     static final CARGO_PROTOCOL_PROJECT_PROPERTY = 'cargo.protocol'
     static final CARGO_HOSTNAME_PROJECT_PROPERTY = 'cargo.hostname'
     static final CARGO_PORT_PROJECT_PROPERTY = 'cargo.port'
+    static final CARGO_TOMCAT_AJP_PORT_PROJECT_PROPERTY = 'cargo.tomcat.ajp.port'
     static final CARGO_USERNAME_PROJECT_PROPERTY = 'cargo.username'
     static final CARGO_PASSWORD_PROJECT_PROPERTY = 'cargo.password'
     static final CARGO_CONTEXT_PROJECT_PROPERTY = 'cargo.context'
@@ -73,6 +74,21 @@ class CargoProjectProperty {
         }
 
         cargoConvention.port
+    }
+
+    static Integer getTomcatAjpPort(Project project, CargoPluginConvention cargoConvention) {
+        String projectProperty = getProjectProperty(project, CARGO_TOMCAT_AJP_PORT_PROJECT_PROPERTY)
+
+        if(projectProperty) {
+            try {
+                return projectProperty.toInteger()
+            }
+            catch(NumberFormatException e) {
+                throw new InvalidUserDataException("Bad Tomcat AJP port provided as project property: '$projectProperty'", e)
+            }
+        }
+
+        cargoConvention.tomcatAjpPort
     }
 
     static String getUsername(Project project, CargoPluginConvention cargoConvention) {

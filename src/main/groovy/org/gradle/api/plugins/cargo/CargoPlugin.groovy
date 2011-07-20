@@ -63,6 +63,7 @@ class CargoPlugin implements Plugin<Project> {
             abstractContainerTask.conventionMapping.map('webApp') { project.tasks.getByName(WarPlugin.WAR_TASK_NAME).archivePath }
             abstractContainerTask.conventionMapping.map('containerId') { CargoProjectProperty.getContainerId(project, cargoConvention) }
             abstractContainerTask.conventionMapping.map('port') { CargoProjectProperty.getPort(project, cargoConvention) }
+            abstractContainerTask.conventionMapping.map('tomcatAjpPort') { CargoProjectProperty.getTomcatAjpPort(project, cargoConvention) }
             abstractContainerTask.conventionMapping.map('context') { CargoProjectProperty.getContext(project, cargoConvention) }
         }
     }
