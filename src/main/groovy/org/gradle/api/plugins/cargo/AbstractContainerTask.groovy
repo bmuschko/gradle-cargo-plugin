@@ -33,11 +33,13 @@ abstract class AbstractContainerTask extends ConventionTask {
     static final Logger LOGGER = LoggerFactory.getLogger(AbstractContainerTask.class)
     static final CARGO_TASKS = 'cargo.tasks'
     static final CARGO_SERVLET_PORT = 'cargo.servlet.port'
+    static final CARGO_TOMCAT_AJP_PORT = 'cargo.tomcat.ajp.port'
     static final CARGO_CONTEXT = 'context'
     static final DEPLOYABLE_TYPE_WAR = 'war'
     String containerId
     String action
     Integer port
+    Integer tomcatAjpPort
     String context
     @InputFiles FileCollection classpath
     @InputFile File webApp
