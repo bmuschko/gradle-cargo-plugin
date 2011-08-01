@@ -16,13 +16,28 @@
 package org.gradle.api.plugins.cargo
 
 /**
- * Defines Cargo remote task convention.
- *
- * @author Benjamin Muschko
+ * Created by IntelliJ IDEA.
+ * User: Ben
+ * Date: 7/30/11
+ * Time: 11:17 AM
+ * To change this template use File | Settings | File Templates.
  */
-class CargoRemoteTaskConvention {
-    String protocol = 'http'
-    String hostname
-    String username
-    String password
+enum LocalContainerTaskMapping {
+    TOMCAT(LocalTomcatTask), DEFAULT(LocalContainerTask)
+
+    final Class taskClass
+
+    private LocalContainerTaskMapping(Class taskClass) {
+        this.taskClass = taskClass
+    }
+
+    static LocalContainerTaskMapping getLocalContainerTaskMappingForContainerId(String containerId) {
+        def container = Container.getContainerForId(containerId)
+
+        if(Container.TOMCAT.contains(container)) {
+            return TOMCAT
+        }
+
+        return DEFAULT
+    }
 }

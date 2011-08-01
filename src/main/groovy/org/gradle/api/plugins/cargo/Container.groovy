@@ -34,7 +34,7 @@ enum Container {
     TOMCAT_5X('tomcat5x', 'Tomcat 5.x'), TOMCAT_6X('tomcat6x', 'Tomcat 6.x'), TOMCAT_7X('tomcat7x', 'Tomcat 7.x'),
     WEBLOGIC_8X('weblogic8x', 'WebLogic 8.x'), WEBLOGIC_9X('weblogic9x', 'WebLogic 9.x'), WEBLOGIC_10X('weblogic10x', 'WebLogic 10.x'), WEBLOGIC_10_3X('weblogic103x', 'WebLogic 10.3.x')
 
-    static final Logger LOGGER = LoggerFactory.getLogger(Container.class)
+    static final Logger LOGGER = LoggerFactory.getLogger(Container)
     static final Map CONTAINERS
 
     static {
@@ -45,6 +45,14 @@ enum Container {
         }
     }
 
+    static final EnumSet<Container> GERONIMO = EnumSet.range(GERONIMO_1X, GERONIMO_4X)
+    static final EnumSet<Container> GLASSFISH = EnumSet.of(GLASSFISH_2X, GLASSFISH_3X)
+    static final EnumSet<Container> JO = EnumSet.of(JO_1X)
+    static final EnumSet<Container> JONAS = EnumSet.of(JONAS_4x, JONAS_5x)
+    static final EnumSet<Container> RESIN = EnumSet.of(RESIN_2x, RESIN_3x)
+    static final EnumSet<Container> JETTY = EnumSet.range(JETTY_4X, JETTY_7X)
+    static final EnumSet<Container> TOMCAT = EnumSet.range(TOMCAT_5X, TOMCAT_7X)
+    static final EnumSet<Container> WEBLOGIC = EnumSet.range(WEBLOGIC_8X, WEBLOGIC_10_3X)
     final String id
     final String description
 

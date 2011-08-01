@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.api.plugins.cargo
+package org.gradle.api.plugins.cargo.property
 
 /**
- * Defines Cargo local task convention.
+ * Defines property data type.
  *
  * @author Benjamin Muschko
  */
-class CargoLocalTaskConvention {
-    String logLevel
-    File homeDir
+enum PropertyDataType {
+    STRING, INTEGER, BOOLEAN, FILE
 }

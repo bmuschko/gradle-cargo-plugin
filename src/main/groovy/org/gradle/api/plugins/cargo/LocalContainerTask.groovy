@@ -52,7 +52,11 @@ class LocalContainerTask extends AbstractContainerTask {
                 else {
                     deployable(type: DEPLOYABLE_TYPE_WAR, file: getWebApp())
                 }
+
+                setContainerSpecificProperties()
             }
         }
     }
+
+    void setContainerSpecificProperties() {}
 }

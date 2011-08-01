@@ -13,35 +13,21 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.api.plugins.cargo
+package org.gradle.api.plugins.cargo.convention
 
 /**
- * Defines Cargo convention.
+ * Defines Cargo local task convention.
  *
  * @author Benjamin Muschko
  */
-class CargoPluginConvention {
-    String containerId
-    Integer port = 8080
-    String context
-    Boolean wait = false
-    CargoRemoteTaskConvention remote = new CargoRemoteTaskConvention()
-    CargoLocalTaskConvention local = new CargoLocalTaskConvention()
+class CargoLocalTaskConvention {
+    String logLevel
+    File homeDir
+    CargoLocalTomcatConvention tomcat = new CargoLocalTomcatConvention()
 
-    def cargo(Closure closure) {
-        closure.delegate = this
-        closure()
-    }
-
-    def remote(Closure closure) {
+    def tomcat(Closure closure) {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = remote
-        closure()
-    }
-
-    def local(Closure closure) {
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = local
+        closure.delegate = tomcat
         closure()
     }
 }
