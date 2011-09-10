@@ -23,7 +23,7 @@ package org.gradle.api.plugins.cargo
  * To change this template use File | Settings | File Templates.
  */
 enum LocalContainerTaskMapping {
-    TOMCAT(LocalTomcatTask), DEFAULT(LocalContainerTask)
+    JETTY(LocalJettyTask), JONAS(LocalJonasTask), JRUN(LocalJRunTask), TOMCAT(LocalTomcatTask), WEBLOGIC(LocalWeblogicTask), DEFAULT(LocalContainerTask)
 
     final Class taskClass
 
@@ -34,8 +34,20 @@ enum LocalContainerTaskMapping {
     static LocalContainerTaskMapping getLocalContainerTaskMappingForContainerId(String containerId) {
         def container = Container.getContainerForId(containerId)
 
-        if(Container.TOMCAT.contains(container)) {
+        if(Container.JETTY.contains(container)) {
+            return JETTY
+        }
+        else if(Container.JONAS.contains(container)) {
+            return JONAS
+        }
+        else if(Container.JRUN.contains(container)) {
+            return JRUN
+        }
+        else if(Container.TOMCAT.contains(container)) {
             return TOMCAT
+        }
+        else if(Container.WEBLOGIC.contains(container)) {
+            return WEBLOGIC
         }
 
         return DEFAULT

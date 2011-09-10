@@ -99,6 +99,63 @@ class CargoPlugin implements Plugin<Project> {
         }
     }
 
+    private void setLocalJettyConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
+        project.tasks.withType(LocalJettyTask).whenTaskAdded { LocalJettyTask localJettyTask ->
+            localJettyTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
+            localJettyTask.conventionMapping.map('logLevel') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
+            }
+            localJettyTask.conventionMapping.map('homeDir') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
+            }
+            localJettyTask.conventionMapping.map('sessionPath') {
+                CargoProjectProperty.getTypedProperty(project, LocalJettyTaskProperty.SESSION_PATH, cargoConvention.local.jetty.sessionPath)
+            }
+            localJettyTask.conventionMapping.map('useFileMappedBuffer') {
+                CargoProjectProperty.getTypedProperty(project, LocalJettyTaskProperty.USE_FILE_MAPPED_BUFFER, cargoConvention.local.jetty.useFileMappedBuffer)
+            }
+        }
+    }
+
+    private void setLocalJonasConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
+        project.tasks.withType(LocalJonasTask).whenTaskAdded { LocalJonasTask localJonasTask ->
+            localJonasTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
+            localJonasTask.conventionMapping.map('logLevel') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
+            }
+            localJonasTask.conventionMapping.map('homeDir') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
+            }
+            localJonasTask.conventionMapping.map('jmxPort') {
+                CargoProjectProperty.getTypedProperty(project, LocalJonasTaskProperty.JMS_PORT, cargoConvention.local.jonas.jmsPort)
+            }
+            localJonasTask.conventionMapping.map('serverName') {
+                CargoProjectProperty.getTypedProperty(project, LocalJonasTaskProperty.SERVER_NAME, cargoConvention.local.jonas.serverName)
+            }
+            localJonasTask.conventionMapping.map('servicesList') {
+                CargoProjectProperty.getTypedProperty(project, LocalJonasTaskProperty.SERVICES_LIST, cargoConvention.local.jonas.servicesList)
+            }
+            localJonasTask.conventionMapping.map('domainName') {
+                CargoProjectProperty.getTypedProperty(project, LocalJonasTaskProperty.DOMAIN_NAME, cargoConvention.local.jonas.domainName)
+            }
+        }
+    }
+
+    private void setLocalJRunConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
+        project.tasks.withType(LocalJRunTask).whenTaskAdded { LocalJRunTask localJRunTask ->
+            localJRunTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
+            localJRunTask.conventionMapping.map('logLevel') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
+            }
+            localJRunTask.conventionMapping.map('homeDir') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
+            }
+            localJRunTask.conventionMapping.map('home') {
+                CargoProjectProperty.getTypedProperty(project, LocalJRunTaskProperty.HOME, cargoConvention.local.jrun.home)
+            }
+        }
+    }
+
     private void setLocalTomcatConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
         project.tasks.withType(LocalTomcatTask).whenTaskAdded { LocalTomcatTask localTomcatTask ->
             localTomcatTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
@@ -119,6 +176,30 @@ class CargoPlugin implements Plugin<Project> {
             }
             localTomcatTask.conventionMapping.map('ajpPort') {
                 CargoProjectProperty.getTypedProperty(project, LocalTomcatTaskProperty.AJP_PORT, cargoConvention.local.tomcat.ajpPort)
+            }
+        }
+    }
+
+    private void setLocalWeblogicConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
+        project.tasks.withType(LocalWeblogicTask).whenTaskAdded { LocalWeblogicTask localWeblogicTask ->
+            localWeblogicTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
+            localWeblogicTask.conventionMapping.map('logLevel') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
+            }
+            localWeblogicTask.conventionMapping.map('homeDir') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
+            }
+            localWeblogicTask.conventionMapping.map('adminUser') {
+                CargoProjectProperty.getTypedProperty(project, LocalWeblogicTaskProperty.ADMIN_USER, cargoConvention.local.weblogic.adminUser)
+            }
+            localWeblogicTask.conventionMapping.map('adminPassword') {
+                CargoProjectProperty.getTypedProperty(project, LocalWeblogicTaskProperty.ADMIN_PASSWORD, cargoConvention.local.weblogic.adminPassword)
+            }
+            localWeblogicTask.conventionMapping.map('beaHome') {
+                CargoProjectProperty.getTypedProperty(project, LocalWeblogicTaskProperty.BEA_HOME, cargoConvention.local.weblogic.beaHome)
+            }
+            localWeblogicTask.conventionMapping.map('server') {
+                CargoProjectProperty.getTypedProperty(project, LocalWeblogicTaskProperty.SERVER, cargoConvention.local.weblogic.server)
             }
         }
     }
@@ -154,11 +235,18 @@ class CargoPlugin implements Plugin<Project> {
         project.afterEvaluate {
             LocalContainerTaskMapping mapping = LocalContainerTaskMapping.getLocalContainerTaskMappingForContainerId(cargoConvention.containerId)
 
-            if(mapping == LocalContainerTaskMapping.TOMCAT) {
-                setLocalTomcatConventionMapping(project, cargoConvention, action)
-            }
-            else {
-                setLocalContainerConventionMapping(project, cargoConvention, action)
+            switch(mapping) {
+                case LocalContainerTaskMapping.JETTY: setLocalJettyConventionMapping(project, cargoConvention, action)
+                                                      break
+                case LocalContainerTaskMapping.JONAS: setLocalJonasConventionMapping(project, cargoConvention, action)
+                                                      break
+                case LocalContainerTaskMapping.JRUN: setLocalJRunConventionMapping(project, cargoConvention, action)
+                                                     break
+                case LocalContainerTaskMapping.TOMCAT: setLocalWeblogicConventionMapping(project, cargoConvention, action)
+                                                       break
+                case LocalContainerTaskMapping.WEBLOGIC: setLocalTomcatConventionMapping(project, cargoConvention, action)
+                                                         break
+                default: setLocalContainerConventionMapping(project, cargoConvention, action)
             }
 
             addContainerTask(project, mapping.taskClass, task)

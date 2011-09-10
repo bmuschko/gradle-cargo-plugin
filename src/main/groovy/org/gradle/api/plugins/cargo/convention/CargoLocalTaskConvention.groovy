@@ -23,11 +23,39 @@ package org.gradle.api.plugins.cargo.convention
 class CargoLocalTaskConvention {
     String logLevel
     File homeDir
+    CargoLocalJettyConvention jetty = new CargoLocalJettyConvention()
+    CargoLocalJonasConvention jonas = new CargoLocalJonasConvention()
+    CargoLocalJRunConvention jrun = new CargoLocalJRunConvention()
     CargoLocalTomcatConvention tomcat = new CargoLocalTomcatConvention()
+    CargoLocalWeblogicConvention weblogic = new CargoLocalWeblogicConvention()
+
+    def jetty(Closure closure) {
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure.delegate = jetty
+        closure()
+    }
+
+    def jonas(Closure closure) {
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure.delegate = jonas
+        closure()
+    }
+
+    def jrun(Closure closure) {
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure.delegate = jrun
+        closure()
+    }
 
     def tomcat(Closure closure) {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
         closure.delegate = tomcat
+        closure()
+    }
+
+    def weblogic(Closure closure) {
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure.delegate = weblogic
         closure()
     }
 }
