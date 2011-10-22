@@ -24,7 +24,8 @@ import org.slf4j.Logger
  * @author Benjamin Muschko
  */
 enum LocalContainerTaskProperty implements TaskProperty {
-    LOG_LEVEL('cargo.log.level', PropertyDataType.STRING), HOME_DIR('cargo.home.dir', PropertyDataType.FILE)
+    JVM_ARGS('cargo.jvmargs', PropertyDataType.STRING), LOG_LEVEL('cargo.log.level', PropertyDataType.STRING),
+    HOME_DIR('cargo.home.dir', PropertyDataType.FILE)
 
     static final Logger LOGGER = LoggerFactory.getLogger(LocalContainerTaskProperty)
     static final Map PROPERTIES

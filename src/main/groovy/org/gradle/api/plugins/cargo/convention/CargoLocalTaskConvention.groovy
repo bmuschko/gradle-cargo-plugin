@@ -21,6 +21,7 @@ package org.gradle.api.plugins.cargo.convention
  * @author Benjamin Muschko
  */
 class CargoLocalTaskConvention {
+    String jvmArgs
     String logLevel
     File homeDir
     CargoLocalJettyConvention jetty = new CargoLocalJettyConvention()

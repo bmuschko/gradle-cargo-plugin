@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory
 class LocalContainerTask extends AbstractContainerTask {
     static final Logger LOGGER = LoggerFactory.getLogger(LocalContainerTask.class)
     String logLevel
+    String jvmArgs
     @InputDirectory File homeDir
 
     @Override
@@ -39,6 +40,10 @@ class LocalContainerTask extends AbstractContainerTask {
         ant.cargo(containerId: getContainerId(), home: getHomeDir().canonicalPath, action: getAction()) {
             configuration {
                 property(name: CARGO_SERVLET_PORT, value: getPort())
+
+                if(getJvmArgs()) {
+                    property(name: 'cargo.jvmargs', value: getJvmArgs())
+                }
 
                 if(getLogLevel()) {
                     property(name: 'cargo.logging', value: getLogLevel())

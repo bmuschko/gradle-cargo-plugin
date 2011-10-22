@@ -15,9 +15,9 @@
  */
 package org.gradle.api.plugins.cargo
 
+import org.gradle.api.DefaultTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.file.FileCollection
-import org.gradle.api.internal.ConventionTask
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.TaskAction
@@ -29,7 +29,7 @@ import org.slf4j.LoggerFactory
  *
  * @author Benjamin Muschko
  */
-abstract class AbstractContainerTask extends ConventionTask {
+abstract class AbstractContainerTask extends DefaultTask {
     static final Logger LOGGER = LoggerFactory.getLogger(AbstractContainerTask.class)
     static final CARGO_TASKS = 'cargo.tasks'
     static final CARGO_SERVLET_PORT = 'cargo.servlet.port'

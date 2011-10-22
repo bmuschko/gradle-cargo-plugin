@@ -90,6 +90,9 @@ class CargoPlugin implements Plugin<Project> {
     private void setLocalContainerConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
         project.tasks.withType(LocalContainerTask).whenTaskAdded { LocalContainerTask localContainerTask ->
             localContainerTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
+            localContainerTask.conventionMapping.map('jvmArgs') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.JVM_ARGS, cargoConvention.local.jvmArgs)
+            }
             localContainerTask.conventionMapping.map('logLevel') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
             }
