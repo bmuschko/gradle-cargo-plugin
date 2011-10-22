@@ -21,6 +21,8 @@ package org.gradle.api.plugins.cargo.convention
  * @author Benjamin Muschko
  */
 class CargoLocalJonasConvention {
+    String jmsPort
     String serverName
+    String servicesList
     String domainName
 }

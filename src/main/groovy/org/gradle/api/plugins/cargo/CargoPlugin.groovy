@@ -129,7 +129,7 @@ class CargoPlugin implements Plugin<Project> {
             localJonasTask.conventionMapping.map('homeDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
             }
-            localJonasTask.conventionMapping.map('jmxPort') {
+            localJonasTask.conventionMapping.map('jmsPort') {
                 CargoProjectProperty.getTypedProperty(project, LocalJonasTaskProperty.JMS_PORT, cargoConvention.local.jonas.jmsPort)
             }
             localJonasTask.conventionMapping.map('serverName') {
