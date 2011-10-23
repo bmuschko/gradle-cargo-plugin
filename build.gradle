@@ -41,3 +41,7 @@ ideaProject {
         gradleSettings.appendNode('option', [name: 'SDK_HOME', value: gradle.gradleHomeDir])
     }
 }
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.0-milestone-3'
+}
