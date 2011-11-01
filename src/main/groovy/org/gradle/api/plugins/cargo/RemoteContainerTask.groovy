@@ -49,12 +49,12 @@ class RemoteContainerTask extends AbstractContainerTask {
                 }
 
                 if(getContext()) {
-                    deployable(type: DEPLOYABLE_TYPE_WAR, file: getWebApp()) {
+                    deployable(type: getDeployableType().filenameExtension, file: getDeployable()) {
                         property(name: CARGO_CONTEXT, value: getContext())
                     }
                 }
                 else {
-                    deployable(type: DEPLOYABLE_TYPE_WAR, file: getWebApp())
+                    deployable(type: getDeployableType().filenameExtension, file: getDeployable())
                 }
             }
         }

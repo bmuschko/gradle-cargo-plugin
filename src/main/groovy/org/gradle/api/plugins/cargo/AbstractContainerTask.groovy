@@ -18,6 +18,7 @@ package org.gradle.api.plugins.cargo
 import org.gradle.api.DefaultTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.file.FileCollection
+import org.gradle.api.plugins.cargo.util.FilenameUtils
 import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.TaskAction
@@ -34,13 +35,12 @@ abstract class AbstractContainerTask extends DefaultTask {
     static final CARGO_TASKS = 'cargo.tasks'
     static final CARGO_SERVLET_PORT = 'cargo.servlet.port'
     static final CARGO_CONTEXT = 'context'
-    static final DEPLOYABLE_TYPE_WAR = 'war'
     String containerId
     String action
     Integer port
     String context
     @InputFiles FileCollection classpath
-    @InputFile File webApp
+    @InputFile File deployable
 
     @TaskAction
     void start() {
@@ -49,13 +49,13 @@ abstract class AbstractContainerTask extends DefaultTask {
     }
 
     void validateConfiguration() {
-        if(!getWebApp() || !getWebApp().exists()) {
-            throw new InvalidUserDataException("Web application WAR "
-                    + (getWebApp() == null ? "null" : getWebApp().canonicalPath)
+        if(!getDeployable() || !getDeployable().exists()) {
+            throw new InvalidUserDataException("Deployable "
+                    + (getDeployable() == null ? "null" : getDeployable().canonicalPath)
                     + " does not exist")
         }
         else {
-            LOGGER.info "Web application WAR = ${getWebApp().canonicalPath}"
+            LOGGER.info "Deployable artifact = ${getDeployable().canonicalPath}"
         }
 
         if(!getContainerId() || !Container.CONTAINERS.containsKey(getContainerId())) {
@@ -64,6 +64,11 @@ abstract class AbstractContainerTask extends DefaultTask {
         else {
             LOGGER.info "Container ID = ${getContainerId()}"
         }
+    }
+
+    DeployableType getDeployableType() {
+        String filenameExtension = FilenameUtils.getExtension(getDeployable().canonicalPath)
+        DeployableType.getDeployableTypeForFilenameExtension(filenameExtension)
     }
 
     abstract void runAction()

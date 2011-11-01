@@ -35,8 +35,6 @@ class CargoPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.plugins.apply(WarPlugin)
-
         project.configurations.add(CARGO_CONFIGURATION_NAME).setVisible(false).setTransitive(true)
                .setDescription('The Cargo Ant libraries to be used for this project.')
 
@@ -56,7 +54,7 @@ class CargoPlugin implements Plugin<Project> {
         project.tasks.withType(AbstractContainerTask).whenTaskAdded { AbstractContainerTask abstractContainerTask ->
             abstractContainerTask.dependsOn WarPlugin.WAR_TASK_NAME
             abstractContainerTask.conventionMapping.map('classpath') { project.configurations.getByName(CARGO_CONFIGURATION_NAME).asFileTree }
-            abstractContainerTask.conventionMapping.map('webApp') { project.tasks.getByName(WarPlugin.WAR_TASK_NAME).archivePath }
+            abstractContainerTask.conventionMapping.map('deployable') { getDeployable(project, cargoConvention) }
             abstractContainerTask.conventionMapping.map('containerId') {
                 CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.CONTAINER_ID, cargoConvention.containerId)
             }
@@ -260,5 +258,19 @@ class CargoPlugin implements Plugin<Project> {
         def containerTask = project.tasks.add(task.name, taskClass)
         containerTask.description = task.description
         containerTask.group = WarPlugin.WEB_APP_GROUP
+    }
+
+    private File getDeployable(Project project, CargoPluginConvention cargoConvention) {
+        if(cargoConvention.deployable) {
+            return cargoConvention.deployable
+        }
+        else {
+            if(project.plugins.hasPlugin(WarPlugin.WAR_TASK_NAME)) {
+                return project.tasks.getByName(WarPlugin.WAR_TASK_NAME).archivePath
+            }
+            else if(project.plugins.hasPlugin('ear')) {
+                return project.tasks.getByName('ear').archivePath
+            }
+        }
     }
 }

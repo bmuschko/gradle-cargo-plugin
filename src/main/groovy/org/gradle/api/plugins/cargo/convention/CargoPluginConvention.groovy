@@ -24,6 +24,7 @@ class CargoPluginConvention {
     String containerId
     Integer port = 8080
     String context
+    File deployable
     CargoRemoteTaskConvention remote = new CargoRemoteTaskConvention()
     CargoLocalTaskConvention local = new CargoLocalTaskConvention()
 
