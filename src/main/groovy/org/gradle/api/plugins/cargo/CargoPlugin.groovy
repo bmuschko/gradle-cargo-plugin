@@ -52,7 +52,6 @@ class CargoPlugin implements Plugin<Project> {
 
     private void configureAbstractContainerTask(Project project, CargoPluginConvention cargoConvention) {
         project.tasks.withType(AbstractContainerTask).whenTaskAdded { AbstractContainerTask abstractContainerTask ->
-            abstractContainerTask.dependsOn WarPlugin.WAR_TASK_NAME
             abstractContainerTask.conventionMapping.map('classpath') { project.configurations.getByName(CARGO_CONFIGURATION_NAME).asFileTree }
             abstractContainerTask.conventionMapping.map('deployable') { getDeployable(project, cargoConvention) }
             abstractContainerTask.conventionMapping.map('containerId') {
@@ -257,7 +256,7 @@ class CargoPlugin implements Plugin<Project> {
     private void addContainerTask(Project project, Class taskClass, CargoPluginTask task) {
         def containerTask = project.tasks.add(task.name, taskClass)
         containerTask.description = task.description
-        containerTask.group = WarPlugin.WEB_APP_GROUP
+        containerTask.group = 'deployment'
     }
 
     private File getDeployable(Project project, CargoPluginConvention cargoConvention) {
