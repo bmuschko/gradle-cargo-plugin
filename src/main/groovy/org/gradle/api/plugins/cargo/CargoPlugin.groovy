@@ -24,13 +24,14 @@ import org.slf4j.LoggerFactory
 import org.gradle.api.plugins.cargo.property.*
 
 /**
- * <p>A {@link org.gradle.api.Plugin} that provides tasks for deploying WAR files to local and remote web containers.</p>
+ * <p>A {@link org.gradle.api.Plugin} that provides tasks for deploying WAR/EAR files to local and remote web containers.</p>
  *
  * @author Benjamin Muschko
  */
 class CargoPlugin implements Plugin<Project> {
     static final Logger LOGGER = LoggerFactory.getLogger(CargoPlugin)
     static final String CARGO_CONFIGURATION_NAME = 'cargo'
+    static final String CARGO_TASK_GROUP = 'deployment'
     static final String ACTION_CONVENTION_MAPPING_PARAM = 'action'
 
     @Override
@@ -256,7 +257,7 @@ class CargoPlugin implements Plugin<Project> {
     private void addContainerTask(Project project, Class taskClass, CargoPluginTask task) {
         def containerTask = project.tasks.add(task.name, taskClass)
         containerTask.description = task.description
-        containerTask.group = 'deployment'
+        containerTask.group = CARGO_TASK_GROUP
     }
 
     private File getDeployable(Project project, CargoPluginConvention cargoConvention) {
