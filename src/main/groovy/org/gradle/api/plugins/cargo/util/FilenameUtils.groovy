@@ -24,8 +24,9 @@ final class FilenameUtils {
     private FilenameUtils() {}
 
     static String getExtension(String fileName) {
-        if (fileName.contains('.')) {
-            return fileName.substring(fileName.lastIndexOf('.'))
+		int index = fileName.lastIndexOf('.')
+        if (index > 0) {
+            return fileName.substring(index + 1)
         }
 
         ''
