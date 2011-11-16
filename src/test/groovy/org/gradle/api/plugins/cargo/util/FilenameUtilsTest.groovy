@@ -15,21 +15,21 @@
  */
 package org.gradle.api.plugins.cargo.util
 
+import org.junit.Test
+
 /**
- * Filename utilities.
+ * Filename utilities unit tests.
  *
  * @author Benjamin Muschko
  */
-final class FilenameUtils {
-    private FilenameUtils() {}
+class FilenameUtilsTest {
+    @Test
+    void "Get file extension for file name without extension"() {
+        assert FilenameUtils.getExtension('test') == ''
+    }
 
-    static String getExtension(String fileName) {
-        int index = fileName.lastIndexOf('.')
-
-        if (index > 0) {
-            return fileName.substring(index + 1)
-        }
-
-        ''
+    @Test
+    void "Get file extension for file name with extension"() {
+        assert FilenameUtils.getExtension('test.war') == 'war'
     }
 }
