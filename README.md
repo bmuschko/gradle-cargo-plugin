@@ -77,15 +77,26 @@ Within `cargo` you can define properties for specific local containers. At the m
 defined by these closures:
 
 * `jetty`: Jetty
-    * `createContextXml`, `sessionPath`, `useFileMappedBuffer`
+    * `createContextXml`,
+    * `sessionPath`
+    * `useFileMappedBuffer`
 * `jonas`: Jonas
-    * `jmsPort`, `serverName`, `servicesList`, `domainName`
+    * `jmsPort`
+    * `serverName`
+    * `servicesList`
+    * `domainName`
 * `jrun`: JRun
     * `home`
 * `tomcat`: Tomcat
-    * `webappsDir`, `copyWars`, `contextReloadable`, `ajpPort`
+    * `webappsDir`
+    * `copyWars`
+    * `contextReloadable`
+    * `ajpPort`
 * `weblogic`: WebLogic
-    * `adminUser`, `adminPassword`, `beaHome`, `server`
+    * `adminUser`
+    * `adminPassword`
+    * `beaHome`
+    * `server`
 
 Please refer to the individual configuration properties on the Cargo homepage. All of these properties can be overriden
 by project properties. The name of the project properties is the same as in the Cargo manual.
