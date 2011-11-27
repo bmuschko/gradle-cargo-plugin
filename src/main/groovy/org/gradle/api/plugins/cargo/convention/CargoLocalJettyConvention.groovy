@@ -21,6 +21,7 @@ package org.gradle.api.plugins.cargo.convention
  * @author Benjamin Muschko
  */
 class CargoLocalJettyConvention {
+    Boolean createContextXml
     File sessionPath
     Boolean useFileMappedBuffer
 }

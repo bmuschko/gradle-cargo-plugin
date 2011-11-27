@@ -16,6 +16,8 @@
 package org.gradle.api.plugins.cargo
 
 import org.gradle.api.plugins.cargo.property.LocalJonasTaskProperty
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
 
 /**
  * Deploys WAR to local Jonas container.
@@ -23,10 +25,10 @@ import org.gradle.api.plugins.cargo.property.LocalJonasTaskProperty
  * @author Benjamin Muschko
  */
 class LocalJonasTask extends LocalContainerTask {
-    Integer jmsPort
-    String serverName
-    String servicesList
-    String domainName
+    @Input @Optional Integer jmsPort
+    @Input @Optional String serverName
+    @Input @Optional String servicesList
+    @Input @Optional String domainName
 
     @Override
     void setContainerSpecificProperties() {

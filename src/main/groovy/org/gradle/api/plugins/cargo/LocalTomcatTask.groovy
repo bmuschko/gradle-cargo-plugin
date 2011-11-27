@@ -16,6 +16,7 @@
 package org.gradle.api.plugins.cargo
 
 import org.gradle.api.plugins.cargo.property.LocalTomcatTaskProperty
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Optional
 
@@ -26,9 +27,9 @@ import org.gradle.api.tasks.Optional
  */
 class LocalTomcatTask extends LocalContainerTask {
     @InputDirectory @Optional File webappsDir
-    Boolean copyWars
-    Boolean contextReloadable
-    Integer ajpPort
+    @Input @Optional Boolean copyWars
+    @Input @Optional Boolean contextReloadable
+    @Input @Optional Integer ajpPort
 
     @Override
     void setContainerSpecificProperties() {

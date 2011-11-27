@@ -16,6 +16,7 @@
 package org.gradle.api.plugins.cargo
 
 import org.gradle.api.plugins.cargo.property.LocalJettyTaskProperty
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Optional
 
@@ -25,11 +26,15 @@ import org.gradle.api.tasks.Optional
  * @author Benjamin Muschko
  */
 class LocalJettyTask extends LocalContainerTask {
+    @Input @Optional Boolean createContextXml
     @InputDirectory @Optional File sessionPath
-    Boolean useFileMappedBuffer
+    @Input @Optional Boolean useFileMappedBuffer
 
     @Override
     void setContainerSpecificProperties() {
+        if(getCreateContextXml()) {
+            property(name: LocalJettyTaskProperty.SESSION_PATH, value: getCreateContextXml())
+        }
         if(getSessionPath()) {
             property(name: LocalJettyTaskProperty.SESSION_PATH, value: getSessionPath())
         }

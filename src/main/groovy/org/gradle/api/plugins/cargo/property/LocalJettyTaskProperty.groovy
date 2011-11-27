@@ -24,6 +24,7 @@ import org.slf4j.LoggerFactory
  * @author Benjamin Muschko
  */
 enum LocalJettyTaskProperty {
+    CREATE_CONTEXT_XML('cargo.jetty.createContextXml', PropertyDataType.BOOLEAN),
     SESSION_PATH('cargo.jetty.session.path', PropertyDataType.FILE),
     USE_FILE_MAPPED_BUFFER('cargo.jetty.servlet.default.useFileMappedBuffer', PropertyDataType.BOOLEAN)
 

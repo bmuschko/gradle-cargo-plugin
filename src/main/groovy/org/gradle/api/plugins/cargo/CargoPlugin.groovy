@@ -15,10 +15,12 @@
  */
 package org.gradle.api.plugins.cargo
 
+import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.WarPlugin
 import org.gradle.api.plugins.cargo.convention.CargoPluginConvention
+import org.gradle.plugins.ear.EarPlugin
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.gradle.api.plugins.cargo.property.*
@@ -108,6 +110,9 @@ class CargoPlugin implements Plugin<Project> {
             }
             localJettyTask.conventionMapping.map('homeDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
+            }
+            localJettyTask.conventionMapping.map('createContextXml') {
+                CargoProjectProperty.getTypedProperty(project, LocalJettyTaskProperty.CREATE_CONTEXT_XML, cargoConvention.local.jetty.createContextXml)
             }
             localJettyTask.conventionMapping.map('sessionPath') {
                 CargoProjectProperty.getTypedProperty(project, LocalJettyTaskProperty.SESSION_PATH, cargoConvention.local.jetty.sessionPath)
@@ -234,6 +239,10 @@ class CargoPlugin implements Plugin<Project> {
 
     private void configureLocalContainer(Project project, CargoPluginConvention cargoConvention, Action action, CargoPluginTask task) {
         project.afterEvaluate {
+            if(!cargoConvention.containerId) {
+                throw new InvalidUserDataException('Container ID was not defined.')
+            }
+
             LocalContainerTaskMapping mapping = LocalContainerTaskMapping.getLocalContainerTaskMappingForContainerId(cargoConvention.containerId)
 
             switch(mapping) {
@@ -243,9 +252,9 @@ class CargoPlugin implements Plugin<Project> {
                                                       break
                 case LocalContainerTaskMapping.JRUN: setLocalJRunConventionMapping(project, cargoConvention, action)
                                                      break
-                case LocalContainerTaskMapping.TOMCAT: setLocalWeblogicConventionMapping(project, cargoConvention, action)
+                case LocalContainerTaskMapping.TOMCAT: setLocalTomcatConventionMapping(project, cargoConvention, action)
                                                        break
-                case LocalContainerTaskMapping.WEBLOGIC: setLocalTomcatConventionMapping(project, cargoConvention, action)
+                case LocalContainerTaskMapping.WEBLOGIC: setLocalWeblogicConventionMapping(project, cargoConvention, action)
                                                          break
                 default: setLocalContainerConventionMapping(project, cargoConvention, action)
             }
@@ -268,8 +277,8 @@ class CargoPlugin implements Plugin<Project> {
             if(project.plugins.hasPlugin(WarPlugin.WAR_TASK_NAME)) {
                 return project.tasks.getByName(WarPlugin.WAR_TASK_NAME).archivePath
             }
-            else if(project.plugins.hasPlugin('ear')) {
-                return project.tasks.getByName('ear').archivePath
+            else if(project.plugins.hasPlugin(EarPlugin.EAR_TASK_NAME)) {
+                return project.tasks.getByName(EarPlugin.EAR_TASK_NAME).archivePath
             }
         }
     }

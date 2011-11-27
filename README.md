@@ -3,7 +3,8 @@
 ![Cargo Logo](http://docs.codehaus.org/download/attachments/27913/cargo-banner-left.png)
 
 The plugin provides deployment capabilities for web applications to local and remote containers in any given
-Gradle build by leveraging the [Cargo Ant tasks](http://cargo.codehaus.org/Ant+support). It extends the [War plugin](http://www.gradle.org/war_plugin.html).
+Gradle build by leveraging the [Cargo Ant tasks](http://cargo.codehaus.org/Ant+support). The plugin supports WAR and EAR
+artifacts.
 
 ## Usage
 
@@ -25,15 +26,14 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
         }
 
         dependencies {
-            classpath 'bmuschko:gradle-cargo-plugin:0.3'
+            classpath 'bmuschko:gradle-cargo-plugin:0.4'
         }
     }
 
     dependencies {
-        def cargoVersion = '1.1.1'
+        def cargoVersion = '1.1.3'
         cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion",
-              "org.codehaus.cargo:cargo-ant:$cargoVersion",
-              'jaxen:jaxen:1.1.1'
+              "org.codehaus.cargo:cargo-ant:$cargoVersion"
     }
 
 ## Tasks
@@ -58,6 +58,7 @@ The Cargo plugin defines the following convention properties in the `cargo` clos
 * `containerId`: The container ID you are targeting. Please see the [list of supported containers](http://cargo.codehaus.org/Home) on the Cargo website.
 * `port`: The TCP port the container responds on (defaults to 8080).
 * `context`: The URL context the container is handling your web application on (defaults to WAR name).
+* `deployable`: An arbitrary artifact to be deployed to container (defaults to project artifact - WAR or EAR file).
 
 Within `cargo` you can define properties for remote containers in a closure named `remote`:
 
@@ -68,8 +69,26 @@ Within `cargo` you can define properties for remote containers in a closure name
 
 Within `cargo` you can define properties for local containers in a closure named `local`:
 
+* `jvmArgs`: The JVM arguments for a local container.
 * `logLevel`: The log level to run the container with (optional). The valid levels are `low`, `medium` and `high`.
 * `homeDir`: The home directory of your local container.
+
+Within `cargo` you can define properties for specific local containers. At the moment the following containers are supported
+defined by these closures:
+
+* `jetty`: Jetty
+** `createContextXml`, `sessionPath`, `useFileMappedBuffer`
+* `jonas`: Jonas
+** `jmsPort`, `serverName`, `servicesList`, `domainName`
+* `jrun`: JRun
+** `home`
+* `tomcat`: Tomcat
+** `webappsDir`, `copyWars`, `contextReloadable`, `ajpPort`
+* `weblogic`: WebLogic
+** `adminUser`, `adminPassword`, `beaHome`, `server`
+
+Please refer to the individual configuration properties on the Cargo homepage. All of these properties can be overriden
+by project properties. The name of the project properties is the same as in the Cargo manual.
 
 ### Example
 
@@ -100,5 +119,6 @@ The convention properties can be overridden by project properties via `gradle.pr
 * `cargo.hostname`: Overrides the convention property `hostname`.
 * `cargo.username`: Overrides the convention property `username`.
 * `cargo.password`: Overrides the convention property `password`.
+* `cargo.jvmargs`: Overrides the convention property `jvmArgs`.
 * `cargo.log.level`: Overrides the convention property `logLevel`.
 * `cargo.home.dir`: Overrides the convention property `homeDir`.

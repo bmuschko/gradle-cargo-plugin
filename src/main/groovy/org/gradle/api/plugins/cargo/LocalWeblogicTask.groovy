@@ -15,9 +15,10 @@
  */
 package org.gradle.api.plugins.cargo
 
+import org.gradle.api.plugins.cargo.property.LocalWeblogicTaskProperty
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Optional
-import org.gradle.api.plugins.cargo.property.LocalWeblogicTaskProperty
 
 /**
  * Deploys WAR to local Weblogic container.
@@ -25,10 +26,10 @@ import org.gradle.api.plugins.cargo.property.LocalWeblogicTaskProperty
  * @author Benjamin Muschko
  */
 class LocalWeblogicTask extends LocalContainerTask {
-    String adminUser
-    String adminPassword
+    @Input @Optional String adminUser
+    @Input @Optional String adminPassword
     @InputDirectory @Optional File beaHome
-    String server
+    @Input @Optional String server
 
     @Override
     void setContainerSpecificProperties() {

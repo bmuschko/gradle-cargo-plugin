@@ -26,8 +26,8 @@ import org.slf4j.LoggerFactory
 enum Container {
     GERONIMO_1X('geronimo1x', 'Geronimo 1.x'), GERONIMO_2X('geronimo2x', 'Geronimo 2.x'), GERONIMO_3X('geronimo3x', 'Geronimo 3.x'), GERONIMO_4X('geronimo4x', 'Geronimo 4.x'),
     GLASSFISH_2X('glassfish2x', 'Glassfish 2.x'), GLASSFISH_3X('glassfish3x', 'Glassfish 3.x'),
-    JBOSS_3X('jboss3x', 'JBoss 3.x'), JBOSS_4X('jboss4x', 'JBoss 4.x'), JBOSS_4_2X('jboss42x', 'JBoss 4.2.x'), JBOSS_5X('jboss5x', 'JBoss 5.x'), JBOSS_5_1X('jboss51x', 'JBoss 5.1.x'), JBOSS_6X('jboss6x', 'JBoss 6.x'), JBOSS_7X('jboss7x', 'JBoss 7.x'),
-    JETTY_4X('jetty4x', 'Jetty 4.x'), JETTY_5X('jetty5x', 'Jetty 5.x'), JETTY_6X('jetty6x', 'Jetty 6.x'), JETTY_7X('jetty7x', 'Jetty 7.x'),
+    JBOSS_3X('jboss3x', 'JBoss 3.x'), JBOSS_4X('jboss4x', 'JBoss 4.x'), JBOSS_4_2X('jboss42x', 'JBoss 4.2.x'), JBOSS_5X('jboss5x', 'JBoss 5.x'), JBOSS_5_1X('jboss51x', 'JBoss 5.1.x'), JBOSS_6X('jboss6x', 'JBoss 6.x'), JBOSS_6_1X('jboss61x', 'JBoss 6.1.x'), JBOSS_7X('jboss7x', 'JBoss 7.x'), JBOSS_7_1X('jboss71x', 'JBoss 7.1.x'),
+    JETTY_4X('jetty4x', 'Jetty 4.x'), JETTY_5X('jetty5x', 'Jetty 5.x'), JETTY_6X('jetty6x', 'Jetty 6.x'), JETTY_7X('jetty7x', 'Jetty 7.x'), JETTY_8X('jetty8x', 'Jetty 8.x'),
     JO_1X('jo1x', 'jo! 1.x'),
     JONAS_4x('jonas4x', 'JOnAS 4.x'), JONAS_5x('jonas5x', 'JOnAS 5.x'),
     JRUN_4X('jrun4x', 'JRun 4.x'),
@@ -49,8 +49,8 @@ enum Container {
 
     static final EnumSet<Container> GERONIMO = EnumSet.range(GERONIMO_1X, GERONIMO_4X)
     static final EnumSet<Container> GLASSFISH = EnumSet.of(GLASSFISH_2X, GLASSFISH_3X)
-    static final EnumSet<Container> JBOSS = EnumSet.range(JBOSS_3X, JBOSS_7X)
-    static final EnumSet<Container> JETTY = EnumSet.range(JETTY_4X, JETTY_7X)
+    static final EnumSet<Container> JBOSS = EnumSet.range(JBOSS_3X, JBOSS_7_1X)
+    static final EnumSet<Container> JETTY = EnumSet.range(JETTY_4X, JETTY_8X)
     static final EnumSet<Container> JO = EnumSet.of(JO_1X)
     static final EnumSet<Container> JONAS = EnumSet.of(JONAS_4x, JONAS_5x)
     static final EnumSet<Container> JRUN = EnumSet.of(JRUN_4X)
