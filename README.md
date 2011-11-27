@@ -77,7 +77,7 @@ Within `cargo` you can define properties for specific local containers. At the m
 defined by these closures:
 
 * `jetty`: Jetty
-    * `createContextXml`,
+    * `createContextXml`
     * `sessionPath`
     * `useFileMappedBuffer`
 * `jonas`: Jonas
