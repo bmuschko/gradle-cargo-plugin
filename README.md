@@ -58,7 +58,7 @@ The Cargo plugin defines the following convention properties in the `cargo` clos
 * `containerId`: The container ID you are targeting. Please see the [list of supported containers](http://cargo.codehaus.org/Home) on the Cargo website.
 * `port`: The TCP port the container responds on (defaults to 8080).
 * `context`: The URL context the container is handling your web application on (defaults to WAR/EAR name).
-* `deployable`: An arbitrary artifact to be deployed to container (defaults to project artifact - WAR or EAR file).
+* `deployable`: An arbitrary artifact to be deployed to container (defaults to project/module artifact - WAR or EAR file).
 
 Within `cargo` you can define properties for remote containers in a closure named `remote`:
 
