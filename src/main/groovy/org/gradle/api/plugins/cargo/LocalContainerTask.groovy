@@ -49,13 +49,15 @@ class LocalContainerTask extends AbstractContainerTask {
                     property(name: 'cargo.logging', value: getLogLevel())
                 }
 
-                if(getContext()) {
-                    deployable(type: getDeployableType().filenameExtension, file: getDeployable()) {
-                        property(name: CARGO_CONTEXT, value: getContext())
+                getDeployables().each { deployable ->
+                    if(deployable.context) {
+                        ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file) {
+                            property(name: CARGO_CONTEXT, value: deployable.context)
+                        }
                     }
-                }
-                else {
-                    deployable(type: getDeployableType().filenameExtension, file: getDeployable())
+                    else {
+                        ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file)
+                    }
                 }
 
                 setContainerSpecificProperties()

@@ -26,7 +26,7 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
         }
 
         dependencies {
-            classpath 'bmuschko:gradle-cargo-plugin:0.4'
+            classpath 'bmuschko:gradle-cargo-plugin:0.5'
         }
     }
 
@@ -53,12 +53,19 @@ The Cargo plugin uses the same layout as the War plugin.
 
 ## Convention properties
 
-The Cargo plugin defines the following convention properties in the `cargo` closure::
+The Cargo plugin defines the following convention properties in the `cargo` closure:
 
 * `containerId`: The container ID you are targeting. Please see the [list of supported containers](http://cargo.codehaus.org/Home) on the Cargo website.
 * `port`: The TCP port the container responds on (defaults to 8080).
+
+Within `cargo` you can define optional properties for the 1..n deployment artifacts in a closure named `deployable`. Each
+deployment artifact would be specified in its own closure:
+
+* `file`: An arbitrary artifact to be deployed to container (defaults to project/module artifact - WAR or EAR file).
 * `context`: The URL context the container is handling your web application on (defaults to WAR/EAR name).
-* `deployable`: An arbitrary artifact to be deployed to container (defaults to project/module artifact - WAR or EAR file).
+
+Keep in mind that you do not have to define the `deployable` closure if you just want to deploy the artifact defined by your
+Gradle project/module.
 
 Within `cargo` you can define properties for remote containers in a closure named `remote`:
 
@@ -106,7 +113,10 @@ by project properties. The name of the project properties is the same as in the 
     cargo {
         containerId = 'tomcat6x'
         port = 9090
-        context = 'myawesomewebapp'
+
+        deployable {
+            context = 'myawesomewebapp'
+        }
 
         remote {
             hostname = 'cloud.internal.it'
@@ -125,7 +135,6 @@ The convention properties can be overridden by project properties via `gradle.pr
 
 * `cargo.container.id`: Overrides the convention property `containerId`.
 * `cargo.port`: Overrides the convention property `port`.
-* `cargo.context`: Overrides the convention property `context`.
 * `cargo.protocol`: Overrides the convention property `protocol`.
 * `cargo.hostname`: Overrides the convention property `hostname`.
 * `cargo.username`: Overrides the convention property `username`.
@@ -133,3 +142,34 @@ The convention properties can be overridden by project properties via `gradle.pr
 * `cargo.jvmargs`: Overrides the convention property `jvmArgs`.
 * `cargo.log.level`: Overrides the convention property `logLevel`.
 * `cargo.home.dir`: Overrides the convention property `homeDir`.
+
+## FAQ
+
+**I would like to deploy multiple artifacts to my container. How do I do that?**
+
+You would specify each artifact in a separate `deployable` closure. Each of the closures should assign a unique URL context.
+The following example demonstrates how a Cargo setup with three different artifacts deployed to a local Tomcat:
+
+    cargo {
+        containerId = 'tomcat6x'
+        port = 9090
+
+        deployable {
+            file = file('/home/foo/bar/web-services.war')
+            context = 'web-services'
+        }
+
+        deployable {
+            file = file('/home/foo/bar/web-app.war')
+            context = 'web-app'
+        }
+
+        deployable {
+            file = file('/home/foo/bar/enterprise-app.ear')
+            context = 'enterprise-app'
+        }
+
+        local {
+            homeDir = file('/home/user/dev/tools/apache-tomcat-6.0.32')
+        }
+    }

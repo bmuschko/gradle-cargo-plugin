@@ -24,6 +24,7 @@ import org.gradle.plugins.ear.EarPlugin
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.gradle.api.plugins.cargo.property.*
+import org.gradle.api.plugins.cargo.convention.Deployable
 
 /**
  * <p>A {@link org.gradle.api.Plugin} that provides tasks for deploying WAR/EAR files to local and remote web containers.</p>
@@ -56,16 +57,13 @@ class CargoPlugin implements Plugin<Project> {
     private void configureAbstractContainerTask(Project project, CargoPluginConvention cargoConvention) {
         project.tasks.withType(AbstractContainerTask).whenTaskAdded { AbstractContainerTask abstractContainerTask ->
             abstractContainerTask.conventionMapping.map('classpath') { project.configurations.getByName(CARGO_CONFIGURATION_NAME).asFileTree }
-            abstractContainerTask.conventionMapping.map('deployable') { getDeployable(project, cargoConvention) }
             abstractContainerTask.conventionMapping.map('containerId') {
                 CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.CONTAINER_ID, cargoConvention.containerId)
             }
             abstractContainerTask.conventionMapping.map('port') {
                 CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.PORT, cargoConvention.port)
             }
-            abstractContainerTask.conventionMapping.map('context') {
-                CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.CONTEXT, cargoConvention.context)
-            }
+            abstractContainerTask.conventionMapping.map('deployables') { resolveDeployables(project, cargoConvention) }
         }
     }
 
@@ -269,17 +267,31 @@ class CargoPlugin implements Plugin<Project> {
         containerTask.group = CARGO_TASK_GROUP
     }
 
-    private File getDeployable(Project project, CargoPluginConvention cargoConvention) {
-        if(cargoConvention.deployable) {
-            return cargoConvention.deployable
+    private List<Deployable> resolveDeployables(Project project, CargoPluginConvention cargoConvention) {
+        def deployables = []
+
+        if(cargoConvention.deployables.size() == 0) {
+            deployables << new Deployable(file: getProjectDeployableFile(project))
         }
         else {
-            if(project.plugins.hasPlugin(WarPlugin.WAR_TASK_NAME)) {
-                return project.tasks.getByName(WarPlugin.WAR_TASK_NAME).archivePath
+            cargoConvention.deployables.each { deployable ->
+                if(!deployable.file) {
+                    deployable.file = getProjectDeployableFile(project)
+                }
+
+                deployables << deployable
             }
-            else if(project.plugins.hasPlugin(EarPlugin.EAR_TASK_NAME)) {
-                return project.tasks.getByName(EarPlugin.EAR_TASK_NAME).archivePath
-            }
+        }
+
+        deployables
+    }
+
+    private File getProjectDeployableFile(Project project) {
+        if(project.plugins.hasPlugin(WarPlugin.WAR_TASK_NAME)) {
+            return project.tasks.getByName(WarPlugin.WAR_TASK_NAME).archivePath
+        }
+        else if(project.plugins.hasPlugin(EarPlugin.EAR_TASK_NAME)) {
+            return project.tasks.getByName(EarPlugin.EAR_TASK_NAME).archivePath
         }
     }
 }

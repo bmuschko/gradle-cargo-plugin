@@ -23,13 +23,20 @@ package org.gradle.api.plugins.cargo.convention
 class CargoPluginConvention {
     String containerId
     Integer port = 8080
-    String context
-    File deployable
+    def deployables = []
     CargoRemoteTaskConvention remote = new CargoRemoteTaskConvention()
     CargoLocalTaskConvention local = new CargoLocalTaskConvention()
 
     def cargo(Closure closure) {
         closure.delegate = this
+        closure()
+    }
+
+    def deployable(Closure closure) {
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        Deployable deployable = new Deployable()
+        closure.delegate = deployable
+        deployables << deployable
         closure()
     }
 

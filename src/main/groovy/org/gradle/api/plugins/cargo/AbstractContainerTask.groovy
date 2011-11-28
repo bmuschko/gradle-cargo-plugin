@@ -18,8 +18,9 @@ package org.gradle.api.plugins.cargo
 import org.gradle.api.DefaultTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.file.FileCollection
+import org.gradle.api.plugins.cargo.convention.Deployable
 import org.gradle.api.plugins.cargo.util.FilenameUtils
-import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.TaskAction
 import org.slf4j.Logger
@@ -40,7 +41,7 @@ abstract class AbstractContainerTask extends DefaultTask {
     Integer port
     String context
     @InputFiles FileCollection classpath
-    @InputFile File deployable
+    @Input List<Deployable> deployables
 
     @TaskAction
     void start() {
@@ -49,14 +50,19 @@ abstract class AbstractContainerTask extends DefaultTask {
     }
 
     void validateConfiguration() {
-        if(!getDeployable() || !getDeployable().exists()) {
-            throw new InvalidUserDataException("Deployable "
-                    + (getDeployable() == null ? "null" : getDeployable().canonicalPath)
-                    + " does not exist")
+        if(!getDeployables()) {
+            throw new InvalidUserDataException('No deployables assigned!')
         }
-        else {
-            LOGGER.info "Deployable artifact = ${getDeployable().canonicalPath}"
+
+        getDeployables().each { deployable ->
+            if(deployable.file && !deployable.file.exists()) {
+                throw new InvalidUserDataException("Deployable "
+                + (deployable.file == null ? "null" : deployable.file.canonicalPath)
+                + " does not exist")
+            }
         }
+
+        LOGGER.info "Deployable artifacts = ${getDeployables().collect { it.file.canonicalPath }}"
 
         if(!getContainerId() || !Container.CONTAINERS.containsKey(getContainerId())) {
             throw new InvalidUserDataException("Unsupported container ID '${getContainerId()}'. Please pick a valid one: ${Container.containerIds}")
@@ -66,8 +72,8 @@ abstract class AbstractContainerTask extends DefaultTask {
         }
     }
 
-    DeployableType getDeployableType() {
-        String filenameExtension = FilenameUtils.getExtension(getDeployable().canonicalPath)
+    DeployableType getDeployableType(Deployable deployable) {
+        String filenameExtension = FilenameUtils.getExtension(deployable.file.canonicalPath)
         DeployableType.getDeployableTypeForFilenameExtension(filenameExtension)
     }
 
