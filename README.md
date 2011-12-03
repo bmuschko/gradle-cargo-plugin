@@ -26,7 +26,7 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
         }
 
         dependencies {
-            classpath 'bmuschko:gradle-cargo-plugin:0.5'
+            classpath 'bmuschko:gradle-cargo-plugin:0.5.1'
         }
     }
 
@@ -77,6 +77,8 @@ Within `cargo` you can define properties for remote containers in a closure name
 Within `cargo` you can define properties for local containers in a closure named `local`:
 
 * `jvmArgs`: The JVM arguments for a local container.
+* `output`: The log file of your local container (defaults to writing to the console).
+* `log`: The Cargo log file of your local container (defaults to writing to the console).
 * `logLevel`: The log level to run the container with (optional). The valid levels are `low`, `medium` and `high`.
 * `homeDir`: The home directory of your local container.
 
@@ -126,6 +128,7 @@ by project properties. The name of the project properties is the same as in the 
 
         local {
             homeDir = file('/home/user/dev/tools/apache-tomcat-6.0.32')
+            output = file('build/output.log')
         }
     }
 
@@ -140,6 +143,8 @@ The convention properties can be overridden by project properties via `gradle.pr
 * `cargo.username`: Overrides the convention property `username`.
 * `cargo.password`: Overrides the convention property `password`.
 * `cargo.jvmargs`: Overrides the convention property `jvmArgs`.
+* `cargo.output`: Overrides the convention property `output`.
+* `cargo.log`: Overrides the convention property `log`.
 * `cargo.log.level`: Overrides the convention property `logLevel`.
 * `cargo.home.dir`: Overrides the convention property `homeDir`.
 

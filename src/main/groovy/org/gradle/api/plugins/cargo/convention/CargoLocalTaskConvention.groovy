@@ -24,6 +24,8 @@ class CargoLocalTaskConvention {
     String jvmArgs
     String logLevel
     File homeDir
+    File output
+    File log
     CargoLocalJettyConvention jetty = new CargoLocalJettyConvention()
     CargoLocalJonasConvention jonas = new CargoLocalJonasConvention()
     CargoLocalJRunConvention jrun = new CargoLocalJRunConvention()

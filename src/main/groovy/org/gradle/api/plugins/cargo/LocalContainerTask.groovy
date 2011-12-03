@@ -16,6 +16,8 @@
 package org.gradle.api.plugins.cargo
 
 import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.Optional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -29,6 +31,8 @@ class LocalContainerTask extends AbstractContainerTask {
     String logLevel
     String jvmArgs
     @InputDirectory File homeDir
+    File output
+    File log
 
     @Override
     void runAction() {
@@ -37,7 +41,7 @@ class LocalContainerTask extends AbstractContainerTask {
         }
 
         ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)
-        ant.cargo(containerId: getContainerId(), home: getHomeDir().canonicalPath, action: getAction()) {
+        ant.cargo(getCargoAttributes()) {
             configuration {
                 property(name: CARGO_SERVLET_PORT, value: getPort())
 
@@ -63,6 +67,20 @@ class LocalContainerTask extends AbstractContainerTask {
                 setContainerSpecificProperties()
             }
         }
+    }
+
+    private Map<String, String> getCargoAttributes() {
+        def cargoAttributes = ['containerId': getContainerId(), 'home': getHomeDir().canonicalPath, 'action': getAction()]
+
+        if(getOutput()) {
+            cargoAttributes['output'] = getOutput()
+        }
+
+        if(getLog()) {
+            cargoAttributes['log'] = getLog()
+        }
+
+        cargoAttributes
     }
 
     void setContainerSpecificProperties() {}

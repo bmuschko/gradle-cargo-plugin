@@ -1,3 +1,7 @@
+### Version 0.5.1 (December 3, 2011)
+
+* Provide convention properties for Cargo and container log files.
+
 ### Version 0.5 (November 27, 2011)
 
 * Allow deployment of multiple artifacts - [Issue 9](https://github.com/bmuschko/gradle-cargo-plugin/issues/9). _Note:_ This slightly

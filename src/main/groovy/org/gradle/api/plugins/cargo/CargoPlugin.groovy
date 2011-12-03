@@ -97,6 +97,12 @@ class CargoPlugin implements Plugin<Project> {
             localContainerTask.conventionMapping.map('homeDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
             }
+            localContainerTask.conventionMapping.map('output') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
+            }
+            localContainerTask.conventionMapping.map('log') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
+            }
         }
     }
 
@@ -108,6 +114,12 @@ class CargoPlugin implements Plugin<Project> {
             }
             localJettyTask.conventionMapping.map('homeDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
+            }
+            localJettyTask.conventionMapping.map('output') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
+            }
+            localJettyTask.conventionMapping.map('log') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
             }
             localJettyTask.conventionMapping.map('createContextXml') {
                 CargoProjectProperty.getTypedProperty(project, LocalJettyTaskProperty.CREATE_CONTEXT_XML, cargoConvention.local.jetty.createContextXml)
@@ -129,6 +141,12 @@ class CargoPlugin implements Plugin<Project> {
             }
             localJonasTask.conventionMapping.map('homeDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
+            }
+            localJonasTask.conventionMapping.map('output') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
+            }
+            localJonasTask.conventionMapping.map('log') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
             }
             localJonasTask.conventionMapping.map('jmsPort') {
                 CargoProjectProperty.getTypedProperty(project, LocalJonasTaskProperty.JMS_PORT, cargoConvention.local.jonas.jmsPort)
@@ -154,6 +172,12 @@ class CargoPlugin implements Plugin<Project> {
             localJRunTask.conventionMapping.map('homeDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
             }
+            localJRunTask.conventionMapping.map('output') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
+            }
+            localJRunTask.conventionMapping.map('log') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
+            }
             localJRunTask.conventionMapping.map('home') {
                 CargoProjectProperty.getTypedProperty(project, LocalJRunTaskProperty.HOME, cargoConvention.local.jrun.home)
             }
@@ -168,6 +192,12 @@ class CargoPlugin implements Plugin<Project> {
             }
             localTomcatTask.conventionMapping.map('homeDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
+            }
+            localTomcatTask.conventionMapping.map('output') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
+            }
+            localTomcatTask.conventionMapping.map('log') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
             }
             localTomcatTask.conventionMapping.map('webappsDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalTomcatTaskProperty.WEBAPPS_DIRECTORY, cargoConvention.local.tomcat.webappsDir)
@@ -192,6 +222,12 @@ class CargoPlugin implements Plugin<Project> {
             }
             localWeblogicTask.conventionMapping.map('homeDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
+            }
+            localWeblogicTask.conventionMapping.map('output') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
+            }
+            localWeblogicTask.conventionMapping.map('log') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
             }
             localWeblogicTask.conventionMapping.map('adminUser') {
                 CargoProjectProperty.getTypedProperty(project, LocalWeblogicTaskProperty.ADMIN_USER, cargoConvention.local.weblogic.adminUser)
