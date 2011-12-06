@@ -34,16 +34,16 @@ class LocalTomcatTask extends LocalContainerTask {
     @Override
     void setContainerSpecificProperties() {
         if(getWebappsDir()) {
-            property(name: LocalTomcatTaskProperty.WEBAPPS_DIRECTORY, value: getWebappsDir())
+            ant.property(name: LocalTomcatTaskProperty.WEBAPPS_DIRECTORY.name, value: getWebappsDir())
         }
         if(getCopyWars()) {
-            property(name: LocalTomcatTaskProperty.COPY_WARS, value: getCopyWars())
+            ant.property(name: LocalTomcatTaskProperty.COPY_WARS.name, value: getCopyWars())
         }
         if(getContextReloadable()) {
-            property(name: LocalTomcatTaskProperty.CONTEXT_RELOADABLE, value: getContextReloadable())
+            ant.property(name: LocalTomcatTaskProperty.CONTEXT_RELOADABLE.name, value: getContextReloadable())
         }
         if(getAjpPort()) {
-            property(name: LocalTomcatTaskProperty.AJP_PORT, value: getAjpPort())
+            ant.property(name: LocalTomcatTaskProperty.AJP_PORT.name, value: getAjpPort())
         }
     }
 }

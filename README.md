@@ -26,7 +26,7 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
         }
 
         dependencies {
-            classpath 'bmuschko:gradle-cargo-plugin:0.5.1'
+            classpath 'bmuschko:gradle-cargo-plugin:0.5.2'
         }
     }
 
@@ -82,7 +82,7 @@ Within `cargo` you can define properties for local containers in a closure named
 * `logLevel`: The log level to run the container with (optional). The valid levels are `low`, `medium` and `high`.
 * `homeDir`: The home directory of your local container.
 
-Within `cargo` you can define properties for specific local containers. At the moment the following containers are supported
+Within `local` you can define properties for specific local containers. At the moment the following containers are supported
 defined by these closures:
 
 * `jetty`: Jetty
@@ -129,6 +129,10 @@ by project properties. The name of the project properties is the same as in the 
         local {
             homeDir = file('/home/user/dev/tools/apache-tomcat-6.0.32')
             output = file('build/output.log')
+
+            tomcat {
+                ajpPort = 9091
+            }
         }
     }
 

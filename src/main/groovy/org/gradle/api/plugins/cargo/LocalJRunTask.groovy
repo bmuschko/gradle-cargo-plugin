@@ -30,7 +30,7 @@ class LocalJRunTask extends LocalContainerTask {
     @Override
     void setContainerSpecificProperties() {
         if(getHome()) {
-            property(name: LocalJRunTaskProperty.HOME, value: getHome())
+            ant.property(name: LocalJRunTaskProperty.HOME.name, value: getHome())
         }
     }
 }

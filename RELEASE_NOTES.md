@@ -1,3 +1,7 @@
+### Version 0.5.2 (December 5, 2011)
+
+* Fixed minor bug in documentation and code about setting local container-specific properties.
+
 ### Version 0.5.1 (December 3, 2011)
 
 * Provide convention properties for Cargo and container log files.

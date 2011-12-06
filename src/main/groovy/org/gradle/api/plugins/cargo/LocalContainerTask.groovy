@@ -16,8 +16,6 @@
 package org.gradle.api.plugins.cargo
 
 import org.gradle.api.tasks.InputDirectory
-import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.Optional
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -42,21 +40,21 @@ class LocalContainerTask extends AbstractContainerTask {
 
         ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)
         ant.cargo(getCargoAttributes()) {
-            configuration {
+            ant.configuration {
                 property(name: CARGO_SERVLET_PORT, value: getPort())
 
                 if(getJvmArgs()) {
-                    property(name: 'cargo.jvmargs', value: getJvmArgs())
+                    ant.property(name: 'cargo.jvmargs', value: getJvmArgs())
                 }
 
                 if(getLogLevel()) {
-                    property(name: 'cargo.logging', value: getLogLevel())
+                    ant.property(name: 'cargo.logging', value: getLogLevel())
                 }
 
                 getDeployables().each { deployable ->
                     if(deployable.context) {
                         ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file) {
-                            property(name: CARGO_CONTEXT, value: deployable.context)
+                            ant.property(name: CARGO_CONTEXT, value: deployable.context)
                         }
                     }
                     else {

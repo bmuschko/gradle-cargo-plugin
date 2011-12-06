@@ -33,16 +33,16 @@ class LocalJonasTask extends LocalContainerTask {
     @Override
     void setContainerSpecificProperties() {
         if(getJmsPort()) {
-            property(name: LocalJonasTaskProperty.JMS_PORT, value: getJmsPort())
+            ant.property(name: LocalJonasTaskProperty.JMS_PORT.name, value: getJmsPort())
         }
         if(getServerName()) {
-            property(name: LocalJonasTaskProperty.SERVER_NAME, value: getServerName())
+            ant.property(name: LocalJonasTaskProperty.SERVER_NAME.name, value: getServerName())
         }
         if(getServicesList()) {
-            property(name: LocalJonasTaskProperty.SERVICES_LIST, value: getServicesList())
+            ant.property(name: LocalJonasTaskProperty.SERVICES_LIST.name, value: getServicesList())
         }
         if(getDomainName()) {
-            property(name: LocalJonasTaskProperty.DOMAIN_NAME, value: getDomainName())
+            ant.property(name: LocalJonasTaskProperty.DOMAIN_NAME.name, value: getDomainName())
         }
     }
 }

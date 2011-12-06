@@ -34,16 +34,16 @@ class LocalWeblogicTask extends LocalContainerTask {
     @Override
     void setContainerSpecificProperties() {
         if(getAdminUser()) {
-            property(name: LocalWeblogicTaskProperty.ADMIN_USER, value: getAdminUser())
+            ant.property(name: LocalWeblogicTaskProperty.ADMIN_USER.name, value: getAdminUser())
         }
         if(getAdminPassword()) {
-            property(name: LocalWeblogicTaskProperty.ADMIN_PASSWORD, value: getAdminPassword())
+            ant.property(name: LocalWeblogicTaskProperty.ADMIN_PASSWORD.name, value: getAdminPassword())
         }
         if(getBeaHome()) {
-            property(name: LocalWeblogicTaskProperty.BEA_HOME, value: getBeaHome())
+            ant.property(name: LocalWeblogicTaskProperty.BEA_HOME.name, value: getBeaHome())
         }
         if(getServer()) {
-            property(name: LocalWeblogicTaskProperty.SERVER, value: getServer())
+            ant.property(name: LocalWeblogicTaskProperty.SERVER.name, value: getServer())
         }
     }
 }

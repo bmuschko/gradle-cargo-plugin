@@ -33,13 +33,13 @@ class LocalJettyTask extends LocalContainerTask {
     @Override
     void setContainerSpecificProperties() {
         if(getCreateContextXml()) {
-            property(name: LocalJettyTaskProperty.SESSION_PATH, value: getCreateContextXml())
+            ant.property(name: LocalJettyTaskProperty.SESSION_PATH.name, value: getCreateContextXml())
         }
         if(getSessionPath()) {
-            property(name: LocalJettyTaskProperty.SESSION_PATH, value: getSessionPath())
+            ant.property(name: LocalJettyTaskProperty.SESSION_PATH.name, value: getSessionPath())
         }
         if(getUseFileMappedBuffer()) {
-            property(name: LocalJettyTaskProperty.USE_FILE_MAPPED_BUFFER, value: getUseFileMappedBuffer())
+            ant.property(name: LocalJettyTaskProperty.USE_FILE_MAPPED_BUFFER.name, value: getUseFileMappedBuffer())
         }
     }
 }
