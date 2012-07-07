@@ -15,19 +15,18 @@
  */
 package org.gradle.api.plugins.cargo.property
 
-import org.slf4j.LoggerFactory
-import org.slf4j.Logger
+import groovy.util.logging.Slf4j
 
 /**
  * Defines abstract container task properties.
  *
  * @author Benjamin Muschko
  */
+@Slf4j
 enum AbstractContainerTaskProperty implements TaskProperty {
     CONTAINER_ID('cargo.container.id', PropertyDataType.STRING), PORT('cargo.port', PropertyDataType.INTEGER),
     CONTEXT('cargo.context', PropertyDataType.STRING)
 
-    static final Logger LOGGER = LoggerFactory.getLogger(AbstractContainerTaskProperty)
     static final Map PROPERTIES
 
     static {
@@ -50,7 +49,7 @@ enum AbstractContainerTaskProperty implements TaskProperty {
         def property = PROPERTIES[name]
 
         if(!property) {
-            LOGGER.error "Unknown property: $name"
+            log.error "Unknown property: $name"
             throw new IllegalArgumentException("Unknown property: $name")
         }
 

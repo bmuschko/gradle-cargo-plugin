@@ -15,14 +15,14 @@
  */
 package org.gradle.api.plugins.cargo
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 
 /**
  * Defines supported containers.
  *
  * @author Benjamin Muschko
  */
+@Slf4j
 enum Container {
     GERONIMO_1X('geronimo1x', 'Geronimo 1.x'), GERONIMO_2X('geronimo2x', 'Geronimo 2.x'), GERONIMO_3X('geronimo3x', 'Geronimo 3.x'), GERONIMO_4X('geronimo4x', 'Geronimo 4.x'),
     GLASSFISH_2X('glassfish2x', 'Glassfish 2.x'), GLASSFISH_3X('glassfish3x', 'Glassfish 3.x'),
@@ -36,7 +36,6 @@ enum Container {
     TOMCAT_5X('tomcat5x', 'Tomcat 5.x'), TOMCAT_6X('tomcat6x', 'Tomcat 6.x'), TOMCAT_7X('tomcat7x', 'Tomcat 7.x'),
     WEBLOGIC_8X('weblogic8x', 'WebLogic 8.x'), WEBLOGIC_9X('weblogic9x', 'WebLogic 9.x'), WEBLOGIC_10X('weblogic10x', 'WebLogic 10.x'), WEBLOGIC_10_3X('weblogic103x', 'WebLogic 10.3.x')
 
-    static final Logger LOGGER = LoggerFactory.getLogger(Container)
     static final Map CONTAINERS
 
     static {
@@ -70,7 +69,7 @@ enum Container {
         def container = CONTAINERS[id]
 
         if(!container) {
-            LOGGER.error "Unknown container: ${id}"
+            log.error "Unknown container: ${id}"
             throw new IllegalArgumentException('Unknown container')
         }
 

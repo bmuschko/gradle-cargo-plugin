@@ -15,18 +15,17 @@
  */
 package org.gradle.api.plugins.cargo
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 
 /**
  * Type of deployable.
  *
  * @author Benjamin Muschko
  */
+@Slf4j
 enum DeployableType {
     WAR('war'), EAR('ear')
 
-    static final Logger LOGGER = LoggerFactory.getLogger(Container)
     static final Map DEPLOYABLE_TYPES
 
     static {
@@ -47,7 +46,7 @@ enum DeployableType {
         DeployableType deployableType = DEPLOYABLE_TYPES[filenameExtension]
 
         if(!deployableType) {
-            LOGGER.error "Unknown deployable type: ${filenameExtension}"
+            log.error "Unknown deployable type: ${filenameExtension}"
             throw new IllegalArgumentException('Unknown deployable type')
         }
 

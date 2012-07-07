@@ -15,19 +15,18 @@
  */
 package org.gradle.api.plugins.cargo.property
 
-import org.slf4j.LoggerFactory
-import org.slf4j.Logger
+import groovy.util.logging.Slf4j
 
 /**
  * Defines local Jonas task convention.
  *
  * @author Benjamin Muschko
  */
+@Slf4j
 enum LocalJonasTaskProperty {
     JMS_PORT('cargo.jonas.jms.port', PropertyDataType.INTEGER), SERVER_NAME('cargo.jonas.server.name', PropertyDataType.STRING),
     SERVICES_LIST('cargo.jonas.services.list', PropertyDataType.STRING), DOMAIN_NAME('cargo.jonas.domain.name', PropertyDataType.STRING)
 
-    static final Logger LOGGER = LoggerFactory.getLogger(LocalJonasTaskProperty)
     static final Map PROPERTIES
 
     static {
@@ -50,7 +49,7 @@ enum LocalJonasTaskProperty {
         def property = PROPERTIES[name]
 
         if(!property) {
-            LOGGER.error "Unknown property: $name"
+            log.error "Unknown property: $name"
             throw new IllegalArgumentException("Unknown property: $name")
         }
 

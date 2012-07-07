@@ -15,19 +15,18 @@
  */
 package org.gradle.api.plugins.cargo.property
 
-import org.slf4j.LoggerFactory
-import org.slf4j.Logger
+import groovy.util.logging.Slf4j
 
 /**
  * Defines local Tomcat task convention.
  *
  * @author Benjamin Muschko
  */
+@Slf4j
 enum LocalTomcatTaskProperty implements TaskProperty {
     WEBAPPS_DIRECTORY('cargo.tomcat.webappsDirectory', PropertyDataType.FILE), COPY_WARS('cargo.tomcat.copywars', PropertyDataType.BOOLEAN),
     CONTEXT_RELOADABLE('cargo.tomcat.context.reloadable', PropertyDataType.BOOLEAN), AJP_PORT('cargo.tomcat.ajp.port', PropertyDataType.INTEGER)
 
-    static final Logger LOGGER = LoggerFactory.getLogger(LocalTomcatTaskProperty)
     static final Map PROPERTIES
 
     static {
@@ -50,7 +49,7 @@ enum LocalTomcatTaskProperty implements TaskProperty {
         def property = PROPERTIES[name]
 
         if(!property) {
-            LOGGER.error "Unknown property: $name"
+            log.error "Unknown property: $name"
             throw new IllegalArgumentException("Unknown property: $name")
         }
 

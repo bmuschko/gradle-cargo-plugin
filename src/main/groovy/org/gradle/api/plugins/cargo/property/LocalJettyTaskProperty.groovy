@@ -15,20 +15,19 @@
  */
 package org.gradle.api.plugins.cargo.property
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 
 /**
  * Defines local Jetty task convention.
  *
  * @author Benjamin Muschko
  */
+@Slf4j
 enum LocalJettyTaskProperty {
     CREATE_CONTEXT_XML('cargo.jetty.createContextXml', PropertyDataType.BOOLEAN),
     SESSION_PATH('cargo.jetty.session.path', PropertyDataType.FILE),
     USE_FILE_MAPPED_BUFFER('cargo.jetty.servlet.default.useFileMappedBuffer', PropertyDataType.BOOLEAN)
 
-    static final Logger LOGGER = LoggerFactory.getLogger(LocalJettyTaskProperty)
     static final Map PROPERTIES
 
     static {
@@ -51,7 +50,7 @@ enum LocalJettyTaskProperty {
         def property = PROPERTIES[name]
 
         if(!property) {
-            LOGGER.error "Unknown property: $name"
+            log.error "Unknown property: $name"
             throw new IllegalArgumentException("Unknown property: $name")
         }
 

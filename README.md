@@ -26,12 +26,12 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
         }
 
         dependencies {
-            classpath 'bmuschko:gradle-cargo-plugin:0.5.2'
+            classpath 'bmuschko:gradle-cargo-plugin:0.5.3'
         }
     }
 
     dependencies {
-        def cargoVersion = '1.1.3'
+        def cargoVersion = '1.2.2'
         cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion",
               "org.codehaus.cargo:cargo-ant:$cargoVersion"
     }
@@ -107,6 +107,13 @@ defined by these closures:
     * `beaHome`
     * `server`
 
+If you decide to use the [ZIP installer](http://cargo.codehaus.org/Installer) Cargo will automatically download your container. You can
+define its properties in the closure `installer`. The installer only applies to "local" Cargo tasks.
+
+* `installUrl`: The URL to download the container distribtion from.
+* `downloadDir`: Target directory to download the container distribution to.
+* `extractDir`: Directory to extract the downloaded container distribution to.
+
 Please refer to the individual configuration properties on the Cargo homepage. All of these properties can be overriden
 by project properties. The name of the project properties is the same as in the Cargo manual.
 
@@ -180,5 +187,22 @@ The following example demonstrates how a Cargo setup with three different artifa
 
         local {
             homeDir = file('/home/user/dev/tools/apache-tomcat-6.0.32')
+        }
+    }
+
+**Is there a way to let Cargo automatically install the container I'd like to use?**
+
+Cargo allows for defining a container that gets automatically downloaded and installed on your local disk. All you need to
+do is to specify the `installer` closure. The following code snippet downloads, installs and uses Tomcat 7:
+
+    cargo {
+        containerId = 'tomcat7x'
+
+        local {
+            installer {
+                installUrl = 'http://apache.osuosl.org/tomcat/tomcat-7/v7.0.27/bin/apache-tomcat-7.0.27.zip'
+                downloadDir = file("$buildDir/download")
+                extractDir = file("$buildDir/extract")
+            }
         }
     }

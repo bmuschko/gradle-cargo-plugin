@@ -1,3 +1,9 @@
+### Version 0.5.3 (July 7, 2012)
+
+* Support for ZIP artifact installer - [Issue 15](https://github.com/bmuschko/gradle-cargo-plugin/issues/15).
+* Upgrade to Gradle Wrapper 1.0.
+* Use Groovy @Slf4j annotation for logging.
+
 ### Version 0.5.2 (December 5, 2011)
 
 * Fixed minor bug in documentation and code about setting local container-specific properties.

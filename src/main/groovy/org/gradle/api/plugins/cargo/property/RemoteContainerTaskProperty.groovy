@@ -15,19 +15,18 @@
  */
 package org.gradle.api.plugins.cargo.property
 
-import org.slf4j.LoggerFactory
-import org.slf4j.Logger
+import groovy.util.logging.Slf4j
 
 /**
  * Defines remote container task properties.
  *
  * @author Benjamin Muschko
  */
+@Slf4j
 enum RemoteContainerTaskProperty implements TaskProperty {
     PROTOCOL('cargo.protocol', PropertyDataType.STRING), HOSTNAME('cargo.hostname', PropertyDataType.STRING),
     USERNAME('cargo.username', PropertyDataType.STRING), PASSWORD('cargo.password', PropertyDataType.STRING)
 
-    static final Logger LOGGER = LoggerFactory.getLogger(RemoteContainerTaskProperty)
     static final Map PROPERTIES
 
     static {
@@ -50,7 +49,7 @@ enum RemoteContainerTaskProperty implements TaskProperty {
         def property = PROPERTIES[name]
 
         if(!property) {
-            LOGGER.error "Unknown property: $name"
+            log.error "Unknown property: $name"
             throw new IllegalArgumentException("Unknown property: $name")
         }
 

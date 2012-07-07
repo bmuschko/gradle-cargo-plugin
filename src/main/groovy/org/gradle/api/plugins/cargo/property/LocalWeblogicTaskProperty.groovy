@@ -15,19 +15,18 @@
  */
 package org.gradle.api.plugins.cargo.property
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 
 /**
  * Defines local Weblogic task convention.
  *
  * @author Benjamin Muschko
  */
+@Slf4j
 enum LocalWeblogicTaskProperty {
     ADMIN_USER('cargo.weblogic.administrator.user', PropertyDataType.STRING), ADMIN_PASSWORD('cargo.weblogic.administrator.password', PropertyDataType.STRING),
     BEA_HOME('cargo.weblogic.bea.home', PropertyDataType.FILE), SERVER('cargo.weblogic.server', PropertyDataType.STRING)
 
-    static final Logger LOGGER = LoggerFactory.getLogger(LocalWeblogicTaskProperty)
     static final Map PROPERTIES
 
     static {
@@ -50,7 +49,7 @@ enum LocalWeblogicTaskProperty {
         def property = PROPERTIES[name]
 
         if(!property) {
-            LOGGER.error "Unknown property: $name"
+            log.error "Unknown property: $name"
             throw new IllegalArgumentException("Unknown property: $name")
         }
 

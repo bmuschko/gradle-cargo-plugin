@@ -15,20 +15,19 @@
  */
 package org.gradle.api.plugins.cargo.property
 
-import org.slf4j.LoggerFactory
-import org.slf4j.Logger
+import groovy.util.logging.Slf4j
 
 /**
  * Defines local container task property.
  *
  * @author Benjamin Muschko
  */
+@Slf4j
 enum LocalContainerTaskProperty implements TaskProperty {
     JVM_ARGS('cargo.jvmargs', PropertyDataType.STRING), LOG_LEVEL('cargo.log.level', PropertyDataType.STRING),
     HOME_DIR('cargo.home.dir', PropertyDataType.FILE), OUTPUT('cargo.output', PropertyDataType.FILE),
     LOG('cargo.log', PropertyDataType.FILE)
 
-    static final Logger LOGGER = LoggerFactory.getLogger(LocalContainerTaskProperty)
     static final Map PROPERTIES
 
     static {
@@ -51,7 +50,7 @@ enum LocalContainerTaskProperty implements TaskProperty {
         def property = PROPERTIES[name]
 
         if(!property) {
-            LOGGER.error "Unknown property: $name"
+            log.error "Unknown property: $name"
             throw new IllegalArgumentException("Unknown property: $name")
         }
 

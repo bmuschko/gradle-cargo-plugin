@@ -4,7 +4,7 @@ apply plugin: 'idea'
 def compatibilityVersion = 1.5
 sourceCompatibility = compatibilityVersion
 targetCompatibility = compatibilityVersion
-version = '0.5.2'
+version = '0.5.3'
 
 repositories {
     mavenCentral()
@@ -13,16 +13,17 @@ repositories {
 dependencies {
     groovy localGroovy()
     compile gradleApi()
-    testCompile "junit:junit:4.+"
+    testCompile 'junit:junit:4.+'
 }
 
 jar {
     manifest {
         attributes 'Implementation-Title': 'Gradle Cargo plugin',
                    'Implementation-Version': version,
-                   'Built-By': System.getProperty("user.name"),
+                   'Built-By': System.getProperty('user.name'),
                    'Built-Date': new Date(),
-                   'Built-JDK': System.getProperty("java.version")
+                   'Built-JDK': System.getProperty('java.version'),
+                   'Built-Gradle': gradle.gradleVersion
     }
 }
 
@@ -43,5 +44,5 @@ idea.project {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.0-milestone-6'
+    gradleVersion = '1.0'
 }

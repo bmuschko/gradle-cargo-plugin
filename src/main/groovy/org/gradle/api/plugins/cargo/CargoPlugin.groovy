@@ -20,11 +20,9 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.WarPlugin
 import org.gradle.api.plugins.cargo.convention.CargoPluginConvention
-import org.gradle.plugins.ear.EarPlugin
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
-import org.gradle.api.plugins.cargo.property.*
 import org.gradle.api.plugins.cargo.convention.Deployable
+import org.gradle.plugins.ear.EarPlugin
+import org.gradle.api.plugins.cargo.property.*
 
 /**
  * <p>A {@link org.gradle.api.Plugin} that provides tasks for deploying WAR/EAR files to local and remote web containers.</p>
@@ -32,7 +30,6 @@ import org.gradle.api.plugins.cargo.convention.Deployable
  * @author Benjamin Muschko
  */
 class CargoPlugin implements Plugin<Project> {
-    static final Logger LOGGER = LoggerFactory.getLogger(CargoPlugin)
     static final String CARGO_CONFIGURATION_NAME = 'cargo'
     static final String CARGO_TASK_GROUP = 'deployment'
     static final String ACTION_CONVENTION_MAPPING_PARAM = 'action'
@@ -100,7 +97,7 @@ class CargoPlugin implements Plugin<Project> {
             localContainerTask.conventionMapping.map('output') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
             }
-            localContainerTask.conventionMapping.map('log') {
+            localContainerTask.conventionMapping.map('logFile') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
             }
         }
@@ -118,8 +115,11 @@ class CargoPlugin implements Plugin<Project> {
             localJettyTask.conventionMapping.map('output') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
             }
-            localJettyTask.conventionMapping.map('log') {
+            localJettyTask.conventionMapping.map('logFile') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
+            }
+            localJettyTask.conventionMapping.map('zipUrlInstaller') {
+                cargoConvention.local.zipUrlInstaller
             }
             localJettyTask.conventionMapping.map('createContextXml') {
                 CargoProjectProperty.getTypedProperty(project, LocalJettyTaskProperty.CREATE_CONTEXT_XML, cargoConvention.local.jetty.createContextXml)
@@ -145,8 +145,11 @@ class CargoPlugin implements Plugin<Project> {
             localJonasTask.conventionMapping.map('output') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
             }
-            localJonasTask.conventionMapping.map('log') {
+            localJonasTask.conventionMapping.map('logFile') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
+            }
+            localJonasTask.conventionMapping.map('zipUrlInstaller') {
+                cargoConvention.local.zipUrlInstaller
             }
             localJonasTask.conventionMapping.map('jmsPort') {
                 CargoProjectProperty.getTypedProperty(project, LocalJonasTaskProperty.JMS_PORT, cargoConvention.local.jonas.jmsPort)
@@ -175,8 +178,11 @@ class CargoPlugin implements Plugin<Project> {
             localJRunTask.conventionMapping.map('output') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
             }
-            localJRunTask.conventionMapping.map('log') {
+            localJRunTask.conventionMapping.map('logFile') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
+            }
+            localJRunTask.conventionMapping.map('zipUrlInstaller') {
+                cargoConvention.local.zipUrlInstaller
             }
             localJRunTask.conventionMapping.map('home') {
                 CargoProjectProperty.getTypedProperty(project, LocalJRunTaskProperty.HOME, cargoConvention.local.jrun.home)
@@ -196,8 +202,11 @@ class CargoPlugin implements Plugin<Project> {
             localTomcatTask.conventionMapping.map('output') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
             }
-            localTomcatTask.conventionMapping.map('log') {
+            localTomcatTask.conventionMapping.map('logFile') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
+            }
+            localTomcatTask.conventionMapping.map('zipUrlInstaller') {
+                cargoConvention.local.zipUrlInstaller
             }
             localTomcatTask.conventionMapping.map('webappsDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalTomcatTaskProperty.WEBAPPS_DIRECTORY, cargoConvention.local.tomcat.webappsDir)
@@ -226,8 +235,11 @@ class CargoPlugin implements Plugin<Project> {
             localWeblogicTask.conventionMapping.map('output') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
             }
-            localWeblogicTask.conventionMapping.map('log') {
+            localWeblogicTask.conventionMapping.map('logFile') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
+            }
+            localWeblogicTask.conventionMapping.map('zipUrlInstaller') {
+                cargoConvention.local.zipUrlInstaller
             }
             localWeblogicTask.conventionMapping.map('adminUser') {
                 CargoProjectProperty.getTypedProperty(project, LocalWeblogicTaskProperty.ADMIN_USER, cargoConvention.local.weblogic.adminUser)

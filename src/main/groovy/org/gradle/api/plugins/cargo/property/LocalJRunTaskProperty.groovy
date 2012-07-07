@@ -15,18 +15,17 @@
  */
 package org.gradle.api.plugins.cargo.property
 
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import groovy.util.logging.Slf4j
 
 /**
  * Defines local JRun task convention.
  *
  * @author Benjamin Muschko
  */
+@Slf4j
 enum LocalJRunTaskProperty {
     HOME('cargo.jrun4x.home', PropertyDataType.FILE)
 
-    static final Logger LOGGER = LoggerFactory.getLogger(LocalJRunTaskProperty)
     static final Map PROPERTIES
 
     static {
@@ -49,7 +48,7 @@ enum LocalJRunTaskProperty {
         def property = PROPERTIES[name]
 
         if(!property) {
-            LOGGER.error "Unknown property: $name"
+            log.error "Unknown property: $name"
             throw new IllegalArgumentException("Unknown property: $name")
         }
 

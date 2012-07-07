@@ -15,6 +15,8 @@
  */
 package org.gradle.api.plugins.cargo.convention
 
+import org.gradle.api.plugins.cargo.ZipUrlInstaller
+
 /**
  * Defines Cargo local task convention.
  *
@@ -31,6 +33,7 @@ class CargoLocalTaskConvention {
     CargoLocalJRunConvention jrun = new CargoLocalJRunConvention()
     CargoLocalTomcatConvention tomcat = new CargoLocalTomcatConvention()
     CargoLocalWeblogicConvention weblogic = new CargoLocalWeblogicConvention()
+    ZipUrlInstaller zipUrlInstaller = new ZipUrlInstaller()
 
     def jetty(Closure closure) {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
@@ -59,6 +62,12 @@ class CargoLocalTaskConvention {
     def weblogic(Closure closure) {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
         closure.delegate = weblogic
+        closure()
+    }
+
+    def installer(Closure closure) {
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure.delegate = zipUrlInstaller
         closure()
     }
 }

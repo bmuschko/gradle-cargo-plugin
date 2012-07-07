@@ -15,28 +15,27 @@
  */
 package org.gradle.api.plugins.cargo
 
+import groovy.util.logging.Slf4j
 import org.gradle.api.tasks.InputDirectory
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.gradle.api.tasks.Optional
 
 /**
  * Deploys WAR to local container.
  *
  * @author Benjamin Muschko
  */
+@Slf4j
 class LocalContainerTask extends AbstractContainerTask {
-    static final Logger LOGGER = LoggerFactory.getLogger(LocalContainerTask.class)
     String logLevel
     String jvmArgs
-    @InputDirectory File homeDir
+    @InputDirectory @Optional File homeDir
     File output
-    File log
+    File logFile
+    ZipUrlInstaller zipUrlInstaller
 
     @Override
     void runAction() {
-        if(LOGGER.isInfoEnabled()) {
-            LOGGER.info "Starting action '${getAction()}' for local container '${Container.getContainerForId(getContainerId()).description}'"
-        }
+        log.info "Starting action '${getAction()}' for local container '${Container.getContainerForId(getContainerId()).description}'"
 
         ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)
         ant.cargo(getCargoAttributes()) {
@@ -64,18 +63,27 @@ class LocalContainerTask extends AbstractContainerTask {
 
                 setContainerSpecificProperties()
             }
+
+            if(getZipUrlInstaller()) {
+                ant.zipUrlInstaller(installUrl: getZipUrlInstaller().installUrl, downloadDir: getZipUrlInstaller().downloadDir,
+                        extractDir: getZipUrlInstaller().extractDir)
+            }
         }
     }
 
     private Map<String, String> getCargoAttributes() {
-        def cargoAttributes = ['containerId': getContainerId(), 'home': getHomeDir().canonicalPath, 'action': getAction()]
+        def cargoAttributes = ['containerId': getContainerId(), 'action': getAction()]
+
+        if(!getZipUrlInstaller()) {
+            cargoAttributes['home'] = getHomeDir().canonicalPath
+        }
 
         if(getOutput()) {
             cargoAttributes['output'] = getOutput()
         }
 
-        if(getLog()) {
-            cargoAttributes['log'] = getLog()
+        if(getLogFile()) {
+            cargoAttributes['log'] = getLogFile()
         }
 
         cargoAttributes
