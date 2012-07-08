@@ -100,6 +100,9 @@ class CargoPlugin implements Plugin<Project> {
             localContainerTask.conventionMapping.map('logFile') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
             }
+			localContainerTask.conventionMapping.map('zipUrlInstaller') {
+				cargoConvention.local.zipUrlInstaller
+			}
         }
     }
 
