@@ -25,4 +25,8 @@ class ZipUrlInstaller {
     String installUrl
     File downloadDir
     File extractDir
+
+    boolean isValid() {
+        installUrl && downloadDir && extractDir
+    }
 }

@@ -64,7 +64,7 @@ class LocalContainerTask extends AbstractContainerTask {
                 setContainerSpecificProperties()
             }
 
-            if(getZipUrlInstaller()) {
+            if(getZipUrlInstaller().isValid()) {
                 ant.zipUrlInstaller(installUrl: getZipUrlInstaller().installUrl, downloadDir: getZipUrlInstaller().downloadDir,
                         extractDir: getZipUrlInstaller().extractDir)
             }
@@ -74,7 +74,7 @@ class LocalContainerTask extends AbstractContainerTask {
     private Map<String, String> getCargoAttributes() {
         def cargoAttributes = ['containerId': getContainerId(), 'action': getAction()]
 
-        if(!getZipUrlInstaller()) {
+        if(!getZipUrlInstaller().isValid()) {
             cargoAttributes['home'] = getHomeDir().canonicalPath
         }
 

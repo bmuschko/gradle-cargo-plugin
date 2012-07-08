@@ -43,6 +43,7 @@ class CargoPlugin implements Plugin<Project> {
         project.convention.plugins.cargo = cargoConvention
 
         configureAbstractContainerTask(project, cargoConvention)
+        configureLocalContainerConventionMapping(project, cargoConvention)
         configureDeployRemoteContainerTask(project, cargoConvention)
         configureUndeployRemoteContainerTask(project, cargoConvention)
         configureRedeployRemoteContainerTask(project, cargoConvention)
@@ -64,6 +65,29 @@ class CargoPlugin implements Plugin<Project> {
         }
     }
 
+    private void configureLocalContainerConventionMapping(Project project, CargoPluginConvention cargoConvention) {
+        project.tasks.withType(LocalContainerTask).whenTaskAdded { LocalContainerTask localContainerTask ->
+            localContainerTask.conventionMapping.map('jvmArgs') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.JVM_ARGS, cargoConvention.local.jvmArgs)
+            }
+            localContainerTask.conventionMapping.map('logLevel') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
+            }
+            localContainerTask.conventionMapping.map('homeDir') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
+            }
+            localContainerTask.conventionMapping.map('output') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
+            }
+            localContainerTask.conventionMapping.map('logFile') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
+            }
+            localContainerTask.conventionMapping.map('zipUrlInstaller') {
+                cargoConvention.local.zipUrlInstaller
+            }
+        }
+    }
+
     private void setRemoteContainerConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
         project.tasks.withType(RemoteContainerTask).whenTaskAdded { RemoteContainerTask remoteContainerTask ->
             remoteContainerTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
@@ -82,48 +106,15 @@ class CargoPlugin implements Plugin<Project> {
         }
     }
 
-    private void setLocalContainerConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
+    private void setDefaultLocalContainerConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
         project.tasks.withType(LocalContainerTask).whenTaskAdded { LocalContainerTask localContainerTask ->
             localContainerTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            localContainerTask.conventionMapping.map('jvmArgs') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.JVM_ARGS, cargoConvention.local.jvmArgs)
-            }
-            localContainerTask.conventionMapping.map('logLevel') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
-            }
-            localContainerTask.conventionMapping.map('homeDir') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
-            }
-            localContainerTask.conventionMapping.map('output') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
-            }
-            localContainerTask.conventionMapping.map('logFile') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
-            }
-			localContainerTask.conventionMapping.map('zipUrlInstaller') {
-				cargoConvention.local.zipUrlInstaller
-			}
         }
     }
 
     private void setLocalJettyConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
         project.tasks.withType(LocalJettyTask).whenTaskAdded { LocalJettyTask localJettyTask ->
             localJettyTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            localJettyTask.conventionMapping.map('logLevel') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
-            }
-            localJettyTask.conventionMapping.map('homeDir') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
-            }
-            localJettyTask.conventionMapping.map('output') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
-            }
-            localJettyTask.conventionMapping.map('logFile') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
-            }
-            localJettyTask.conventionMapping.map('zipUrlInstaller') {
-                cargoConvention.local.zipUrlInstaller
-            }
             localJettyTask.conventionMapping.map('createContextXml') {
                 CargoProjectProperty.getTypedProperty(project, LocalJettyTaskProperty.CREATE_CONTEXT_XML, cargoConvention.local.jetty.createContextXml)
             }
@@ -139,21 +130,6 @@ class CargoPlugin implements Plugin<Project> {
     private void setLocalJonasConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
         project.tasks.withType(LocalJonasTask).whenTaskAdded { LocalJonasTask localJonasTask ->
             localJonasTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            localJonasTask.conventionMapping.map('logLevel') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
-            }
-            localJonasTask.conventionMapping.map('homeDir') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
-            }
-            localJonasTask.conventionMapping.map('output') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
-            }
-            localJonasTask.conventionMapping.map('logFile') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
-            }
-            localJonasTask.conventionMapping.map('zipUrlInstaller') {
-                cargoConvention.local.zipUrlInstaller
-            }
             localJonasTask.conventionMapping.map('jmsPort') {
                 CargoProjectProperty.getTypedProperty(project, LocalJonasTaskProperty.JMS_PORT, cargoConvention.local.jonas.jmsPort)
             }
@@ -172,21 +148,6 @@ class CargoPlugin implements Plugin<Project> {
     private void setLocalJRunConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
         project.tasks.withType(LocalJRunTask).whenTaskAdded { LocalJRunTask localJRunTask ->
             localJRunTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            localJRunTask.conventionMapping.map('logLevel') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
-            }
-            localJRunTask.conventionMapping.map('homeDir') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
-            }
-            localJRunTask.conventionMapping.map('output') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
-            }
-            localJRunTask.conventionMapping.map('logFile') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
-            }
-            localJRunTask.conventionMapping.map('zipUrlInstaller') {
-                cargoConvention.local.zipUrlInstaller
-            }
             localJRunTask.conventionMapping.map('home') {
                 CargoProjectProperty.getTypedProperty(project, LocalJRunTaskProperty.HOME, cargoConvention.local.jrun.home)
             }
@@ -196,21 +157,6 @@ class CargoPlugin implements Plugin<Project> {
     private void setLocalTomcatConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
         project.tasks.withType(LocalTomcatTask).whenTaskAdded { LocalTomcatTask localTomcatTask ->
             localTomcatTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            localTomcatTask.conventionMapping.map('logLevel') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
-            }
-            localTomcatTask.conventionMapping.map('homeDir') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
-            }
-            localTomcatTask.conventionMapping.map('output') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
-            }
-            localTomcatTask.conventionMapping.map('logFile') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
-            }
-            localTomcatTask.conventionMapping.map('zipUrlInstaller') {
-                cargoConvention.local.zipUrlInstaller
-            }
             localTomcatTask.conventionMapping.map('webappsDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalTomcatTaskProperty.WEBAPPS_DIRECTORY, cargoConvention.local.tomcat.webappsDir)
             }
@@ -229,18 +175,6 @@ class CargoPlugin implements Plugin<Project> {
     private void setLocalWeblogicConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
         project.tasks.withType(LocalWeblogicTask).whenTaskAdded { LocalWeblogicTask localWeblogicTask ->
             localWeblogicTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            localWeblogicTask.conventionMapping.map('logLevel') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
-            }
-            localWeblogicTask.conventionMapping.map('homeDir') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
-            }
-            localWeblogicTask.conventionMapping.map('output') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
-            }
-            localWeblogicTask.conventionMapping.map('logFile') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
-            }
             localWeblogicTask.conventionMapping.map('zipUrlInstaller') {
                 cargoConvention.local.zipUrlInstaller
             }
@@ -305,7 +239,7 @@ class CargoPlugin implements Plugin<Project> {
                                                        break
                 case LocalContainerTaskMapping.WEBLOGIC: setLocalWeblogicConventionMapping(project, cargoConvention, action)
                                                          break
-                default: setLocalContainerConventionMapping(project, cargoConvention, action)
+                default: setDefaultLocalContainerConventionMapping(project, cargoConvention, action)
             }
 
             addContainerTask(project, mapping.taskClass, task)
