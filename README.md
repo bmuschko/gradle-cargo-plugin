@@ -26,7 +26,7 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
         }
 
         dependencies {
-            classpath 'bmuschko:gradle-cargo-plugin:0.5.3'
+            classpath 'bmuschko:gradle-cargo-plugin:0.5.4'
         }
     }
 

@@ -1,3 +1,9 @@
+### Version 0.5.4 (July 8, 2012)
+
+* The ZIP URL installer convention property wasn't set correctly for the default local container implementation.
+* Checking if all properties are set for the ZIP URL installer closure before applying it.
+* Refactored duplicated code for setting the convention properties of a local container.
+
 ### Version 0.5.3 (July 7, 2012)
 
 * Support for ZIP artifact installer - [Issue 15](https://github.com/bmuschko/gradle-cargo-plugin/issues/15).
