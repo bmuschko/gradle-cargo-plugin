@@ -1,3 +1,7 @@
+### Version 0.5.5 (August 4, 2012)
+
+* Provides support for configuration files - [Issue 14](https://github.com/bmuschko/gradle-cargo-plugin/issues/14).
+
 ### Version 0.5.4 (July 8, 2012)
 
 * The ZIP URL installer convention property wasn't set correctly for the default local container implementation.

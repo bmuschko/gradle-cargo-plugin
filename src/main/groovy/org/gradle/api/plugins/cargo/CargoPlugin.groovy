@@ -23,6 +23,7 @@ import org.gradle.api.plugins.cargo.convention.CargoPluginConvention
 import org.gradle.api.plugins.cargo.convention.Deployable
 import org.gradle.plugins.ear.EarPlugin
 import org.gradle.api.plugins.cargo.property.*
+import org.gradle.api.plugins.cargo.convention.ConfigFile
 
 /**
  * <p>A {@link org.gradle.api.Plugin} that provides tasks for deploying WAR/EAR files to local and remote web containers.</p>
@@ -84,6 +85,9 @@ class CargoPlugin implements Plugin<Project> {
             }
             localContainerTask.conventionMapping.map('zipUrlInstaller') {
                 cargoConvention.local.zipUrlInstaller
+            }
+            localContainerTask.conventionMapping.map('configFiles') {
+                cargoConvention.local.configFiles
             }
         }
     }
@@ -175,9 +179,6 @@ class CargoPlugin implements Plugin<Project> {
     private void setLocalWeblogicConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
         project.tasks.withType(LocalWeblogicTask).whenTaskAdded { LocalWeblogicTask localWeblogicTask ->
             localWeblogicTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            localWeblogicTask.conventionMapping.map('zipUrlInstaller') {
-                cargoConvention.local.zipUrlInstaller
-            }
             localWeblogicTask.conventionMapping.map('adminUser') {
                 CargoProjectProperty.getTypedProperty(project, LocalWeblogicTaskProperty.ADMIN_USER, cargoConvention.local.weblogic.adminUser)
             }

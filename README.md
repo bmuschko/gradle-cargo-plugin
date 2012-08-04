@@ -26,7 +26,7 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
         }
 
         dependencies {
-            classpath 'bmuschko:gradle-cargo-plugin:0.5.4'
+            classpath 'bmuschko:gradle-cargo-plugin:0.5.5'
         }
     }
 
@@ -81,6 +81,9 @@ Within `cargo` you can define properties for local containers in a closure named
 * `log`: The Cargo log file of your local container (defaults to writing to the console).
 * `logLevel`: The log level to run the container with (optional). The valid levels are `low`, `medium` and `high`.
 * `homeDir`: The home directory of your local container.
+* `configFile`: The [configuration files](http://cargo.codehaus.org/Configuration+files+option) you want to add to your
+container's configuration. The `configFile` is a closure itself and requires you to provide the attributes `file` and `todir`.
+Multiple configuration file be defined by creating more than one `configFile` closure.
 
 Within `local` you can define properties for specific local containers. At the moment the following containers are supported
 defined by these closures:
@@ -206,3 +209,29 @@ do is to specify the `installer` closure. The following code snippet downloads, 
             }
         }
     }
+
+**I'd like to add a configuration file to my local container. How do I do that?**
+
+For local containers a closure named `configFile` can be used that defines the source file and directory you would like
+to use the file from at runtime. If you need more than one just create multiple `configFile` closures.
+
+cargo {
+    containerId = 'jboss5x'
+
+    local {
+        configFile {
+            file = file('src/main/jboss5/login-config.xml')
+            toDir = file('conf')
+        }
+
+        configFile {
+            file = file('src/main/jboss5/sample-roles.properties')
+            toDir = file('conf/props')
+        }
+
+        configFile {
+            file = file('src/main/jboss5/sample-users.properties')
+            toDir = file('conf/props')
+        }
+    }
+}

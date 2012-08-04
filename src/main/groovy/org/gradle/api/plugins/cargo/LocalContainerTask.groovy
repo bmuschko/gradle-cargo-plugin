@@ -16,6 +16,8 @@
 package org.gradle.api.plugins.cargo
 
 import groovy.util.logging.Slf4j
+import org.gradle.api.InvalidUserDataException
+import org.gradle.api.plugins.cargo.convention.ConfigFile
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Optional
 
@@ -32,6 +34,24 @@ class LocalContainerTask extends AbstractContainerTask {
     File output
     File logFile
     ZipUrlInstaller zipUrlInstaller
+    List<ConfigFile> configFiles
+
+    @Override
+    void validateConfiguration() {
+        super.validateConfiguration()
+
+        if(!getConfigFiles().isEmpty()) {
+            getConfigFiles().each { configFile ->
+                if(!configFile.file || !configFile.file.exists()) {
+                    throw new InvalidUserDataException("Config file "
+                    + (configFile.file == null ? "null" : configFile.file.canonicalPath)
+                    + " does not exist")
+                }
+            }
+
+            log.info "Config files = ${getConfigFiles().collect { it.file.canonicalPath + " -> " + it.toDir.canonicalPath }}"
+        }
+    }
 
     @Override
     void runAction() {
@@ -59,6 +79,10 @@ class LocalContainerTask extends AbstractContainerTask {
                     else {
                         ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file)
                     }
+                }
+
+                getConfigFiles().each { configFile ->
+                    ant.configfile(file: configFile.file, todir: configFile.toDir)
                 }
 
                 setContainerSpecificProperties()
