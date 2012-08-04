@@ -215,23 +215,23 @@ do is to specify the `installer` closure. The following code snippet downloads, 
 For local containers a closure named `configFile` can be used that defines the source file and directory you would like
 to use the file from at runtime. If you need more than one just create multiple `configFile` closures.
 
-cargo {
-    containerId = 'jboss5x'
+    cargo {
+        containerId = 'jboss5x'
 
-    local {
-        configFile {
-            file = file('src/main/jboss5/login-config.xml')
-            toDir = file('conf')
-        }
+        local {
+            configFile {
+                file = file('src/main/jboss5/login-config.xml')
+                toDir = file('conf')
+            }
 
-        configFile {
-            file = file('src/main/jboss5/sample-roles.properties')
-            toDir = file('conf/props')
-        }
+            configFile {
+                file = file('src/main/jboss5/sample-roles.properties')
+                toDir = file('conf/props')
+            }
 
-        configFile {
-            file = file('src/main/jboss5/sample-users.properties')
-            toDir = file('conf/props')
+            configFile {
+                file = file('src/main/jboss5/sample-users.properties')
+                toDir = file('conf/props')
+            }
         }
     }
-}
