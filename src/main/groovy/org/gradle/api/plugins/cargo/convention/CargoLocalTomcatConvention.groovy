@@ -23,6 +23,7 @@ package org.gradle.api.plugins.cargo.convention
 class CargoLocalTomcatConvention {
     Boolean contextReloadable
     Integer ajpPort
+    Integer rmiPort
     Boolean copyWars
     File webappsDir
 }

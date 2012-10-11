@@ -173,6 +173,9 @@ class CargoPlugin implements Plugin<Project> {
             localTomcatTask.conventionMapping.map('ajpPort') {
                 CargoProjectProperty.getTypedProperty(project, LocalTomcatTaskProperty.AJP_PORT, cargoConvention.local.tomcat.ajpPort)
             }
+            localTomcatTask.conventionMapping.map('rmiPort') {
+                CargoProjectProperty.getTypedProperty(project, LocalTomcatTaskProperty.RMI_PORT, cargoConvention.local.tomcat.rmiPort)
+            }
         }
     }
 
