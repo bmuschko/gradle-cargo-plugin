@@ -26,7 +26,7 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
         }
 
         dependencies {
-            classpath 'bmuschko:gradle-cargo-plugin:0.5.5'
+            classpath 'bmuschko:gradle-cargo-plugin:0.5.6'
         }
     }
 
@@ -84,6 +84,7 @@ Within `cargo` you can define properties for local containers in a closure named
 * `configFile`: The [configuration files](http://cargo.codehaus.org/Configuration+files+option) you want to add to your
 container's configuration. The `configFile` is a closure itself and requires you to provide the attributes `file` and `todir`.
 Multiple configuration file be defined by creating more than one `configFile` closure.
+* `rmiPort`: The port to use when communicating with this server, for example to start and stop it.
 
 Within `local` you can define properties for specific local containers. At the moment the following containers are supported
 defined by these closures:

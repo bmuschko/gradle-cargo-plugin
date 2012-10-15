@@ -1,3 +1,7 @@
+### Version 0.5.6 (October 14, 2012)
+
+* Expose convention property for setting the RMI port - [Issue 21](https://github.com/bmuschko/gradle-cargo-plugin/issues/21).
+
 ### Version 0.5.5 (August 4, 2012)
 
 * Provides support for configuration files - [Issue 14](https://github.com/bmuschko/gradle-cargo-plugin/issues/14).

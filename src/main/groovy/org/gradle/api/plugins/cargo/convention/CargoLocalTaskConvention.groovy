@@ -28,6 +28,7 @@ class CargoLocalTaskConvention {
     File homeDir
     File output
     File log
+    Integer rmiPort
     CargoLocalJettyConvention jetty = new CargoLocalJettyConvention()
     CargoLocalJonasConvention jonas = new CargoLocalJonasConvention()
     CargoLocalJRunConvention jrun = new CargoLocalJRunConvention()

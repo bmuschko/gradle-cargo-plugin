@@ -23,7 +23,6 @@ import org.gradle.api.plugins.cargo.convention.CargoPluginConvention
 import org.gradle.api.plugins.cargo.convention.Deployable
 import org.gradle.plugins.ear.EarPlugin
 import org.gradle.api.plugins.cargo.property.*
-import org.gradle.api.plugins.cargo.convention.ConfigFile
 
 /**
  * <p>A {@link org.gradle.api.Plugin} that provides tasks for deploying WAR/EAR files to local and remote web containers.</p>
@@ -82,6 +81,9 @@ class CargoPlugin implements Plugin<Project> {
             }
             localContainerTask.conventionMapping.map('logFile') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
+            }
+            localContainerTask.conventionMapping.map('rmiPort') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.RMI_PORT, cargoConvention.local.rmiPort)
             }
             localContainerTask.conventionMapping.map('zipUrlInstaller') {
                 cargoConvention.local.zipUrlInstaller
@@ -172,9 +174,6 @@ class CargoPlugin implements Plugin<Project> {
             }
             localTomcatTask.conventionMapping.map('ajpPort') {
                 CargoProjectProperty.getTypedProperty(project, LocalTomcatTaskProperty.AJP_PORT, cargoConvention.local.tomcat.ajpPort)
-            }
-            localTomcatTask.conventionMapping.map('rmiPort') {
-                CargoProjectProperty.getTypedProperty(project, LocalTomcatTaskProperty.RMI_PORT, cargoConvention.local.tomcat.rmiPort)
             }
         }
     }

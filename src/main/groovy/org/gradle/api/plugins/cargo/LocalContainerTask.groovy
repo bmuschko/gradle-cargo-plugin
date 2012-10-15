@@ -18,6 +18,7 @@ package org.gradle.api.plugins.cargo
 import groovy.util.logging.Slf4j
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.plugins.cargo.convention.ConfigFile
+import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.Optional
 
@@ -33,6 +34,7 @@ class LocalContainerTask extends AbstractContainerTask {
     @InputDirectory @Optional File homeDir
     File output
     File logFile
+    @Input @Optional Integer rmiPort
     ZipUrlInstaller zipUrlInstaller
     List<ConfigFile> configFiles
 
@@ -68,6 +70,10 @@ class LocalContainerTask extends AbstractContainerTask {
 
                 if(getLogLevel()) {
                     ant.property(name: 'cargo.logging', value: getLogLevel())
+                }
+
+                if(getRmiPort()) {
+                    ant.property(name: 'cargo.rmi.port', value: getRmiPort())
                 }
 
                 getDeployables().each { deployable ->

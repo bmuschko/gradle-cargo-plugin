@@ -25,8 +25,7 @@ import groovy.util.logging.Slf4j
 @Slf4j
 enum LocalTomcatTaskProperty implements TaskProperty {
     WEBAPPS_DIRECTORY('cargo.tomcat.webappsDirectory', PropertyDataType.FILE), COPY_WARS('cargo.tomcat.copywars', PropertyDataType.BOOLEAN),
-    CONTEXT_RELOADABLE('cargo.tomcat.context.reloadable', PropertyDataType.BOOLEAN), AJP_PORT('cargo.tomcat.ajp.port', PropertyDataType.INTEGER),
-    RMI_PORT('cargo.rmi.port', PropertyDataType.INTEGER)
+    CONTEXT_RELOADABLE('cargo.tomcat.context.reloadable', PropertyDataType.BOOLEAN), AJP_PORT('cargo.tomcat.ajp.port', PropertyDataType.INTEGER)
 
     static final Map PROPERTIES
 

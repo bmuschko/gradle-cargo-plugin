@@ -30,7 +30,6 @@ class LocalTomcatTask extends LocalContainerTask {
     @Input @Optional Boolean copyWars
     @Input @Optional Boolean contextReloadable
     @Input @Optional Integer ajpPort
-    @Input @Optional Integer rmiPort
 
     @Override
     void setContainerSpecificProperties() {
@@ -45,9 +44,6 @@ class LocalTomcatTask extends LocalContainerTask {
         }
         if(getAjpPort()) {
             ant.property(name: LocalTomcatTaskProperty.AJP_PORT.name, value: getAjpPort())
-        }
-        if(getRmiPort()) {
-            ant.property(name: LocalTomcatTaskProperty.RMI_PORT.name, value: getRmiPort())
         }
     }
 }
