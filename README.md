@@ -12,23 +12,24 @@ To use the Cargo plugin, include in your build script:
 
     apply plugin: 'cargo'
 
-The plugin JAR needs to be defined in the classpath of your build script. You can either get the plugin from the GitHub download
-section or upload it to your local repository. To define the Cargo dependencies please use the `cargo` configuration name
-in your `dependencies` closure. Remote deployment functionality will only work with a Cargo version >= 1.1.0 due to a bug
-in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-962) for more information.
+The plugin JAR needs to be defined in the classpath of your build script. It is directly available on
+[Maven Central](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.gradle.api.plugins%22%20AND%20a%3A%22gradle-cargo-plugin%22).
+Alternatively, you can download it from GitHub and deploy it to your local repository. The following code snippet shows an
+example on how to retrieve it from Maven Central:
 
     buildscript {
         repositories {
-            add(new org.apache.ivy.plugins.resolver.URLResolver()) {
-                name = 'GitHub'
-                addArtifactPattern 'http://cloud.github.com/downloads/[organisation]/[module]/[module]-[revision].[ext]'
-            }
+            mavenCentral()
         }
 
         dependencies {
-            classpath 'bmuschko:gradle-cargo-plugin:0.5.6'
+            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:0.5.6'
         }
     }
+
+To define the Cargo dependencies please use the `cargo` configuration name
+in your `dependencies` closure. Remote deployment functionality will only work with a Cargo version >= 1.1.0 due to a bug
+in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-962) for more information.
 
     dependencies {
         def cargoVersion = '1.2.2'
