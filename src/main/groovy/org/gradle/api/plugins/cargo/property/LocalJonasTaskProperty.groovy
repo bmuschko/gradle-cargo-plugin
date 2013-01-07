@@ -23,7 +23,7 @@ import groovy.util.logging.Slf4j
  * @author Benjamin Muschko
  */
 @Slf4j
-enum LocalJonasTaskProperty {
+enum LocalJonasTaskProperty implements TaskProperty {
     JMS_PORT('cargo.jonas.jms.port', PropertyDataType.INTEGER), SERVER_NAME('cargo.jonas.server.name', PropertyDataType.STRING),
     SERVICES_LIST('cargo.jonas.services.list', PropertyDataType.STRING), DOMAIN_NAME('cargo.jonas.domain.name', PropertyDataType.STRING)
 

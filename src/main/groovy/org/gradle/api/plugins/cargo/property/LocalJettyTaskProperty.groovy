@@ -23,7 +23,7 @@ import groovy.util.logging.Slf4j
  * @author Benjamin Muschko
  */
 @Slf4j
-enum LocalJettyTaskProperty {
+enum LocalJettyTaskProperty implements TaskProperty {
     CREATE_CONTEXT_XML('cargo.jetty.createContextXml', PropertyDataType.BOOLEAN),
     SESSION_PATH('cargo.jetty.session.path', PropertyDataType.FILE),
     USE_FILE_MAPPED_BUFFER('cargo.jetty.servlet.default.useFileMappedBuffer', PropertyDataType.BOOLEAN)
