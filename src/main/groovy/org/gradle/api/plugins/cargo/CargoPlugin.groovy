@@ -224,28 +224,30 @@ class CargoPlugin implements Plugin<Project> {
     }
 
     private void configureLocalContainer(Project project, CargoPluginConvention cargoConvention, Action action, CargoPluginTask task) {
-        project.afterEvaluate {
-            if(!cargoConvention.containerId) {
-                throw new InvalidUserDataException('Container ID was not defined.')
+        project.afterEvaluate { proj, state ->
+            if(state.getFailure() == null) {
+                if(!cargoConvention.containerId) {
+                    throw new InvalidUserDataException('Container ID was not defined.')
+                }
+
+                LocalContainerTaskMapping mapping = LocalContainerTaskMapping.getLocalContainerTaskMappingForContainerId(cargoConvention.containerId)
+
+                switch(mapping) {
+                    case LocalContainerTaskMapping.JETTY: setLocalJettyConventionMapping(project, cargoConvention, action)
+                        break
+                    case LocalContainerTaskMapping.JONAS: setLocalJonasConventionMapping(project, cargoConvention, action)
+                        break
+                    case LocalContainerTaskMapping.JRUN: setLocalJRunConventionMapping(project, cargoConvention, action)
+                        break
+                    case LocalContainerTaskMapping.TOMCAT: setLocalTomcatConventionMapping(project, cargoConvention, action)
+                        break
+                    case LocalContainerTaskMapping.WEBLOGIC: setLocalWeblogicConventionMapping(project, cargoConvention, action)
+                        break
+                    default: setDefaultLocalContainerConventionMapping(project, cargoConvention, action)
+                }
+
+                addContainerTask(project, mapping.taskClass, task)
             }
-
-            LocalContainerTaskMapping mapping = LocalContainerTaskMapping.getLocalContainerTaskMappingForContainerId(cargoConvention.containerId)
-
-            switch(mapping) {
-                case LocalContainerTaskMapping.JETTY: setLocalJettyConventionMapping(project, cargoConvention, action)
-                                                      break
-                case LocalContainerTaskMapping.JONAS: setLocalJonasConventionMapping(project, cargoConvention, action)
-                                                      break
-                case LocalContainerTaskMapping.JRUN: setLocalJRunConventionMapping(project, cargoConvention, action)
-                                                     break
-                case LocalContainerTaskMapping.TOMCAT: setLocalTomcatConventionMapping(project, cargoConvention, action)
-                                                       break
-                case LocalContainerTaskMapping.WEBLOGIC: setLocalWeblogicConventionMapping(project, cargoConvention, action)
-                                                         break
-                default: setDefaultLocalContainerConventionMapping(project, cargoConvention, action)
-            }
-
-            addContainerTask(project, mapping.taskClass, task)
         }
     }
 
