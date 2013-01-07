@@ -23,7 +23,7 @@ import groovy.util.logging.Slf4j
  * @author Benjamin Muschko
  */
 @Slf4j
-enum LocalWeblogicTaskProperty {
+enum LocalWeblogicTaskProperty implements TaskProperty {
     ADMIN_USER('cargo.weblogic.administrator.user', PropertyDataType.STRING), ADMIN_PASSWORD('cargo.weblogic.administrator.password', PropertyDataType.STRING),
     BEA_HOME('cargo.weblogic.bea.home', PropertyDataType.FILE), SERVER('cargo.weblogic.server', PropertyDataType.STRING)
 
