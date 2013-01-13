@@ -23,7 +23,7 @@ import groovy.util.logging.Slf4j
  * @author Benjamin Muschko
  */
 @Slf4j
-enum LocalJRunTaskProperty {
+enum LocalJRunTaskProperty implements TaskProperty {
     HOME('cargo.jrun4x.home', PropertyDataType.FILE)
 
     static final Map PROPERTIES
