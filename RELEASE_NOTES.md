@@ -1,7 +1,7 @@
 ### Version 0.5.7 (January 13, 2013)
 
 * Avoid masking exceptions thrown in build.gradle - [Issue 29](https://github.com/bmuschko/gradle-cargo-plugin/issues/29).
-* Some of the container-specific task property classes did not implement TaskProperty - [Issue 28](https://github.com/bmuschko/gradle-cargo-plugin/issues/28).
+* Some of the container-specific task property classes did not implement TaskProperty - [Issue 27](https://github.com/bmuschko/gradle-cargo-plugin/issues/27).
 
 ### Version 0.5.6 (October 14, 2012)
 
