@@ -237,3 +237,16 @@ to use the file from at runtime. If you need more than one just create multiple 
             }
         }
     }
+
+To add binary file(s) you should use `file` closure(s) instead:
+
+    cargo {
+        containerId = 'glassfish3x'
+
+        local {
+            file {
+                file = file('../config/db/mysql-connector-java-5.1.23-bin.jar')
+                toDir = file('lib')
+            }
+        }
+    }
