@@ -56,7 +56,7 @@ class LocalContainerTask extends AbstractContainerTask {
     }
 
     @Override
-    void runAction() {
+    void subclassRunAction() {
         log.info "Starting action '${getAction()}' for local container '${Container.getContainerForId(getContainerId()).description}'"
 
         ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)

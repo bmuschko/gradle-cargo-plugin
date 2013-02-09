@@ -76,5 +76,36 @@ abstract class AbstractContainerTask extends DefaultTask {
         DeployableType.getDeployableTypeForFilenameExtension(filenameExtension)
     }
 
-    abstract void runAction()
+    // Wraps the subclasses action code in a listener that raises info priority ant task messages to
+    // be lifecycle messages for gradle.  This allows messages from the ant task, such as
+    // "Press Ctrl-C to stop the container..." to be passed through.
+    final void runAction() {
+        def localThread = Thread.currentThread()
+        def listener = [
+                buildFinished: {},
+                buildStarted: {},
+                messageLogged: {e ->
+                    if (    e.getTask() != null &&
+                            localThread == Thread.currentThread() &&
+                            e.getTask().class.getCanonicalName() == 'org.codehaus.cargo.ant.CargoTask' &&
+                            e.getPriority() == org.apache.tools.ant.Project.MSG_INFO ) {
+                        logger.lifecycle(e.getMessage())
+                    }
+                },
+                targetFinished: {},
+                targetStarted: {},
+                taskFinished: {},
+                taskStarted: {},
+        ] as org.apache.tools.ant.BuildListener
+        try {
+            ant.project.addBuildListener(listener)
+            subclassRunAction()
+        }
+        finally {
+            ant.project.removeBuildListener(listener)
+        }
+
+    }
+
+    abstract void subclassRunAction()
 }
