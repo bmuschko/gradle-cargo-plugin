@@ -30,7 +30,7 @@ class RemoteContainerTask extends AbstractContainerTask {
     String password
 
     @Override
-    void subclassRunAction() {
+    void runAction() {
         log.info "Starting action '${getAction()}' for remote container '${Container.getContainerForId(getContainerId()).description}' on '${getProtocol()}://${getHostname()}:${getPort()}'"
 
         ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)

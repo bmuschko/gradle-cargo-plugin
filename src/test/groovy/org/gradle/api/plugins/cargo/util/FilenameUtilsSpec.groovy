@@ -15,21 +15,29 @@
  */
 package org.gradle.api.plugins.cargo.util
 
-import org.junit.Test
+import spock.lang.Specification
 
 /**
  * Filename utilities unit tests.
  *
  * @author Benjamin Muschko
  */
-class FilenameUtilsTest {
-    @Test
+class FilenameUtilsSpec extends Specification {
     void "Get file extension for file name without extension"() {
-        assert FilenameUtils.getExtension('test') == ''
+        given:
+            String filename = 'test'
+        when:
+            String extension = FilenameUtils.getExtension(filename)
+        then:
+            extension == ''
     }
 
-    @Test
     void "Get file extension for file name with extension"() {
-        assert FilenameUtils.getExtension('test.war') == 'war'
+        given:
+            String filename = 'test.war'
+        when:
+            String extension = FilenameUtils.getExtension(filename)
+        then:
+            extension == 'war'
     }
 }

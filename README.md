@@ -23,7 +23,7 @@ example on how to retrieve it from Maven Central:
         }
 
         dependencies {
-            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:0.5.7'
+            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:0.5.8'
         }
     }
 
@@ -32,7 +32,7 @@ in your `dependencies` closure. Remote deployment functionality will only work w
 in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-962) for more information.
 
     dependencies {
-        def cargoVersion = '1.2.2'
+        def cargoVersion = '1.3.3'
         cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion",
               "org.codehaus.cargo:cargo-ant:$cargoVersion"
     }

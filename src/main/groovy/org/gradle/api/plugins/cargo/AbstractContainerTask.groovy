@@ -21,6 +21,7 @@ import org.gradle.api.InvalidUserDataException
 import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.cargo.convention.Deployable
 import org.gradle.api.plugins.cargo.util.FilenameUtils
+import org.gradle.api.plugins.cargo.util.LoggingHandler
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.TaskAction
@@ -45,7 +46,10 @@ abstract class AbstractContainerTask extends DefaultTask {
     @TaskAction
     void start() {
         validateConfiguration()
-        runAction()
+
+        LoggingHandler.withAntLoggingListener(ant) {
+            runAction()
+        }
     }
 
     void validateConfiguration() {
@@ -76,36 +80,5 @@ abstract class AbstractContainerTask extends DefaultTask {
         DeployableType.getDeployableTypeForFilenameExtension(filenameExtension)
     }
 
-    // Wraps the subclasses action code in a listener that raises info priority ant task messages to
-    // be lifecycle messages for gradle.  This allows messages from the ant task, such as
-    // "Press Ctrl-C to stop the container..." to be passed through.
-    final void runAction() {
-        def localThread = Thread.currentThread()
-        def listener = [
-                buildFinished: {},
-                buildStarted: {},
-                messageLogged: {e ->
-                    if (    e.getTask() != null &&
-                            localThread == Thread.currentThread() &&
-                            e.getTask().class.getCanonicalName() == 'org.codehaus.cargo.ant.CargoTask' &&
-                            e.getPriority() == org.apache.tools.ant.Project.MSG_INFO ) {
-                        logger.lifecycle(e.getMessage())
-                    }
-                },
-                targetFinished: {},
-                targetStarted: {},
-                taskFinished: {},
-                taskStarted: {},
-        ] as org.apache.tools.ant.BuildListener
-        try {
-            ant.project.addBuildListener(listener)
-            subclassRunAction()
-        }
-        finally {
-            ant.project.removeBuildListener(listener)
-        }
-
-    }
-
-    abstract void subclassRunAction()
+    abstract void runAction()
 }
