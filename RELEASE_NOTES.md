@@ -1,3 +1,8 @@
+### Version 0.5.8 (February 25, 2013)
+
+* Capturing Cargo Ant logging - [Pull request 33](https://github.com/bmuschko/gradle-cargo-plugin/pull/33).
+* Upgrade to Gradle Wrapper 1.4.
+
 ### Version 0.5.7 (January 13, 2013)
 
 * Avoid masking exceptions thrown in build.gradle - [Issue 29](https://github.com/bmuschko/gradle-cargo-plugin/issues/29).
