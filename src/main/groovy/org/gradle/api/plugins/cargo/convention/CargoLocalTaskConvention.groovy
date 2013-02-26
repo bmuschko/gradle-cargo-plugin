@@ -36,6 +36,7 @@ class CargoLocalTaskConvention {
     CargoLocalWeblogicConvention weblogic = new CargoLocalWeblogicConvention()
     ZipUrlInstaller zipUrlInstaller = new ZipUrlInstaller()
     def configFiles = []
+    def files = []
 
     def jetty(Closure closure) {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
@@ -78,6 +79,14 @@ class CargoLocalTaskConvention {
         ConfigFile configFile = new ConfigFile()
         closure.delegate = configFile
         configFiles << configFile
+        closure()
+    }
+
+    def file(Closure closure) {
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        BinFile file = new BinFile()
+        closure.delegate = file
+        files << file
         closure()
     }
 }

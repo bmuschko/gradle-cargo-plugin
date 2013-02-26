@@ -91,6 +91,9 @@ class CargoPlugin implements Plugin<Project> {
             localContainerTask.conventionMapping.map('configFiles') {
                 cargoConvention.local.configFiles
             }
+            localContainerTask.conventionMapping.map('files') {
+                cargoConvention.local.files
+            }
         }
     }
 
