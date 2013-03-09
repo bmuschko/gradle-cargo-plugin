@@ -15,7 +15,6 @@
  */
 package org.gradle.api.plugins.cargo
 
-import groovy.util.logging.Slf4j
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.plugins.cargo.convention.BinFile
 import org.gradle.api.plugins.cargo.convention.ConfigFile
@@ -28,7 +27,6 @@ import org.gradle.api.tasks.Optional
  *
  * @author Benjamin Muschko
  */
-@Slf4j
 class LocalContainerTask extends AbstractContainerTask {
     String logLevel
     String jvmArgs
@@ -53,7 +51,7 @@ class LocalContainerTask extends AbstractContainerTask {
                 }
             }
 
-            log.info "Config files = ${getConfigFiles().collect { it.file.canonicalPath + " -> " + it.toDir.canonicalPath }}"
+            logger.info "Config files = ${getConfigFiles().collect { it.file.canonicalPath + " -> " + it.toDir.canonicalPath }}"
         }
 
         if (!getFiles().isEmpty()) {
@@ -64,13 +62,13 @@ class LocalContainerTask extends AbstractContainerTask {
                     + " does not exist")
                 }
             }
-            log.info "Binary files = ${getFiles().collect { it.file.canonicalPath + " -> " + it.toDir.canonicalPath }}"
+            logger.info "Binary files = ${getFiles().collect { it.file.canonicalPath + " -> " + it.toDir.canonicalPath }}"
         }
     }
 
     @Override
     void runAction() {
-        log.info "Starting action '${getAction()}' for local container '${Container.getContainerForId(getContainerId()).description}'"
+        logger.info "Starting action '${getAction()}' for local container '${Container.getContainerForId(getContainerId()).description}'"
 
         ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)
         ant.cargo(getCargoAttributes()) {

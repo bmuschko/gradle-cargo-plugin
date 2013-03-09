@@ -14,15 +14,11 @@
  * limitations under the License.
  */
 package org.gradle.api.plugins.cargo
-
-import groovy.util.logging.Slf4j
-
 /**
  * Deploys WAR to remote container.
  *
  * @author Benjamin Muschko
  */
-@Slf4j
 class RemoteContainerTask extends AbstractContainerTask {
     String protocol
     String hostname
@@ -31,7 +27,7 @@ class RemoteContainerTask extends AbstractContainerTask {
 
     @Override
     void runAction() {
-        log.info "Starting action '${getAction()}' for remote container '${Container.getContainerForId(getContainerId()).description}' on '${getProtocol()}://${getHostname()}:${getPort()}'"
+        logger.info "Starting action '${getAction()}' for remote container '${Container.getContainerForId(getContainerId()).description}' on '${getProtocol()}://${getHostname()}:${getPort()}'"
 
         ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)
         ant.cargo(containerId: getContainerId(), type: 'remote', action: getAction()) {

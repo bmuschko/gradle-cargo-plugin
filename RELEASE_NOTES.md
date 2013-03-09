@@ -1,3 +1,7 @@
+### Version 0.5.9 (March 8, 2013)
+
+* Added configuration option for binary files - [Pull request 33](https://github.com/bmuschko/gradle-cargo-plugin/pull/32).
+
 ### Version 0.5.8 (February 25, 2013)
 
 * Capturing Cargo Ant logging - [Pull request 33](https://github.com/bmuschko/gradle-cargo-plugin/pull/33).

@@ -21,6 +21,6 @@ package org.gradle.api.plugins.cargo.convention
  * @author Sascha Kiedrowski
  */
 class BinFile {
-    java.io.File file
-    java.io.File toDir
+    File file
+    File toDir
 }

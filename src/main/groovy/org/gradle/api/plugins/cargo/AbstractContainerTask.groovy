@@ -15,7 +15,6 @@
  */
 package org.gradle.api.plugins.cargo
 
-import groovy.util.logging.Slf4j
 import org.gradle.api.DefaultTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.file.FileCollection
@@ -31,7 +30,6 @@ import org.gradle.api.tasks.TaskAction
  *
  * @author Benjamin Muschko
  */
-@Slf4j
 abstract class AbstractContainerTask extends DefaultTask {
     static final CARGO_TASKS = 'cargo.tasks'
     static final CARGO_SERVLET_PORT = 'cargo.servlet.port'
@@ -65,13 +63,13 @@ abstract class AbstractContainerTask extends DefaultTask {
             }
         }
 
-        log.info "Deployable artifacts = ${getDeployables().collect { it.file.canonicalPath }}"
+        logger.info "Deployable artifacts = ${getDeployables().collect { it.file.canonicalPath }}"
 
         if(!getContainerId() || !Container.CONTAINERS.containsKey(getContainerId())) {
             throw new InvalidUserDataException("Unsupported container ID '${getContainerId()}'. Please pick a valid one: ${Container.containerIds}")
         }
         else {
-            log.info "Container ID = ${getContainerId()}"
+            logger.info "Container ID = ${getContainerId()}"
         }
     }
 
