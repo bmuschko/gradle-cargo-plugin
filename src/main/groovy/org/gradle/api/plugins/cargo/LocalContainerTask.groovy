@@ -17,6 +17,7 @@ package org.gradle.api.plugins.cargo
 
 import groovy.util.logging.Slf4j
 import org.gradle.api.InvalidUserDataException
+import org.gradle.api.plugins.cargo.convention.BinFile
 import org.gradle.api.plugins.cargo.convention.ConfigFile
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
@@ -37,6 +38,7 @@ class LocalContainerTask extends AbstractContainerTask {
     @Input @Optional Integer rmiPort
     ZipUrlInstaller zipUrlInstaller
     List<ConfigFile> configFiles
+    List<BinFile> files
 
     @Override
     void validateConfiguration() {
@@ -52,6 +54,17 @@ class LocalContainerTask extends AbstractContainerTask {
             }
 
             log.info "Config files = ${getConfigFiles().collect { it.file.canonicalPath + " -> " + it.toDir.canonicalPath }}"
+        }
+
+        if (!getFiles().isEmpty()) {
+            getFiles().each { binFile ->
+                if (!binFile.file || !binFile.file.exists()) {
+                    throw new InvalidUserDataException("Binary File "
+                    + (binFile.file == null ? "null" : binFile.file.canonicalPath)
+                    + " does not exist")
+                }
+            }
+            log.info "Binary files = ${getFiles().collect { it.file.canonicalPath + " -> " + it.toDir.canonicalPath }}"
         }
     }
 
@@ -89,6 +102,10 @@ class LocalContainerTask extends AbstractContainerTask {
 
                 getConfigFiles().each { configFile ->
                     ant.configfile(file: configFile.file, todir: configFile.toDir)
+                }
+
+                getFiles().each { binFile ->
+                    ant.file(file: binFile.file, todir: binFile.toDir)
                 }
 
                 setContainerSpecificProperties()
