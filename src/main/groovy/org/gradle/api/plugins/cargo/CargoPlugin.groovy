@@ -76,6 +76,9 @@ class CargoPlugin implements Plugin<Project> {
             localContainerTask.conventionMapping.map('homeDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
             }
+            localContainerTask.conventionMapping.map('configHomeDir') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.CONFIG_HOME_DIR, cargoConvention.local.configHomeDir)
+            }
             localContainerTask.conventionMapping.map('output') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
             }

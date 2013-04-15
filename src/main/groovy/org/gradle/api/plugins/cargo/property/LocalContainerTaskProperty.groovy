@@ -26,7 +26,8 @@ import groovy.util.logging.Slf4j
 enum LocalContainerTaskProperty implements TaskProperty {
     JVM_ARGS('cargo.jvmargs', PropertyDataType.STRING), LOG_LEVEL('cargo.log.level', PropertyDataType.STRING),
     HOME_DIR('cargo.home.dir', PropertyDataType.FILE), OUTPUT('cargo.output', PropertyDataType.FILE),
-    LOG('cargo.log', PropertyDataType.FILE), RMI_PORT('cargo.rmi.port', PropertyDataType.INTEGER)
+    LOG('cargo.log', PropertyDataType.FILE), RMI_PORT('cargo.rmi.port', PropertyDataType.INTEGER),
+    CONFIG_HOME_DIR('cargo.config.home.dir', PropertyDataType.FILE)
 
     static final Map PROPERTIES
 

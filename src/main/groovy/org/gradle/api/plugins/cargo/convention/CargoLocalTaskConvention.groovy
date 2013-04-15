@@ -26,6 +26,7 @@ class CargoLocalTaskConvention {
     String jvmArgs
     String logLevel
     File homeDir
+    File configHomeDir
     File output
     File log
     Integer rmiPort
