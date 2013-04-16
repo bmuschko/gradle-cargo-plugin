@@ -55,16 +55,6 @@ abstract class AbstractContainerTask extends DefaultTask {
             throw new InvalidUserDataException('No deployables assigned!')
         }
 
-        getDeployables().each { deployable ->
-            if(deployable.file && !deployable.file.exists()) {
-                throw new InvalidUserDataException("Deployable "
-                + (deployable.file == null ? "null" : deployable.file.canonicalPath)
-                + " does not exist")
-            }
-        }
-
-        logger.info "Deployable artifacts = ${getDeployables().collect { it.file.canonicalPath }}"
-
         if(!getContainerId() || !Container.CONTAINERS.containsKey(getContainerId())) {
             throw new InvalidUserDataException("Unsupported container ID '${getContainerId()}'. Please pick a valid one: ${Container.containerIds}")
         }

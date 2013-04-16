@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 package org.gradle.api.plugins.cargo
+
+import org.gradle.api.InvalidUserDataException
+
 /**
  * Deploys WAR to remote container.
  *
@@ -24,6 +27,23 @@ class RemoteContainerTask extends AbstractContainerTask {
     String hostname
     String username
     String password
+
+    @Override
+    void validateConfiguration() {
+        super.validateConfiguration()
+
+        if(getAction() != Action.UNDEPLOY.name) {
+            getDeployables().each { deployable ->
+                if(deployable.file && !deployable.file.exists()) {
+                    throw new InvalidUserDataException("Deployable "
+                            + (deployable.file == null ? "null" : deployable.file.canonicalPath)
+                            + " does not exist")
+                }
+
+                logger.info "Deployable artifacts = ${getDeployables().collect { it.file.canonicalPath }}"
+            }
+        }
+    }
 
     @Override
     void runAction() {
@@ -43,8 +63,16 @@ class RemoteContainerTask extends AbstractContainerTask {
 
                 getDeployables().each { deployable ->
                     if(deployable.context) {
-                        ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file) {
-                            property(name: CARGO_CONTEXT, value: deployable.context)
+                        // For the undeploy action do not set a file attribute
+                        if(getAction() == Action.UNDEPLOY.name) {
+                            ant.deployable(type: getDeployableType(deployable).filenameExtension) {
+                                property(name: CARGO_CONTEXT, value: deployable.context)
+                            }
+                        }
+                        else {
+                            ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file) {
+                                property(name: CARGO_CONTEXT, value: deployable.context)
+                            }
                         }
                     }
                     else {

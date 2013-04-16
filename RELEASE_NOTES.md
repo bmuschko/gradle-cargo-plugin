@@ -1,3 +1,8 @@
+### Version 0.6 (April 16, 2013)
+
+* Avoid having to assign the WAR file for a remote undeploy action - [Issue 30](https://github.com/bmuschko/gradle-cargo-plugin/issues/30).
+* _Note:_ This release requires you to use Cargo >= 1.3.3.
+
 ### Version 0.5.9 (March 8, 2013)
 
 * Added configuration option for binary files - [Pull request 33](https://github.com/bmuschko/gradle-cargo-plugin/pull/32).
