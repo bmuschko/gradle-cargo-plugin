@@ -36,7 +36,7 @@ class CargoPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.configurations.add(CARGO_CONFIGURATION_NAME).setVisible(false).setTransitive(true)
+        project.configurations.create(CARGO_CONFIGURATION_NAME).setVisible(false).setTransitive(true)
                .setDescription('The Cargo Ant libraries to be used for this project.')
 
         CargoPluginConvention cargoConvention = new CargoPluginConvention()
@@ -255,7 +255,7 @@ class CargoPlugin implements Plugin<Project> {
     }
 
     private void addContainerTask(Project project, Class taskClass, CargoPluginTask task) {
-        def containerTask = project.tasks.add(task.name, taskClass)
+        def containerTask = project.tasks.create(task.name, taskClass)
         containerTask.description = task.description
         containerTask.group = CARGO_TASK_GROUP
     }
