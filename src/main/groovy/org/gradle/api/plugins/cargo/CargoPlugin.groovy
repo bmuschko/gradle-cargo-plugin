@@ -57,7 +57,7 @@ class CargoPlugin implements Plugin<Project> {
     }
 
     private Configuration createConfiguration(Project project, String name) {
-        if (project.respondsTo('create')) {
+        if (project.configurations.respondsTo('create', String)) {
             return project.configurations.create(name)
         }
         project.configurations.add(name)
