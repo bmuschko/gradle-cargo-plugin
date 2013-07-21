@@ -31,6 +31,7 @@ class LocalContainerTask extends AbstractContainerTask {
     String logLevel
     String jvmArgs
     @InputDirectory @Optional File homeDir
+    File configHomeDir
     File output
     File logFile
     @Input @Optional Integer rmiPort
@@ -82,7 +83,7 @@ class LocalContainerTask extends AbstractContainerTask {
 
         ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)
         ant.cargo(getCargoAttributes()) {
-            ant.configuration {
+            ant.configuration(getConfigurationAttributes()) {
                 property(name: CARGO_SERVLET_PORT, value: getPort())
 
                 if(getJvmArgs()) {
@@ -124,6 +125,16 @@ class LocalContainerTask extends AbstractContainerTask {
                         extractDir: getZipUrlInstaller().extractDir)
             }
         }
+    }
+
+    protected Map<String, String> getConfigurationAttributes() {
+        def config = [:]
+
+        if(getConfigHomeDir()) {
+            config['home'] = getConfigHomeDir().absolutePath
+        }
+
+        return config
     }
 
     private Map<String, String> getCargoAttributes() {
