@@ -1,3 +1,9 @@
+### Version 0.6.1 (July 21, 2013)
+
+* Support for Jetty 9.x - [Pull request 48](https://github.com/bmuschko/gradle-cargo-plugin/pull/48).
+* Fix deprecation warnings in gradle 1.6 - [Pull request 48](https://github.com/bmuschko/gradle-cargo-plugin/pull/42).
+* Adding support for specifying configuration home - [Pull request 40](https://github.com/bmuschko/gradle-cargo-plugin/pull/40).
+
 ### Version 0.6 (April 16, 2013)
 
 * Avoid having to assign the WAR file for a remote undeploy action - [Issue 30](https://github.com/bmuschko/gradle-cargo-plugin/issues/30).

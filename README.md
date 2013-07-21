@@ -23,7 +23,7 @@ example on how to retrieve it from Maven Central:
         }
 
         dependencies {
-            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:0.6'
+            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:0.6.1'
         }
     }
 
