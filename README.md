@@ -81,7 +81,8 @@ Within `cargo` you can define properties for local containers in a closure named
 * `output`: The log file of your local container (defaults to writing to the console).
 * `log`: The Cargo log file of your local container (defaults to writing to the console).
 * `logLevel`: The log level to run the container with (optional). The valid levels are `low`, `medium` and `high`.
-* `homeDir`: The home directory of your local container.
+* `homeDir`: The home directory of your local container installation.
+* `configHomeDir`: The home directory of your local container's configuration.
 * `configFile`: The [configuration files](http://cargo.codehaus.org/Configuration+files+option) you want to add to your
 container's configuration. The `configFile` is a closure itself and requires you to provide the attributes `file` and `todir`.
 Multiple configuration file be defined by creating more than one `configFile` closure.
