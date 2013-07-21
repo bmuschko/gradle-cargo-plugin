@@ -18,6 +18,8 @@ package org.gradle.api.plugins.cargo
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
+import org.gradle.api.artifacts.Configuration
 import org.gradle.api.plugins.WarPlugin
 import org.gradle.api.plugins.cargo.convention.CargoPluginConvention
 import org.gradle.api.plugins.cargo.convention.Deployable
@@ -36,8 +38,10 @@ class CargoPlugin implements Plugin<Project> {
 
     @Override
     void apply(Project project) {
-        project.configurations.add(CARGO_CONFIGURATION_NAME).setVisible(false).setTransitive(true)
-               .setDescription('The Cargo Ant libraries to be used for this project.')
+        createConfiguration(project, CARGO_CONFIGURATION_NAME)
+                .setVisible(false)
+                .setTransitive(true)
+                .setDescription('The Cargo Ant libraries to be used for this project.')
 
         CargoPluginConvention cargoConvention = new CargoPluginConvention()
         project.convention.plugins.cargo = cargoConvention
@@ -50,6 +54,13 @@ class CargoPlugin implements Plugin<Project> {
         configureRunLocalContainerTask(project, cargoConvention)
         configureStartLocalContainerTask(project, cargoConvention)
         configureStopLocalContainerTask(project, cargoConvention)
+    }
+
+    private Configuration createConfiguration(Project project, String name) {
+        if (project.configurations.respondsTo('create', String)) {
+            return project.configurations.create(name)
+        }
+        project.configurations.add(name)
     }
 
     private void configureAbstractContainerTask(Project project, CargoPluginConvention cargoConvention) {
@@ -255,7 +266,12 @@ class CargoPlugin implements Plugin<Project> {
     }
 
     private void addContainerTask(Project project, Class taskClass, CargoPluginTask task) {
-        def containerTask = project.tasks.add(task.name, taskClass)
+        Task containerTask
+        if (project.tasks.respondsTo('create', String, Class)) {
+            containerTask = project.tasks.create(task.name, taskClass)
+        } else {
+            containerTask = project.tasks.add(task.name, taskClass)
+        }
         containerTask.description = task.description
         containerTask.group = CARGO_TASK_GROUP
     }
