@@ -35,6 +35,8 @@ class CargoLocalTaskConvention {
     CargoLocalJRunConvention jrun = new CargoLocalJRunConvention()
     CargoLocalTomcatConvention tomcat = new CargoLocalTomcatConvention()
     CargoLocalWeblogicConvention weblogic = new CargoLocalWeblogicConvention()
+    CargoLocalJbossConvention jboss = new CargoLocalJbossConvention()
+
     ZipUrlInstaller zipUrlInstaller = new ZipUrlInstaller()
     def configFiles = []
     def files = []
@@ -66,6 +68,12 @@ class CargoLocalTaskConvention {
     def weblogic(Closure closure) {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
         closure.delegate = weblogic
+        closure()
+    }
+
+    def jboss(Closure closure) {
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure.delegate = jboss
         closure()
     }
 

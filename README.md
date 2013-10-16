@@ -112,6 +112,9 @@ defined by these closures:
     * `adminPassword`
     * `beaHome`
     * `server`
+* `jboss`: JBoss
+    * `invokerPoolPort`: corresponds to `cargo.jboss.invoker.pool.port` cargo property (effective for pre-JBoss 7).
+    * `configuration`: corresponds to `cargo.jboss.configuration` cargo property.
 
 If you decide to use the [ZIP installer](http://cargo.codehaus.org/Installer) Cargo will automatically download your container. You can
 define its properties in the closure `installer`. The installer only applies to "local" Cargo tasks.

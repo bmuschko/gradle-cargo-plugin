@@ -213,6 +213,18 @@ class CargoPlugin implements Plugin<Project> {
         }
     }
 
+    private void setLocalJbossConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
+        project.tasks.withType(LocalJbossTask).whenTaskAdded { LocalJbossTask localJbossTask ->
+            localJbossTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
+            localJbossTask.conventionMapping.map('invokerPoolPort') {
+                CargoProjectProperty.getTypedProperty(project, LocalJbossTaskProperty.INVOKER_POOL_PORT, cargoConvention.local.jboss.invokerPoolPort)
+            }
+            localJbossTask.conventionMapping.map('configuration') {
+                CargoProjectProperty.getTypedProperty(project, LocalJbossTaskProperty.CONFIGURATION, cargoConvention.local.jboss.configuration)
+            }
+        }
+    }
+
     private void configureDeployRemoteContainerTask(Project project, CargoPluginConvention cargoConvention) {
         setRemoteContainerConventionMapping(project, cargoConvention, Action.DEPLOY)
         addContainerTask(project, RemoteContainerTask, CargoPluginTask.DEPLOY_REMOTE)
@@ -259,6 +271,8 @@ class CargoPlugin implements Plugin<Project> {
                     case LocalContainerTaskMapping.TOMCAT: setLocalTomcatConventionMapping(project, cargoConvention, action)
                         break
                     case LocalContainerTaskMapping.WEBLOGIC: setLocalWeblogicConventionMapping(project, cargoConvention, action)
+                        break
+                    case LocalContainerTaskMapping.JBOSS: setLocalJbossConventionMapping(project, cargoConvention, action)
                         break
                     default: setDefaultLocalContainerConventionMapping(project, cargoConvention, action)
                 }
