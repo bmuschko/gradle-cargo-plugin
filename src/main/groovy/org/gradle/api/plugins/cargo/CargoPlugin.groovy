@@ -219,6 +219,9 @@ class CargoPlugin implements Plugin<Project> {
             localJbossTask.conventionMapping.map('invokerPoolPort') {
                 CargoProjectProperty.getTypedProperty(project, LocalJbossTaskProperty.INVOKER_POOL_PORT, cargoConvention.local.jboss.invokerPoolPort)
             }
+            localJbossTask.conventionMapping.map('namingPort') {
+                CargoProjectProperty.getTypedProperty(project, LocalJbossTaskProperty.NAMING_PORT, cargoConvention.local.jboss.namingPort)
+            }
             localJbossTask.conventionMapping.map('configuration') {
                 CargoProjectProperty.getTypedProperty(project, LocalJbossTaskProperty.CONFIGURATION, cargoConvention.local.jboss.configuration)
             }

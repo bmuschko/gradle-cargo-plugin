@@ -7,5 +7,6 @@ package org.gradle.api.plugins.cargo.convention
  */
 class CargoLocalJbossConvention {
     Integer invokerPoolPort
+    Integer namingPort
     String configuration
 }

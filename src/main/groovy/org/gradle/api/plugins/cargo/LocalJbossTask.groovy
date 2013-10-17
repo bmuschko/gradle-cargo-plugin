@@ -11,12 +11,16 @@ import org.gradle.api.tasks.Optional
  */
 class LocalJbossTask extends LocalContainerTask {
     @Input @Optional Integer invokerPoolPort
+    @Input @Optional Integer namingPort
     @Input @Optional String configuration
 
     @Override
     void setContainerSpecificProperties() {
         if(getInvokerPoolPort()) {
             ant.property(name: LocalJbossTaskProperty.INVOKER_POOL_PORT.name, value: getInvokerPoolPort())
+        }
+        if(getNamingPort()) {
+            ant.property(name: LocalJbossTaskProperty.NAMING_PORT.name, value: getNamingPort())
         }
         if(getConfiguration()) {
             ant.property(name: LocalJbossTaskProperty.CONFIGURATION.name, value: getConfiguration())
