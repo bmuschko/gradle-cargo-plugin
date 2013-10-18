@@ -121,7 +121,7 @@ defined by these closures:
 If you decide to use the [ZIP installer](http://cargo.codehaus.org/Installer) Cargo will automatically download your container. You can
 define its properties in the closure `installer`. The installer only applies to "local" Cargo tasks.
 
-* `installUrl`: The URL to download the container distribtion from.
+* `installUrl`: The URL to download the container distribution from.
 * `downloadDir`: Target directory to download the container distribution to.
 * `extractDir`: Directory to extract the downloaded container distribution to.
 
