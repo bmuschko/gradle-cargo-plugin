@@ -116,6 +116,7 @@ defined by these closures:
     * `invokerPoolPort`: corresponds to `cargo.jboss.invoker.pool.port` cargo property (effective for pre-JBoss 7).
     * `configuration`: corresponds to `cargo.jboss.configuration` cargo property.
     * `namingPort`: corresponds to `cargo.jboss.naming.port` cargo property.
+    * `jrmpInvokerPort`: corresponds to `cargo.jboss.jrmp.invoker.port` cargo property.
 
 If you decide to use the [ZIP installer](http://cargo.codehaus.org/Installer) Cargo will automatically download your container. You can
 define its properties in the closure `installer`. The installer only applies to "local" Cargo tasks.

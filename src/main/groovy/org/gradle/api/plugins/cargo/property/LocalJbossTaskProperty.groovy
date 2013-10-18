@@ -11,6 +11,7 @@ import groovy.util.logging.Slf4j
 enum LocalJbossTaskProperty implements TaskProperty {
     /** Effective for pre-JBoss 7. */
     INVOKER_POOL_PORT('cargo.jboss.invoker.pool.port', PropertyDataType.INTEGER),
+    JRMP_INVOKER_PORT('cargo.jboss.jrmp.invoker.port', PropertyDataType.INTEGER),
     NAMING_PORT('cargo.jboss.naming.port', PropertyDataType.INTEGER),
     CONFIGURATION('cargo.jboss.configuration', PropertyDataType.STRING)
 
