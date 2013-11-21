@@ -34,7 +34,8 @@ enum Container {
     OC4J_9X('oc4j9x', 'Oc4J 9.x'), OC4J_10X('oc4j10x', 'Oc4J 10.x'),
     RESIN_2X('resin2x', 'Resin 2.x'), RESIN_3X('resin3x', 'Resin 3.x'),
     TOMCAT_5X('tomcat5x', 'Tomcat 5.x'), TOMCAT_6X('tomcat6x', 'Tomcat 6.x'), TOMCAT_7X('tomcat7x', 'Tomcat 7.x'),
-    WEBLOGIC_8X('weblogic8x', 'WebLogic 8.x'), WEBLOGIC_9X('weblogic9x', 'WebLogic 9.x'), WEBLOGIC_10X('weblogic10x', 'WebLogic 10.x'), WEBLOGIC_10_3X('weblogic103x', 'WebLogic 10.3.x')
+    WEBLOGIC_8X('weblogic8x', 'WebLogic 8.x'), WEBLOGIC_9X('weblogic9x', 'WebLogic 9.x'), WEBLOGIC_10X('weblogic10x', 'WebLogic 10.x'), WEBLOGIC_10_3X('weblogic103x', 'WebLogic 10.3.x'),
+    WILDFLY_8X('wildfly8x', 'WildFly 8.x')
 
     static final Map CONTAINERS
 
