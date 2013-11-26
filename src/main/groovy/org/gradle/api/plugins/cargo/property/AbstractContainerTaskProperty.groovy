@@ -25,7 +25,7 @@ import groovy.util.logging.Slf4j
 @Slf4j
 enum AbstractContainerTaskProperty implements TaskProperty {
     CONTAINER_ID('cargo.container.id', PropertyDataType.STRING), PORT('cargo.port', PropertyDataType.INTEGER),
-    CONTEXT('cargo.context', PropertyDataType.STRING)
+    CONTEXT('cargo.context', PropertyDataType.STRING), TIMEOUT('cargo.timeout', PropertyDataType.INTEGER)
 
     static final Map PROPERTIES
 
