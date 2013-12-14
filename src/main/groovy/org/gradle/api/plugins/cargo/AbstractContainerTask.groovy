@@ -37,7 +37,6 @@ abstract class AbstractContainerTask extends DefaultTask {
     String containerId
     String action
     Integer port
-    Integer timeout
     String context
     @InputFiles FileCollection classpath
     @Input List<Deployable> deployables

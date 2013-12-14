@@ -36,6 +36,7 @@ class LocalContainerTask extends AbstractContainerTask {
     File logFile
     @Input @Optional Integer rmiPort
     ZipUrlInstaller zipUrlInstaller
+    @Input @Optional Integer timeout
     List<ConfigFile> configFiles
     List<BinFile> files
 
