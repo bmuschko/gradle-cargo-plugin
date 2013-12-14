@@ -72,6 +72,9 @@ class CargoPlugin implements Plugin<Project> {
             abstractContainerTask.conventionMapping.map('port') {
                 CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.PORT, cargoConvention.port)
             }
+            abstractContainerTask.conventionMapping.map('timeout') {
+                CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.TIMEOUT, cargoConvention.timeout)
+            }
             abstractContainerTask.conventionMapping.map('deployables') { resolveDeployables(project, cargoConvention) }
         }
     }

@@ -36,6 +36,7 @@ class LocalContainerTask extends AbstractContainerTask {
     File logFile
     @Input @Optional Integer rmiPort
     ZipUrlInstaller zipUrlInstaller
+    @Input @Optional Integer timeout
     List<ConfigFile> configFiles
     List<BinFile> files
 
@@ -139,6 +140,9 @@ class LocalContainerTask extends AbstractContainerTask {
 
     private Map<String, String> getCargoAttributes() {
         def cargoAttributes = ['containerId': getContainerId(), 'action': getAction()]
+        if (getTimeout()) {
+            cargoAttributes['timeout'] = getTimeout()
+        }
 
         if(!getZipUrlInstaller().isValid()) {
             cargoAttributes['home'] = getHomeDir().canonicalPath

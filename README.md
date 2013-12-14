@@ -87,6 +87,7 @@ Within `cargo` you can define properties for local containers in a closure named
 container's configuration. The `configFile` is a closure itself and requires you to provide the attributes `file` and `todir`.
 Multiple configuration file be defined by creating more than one `configFile` closure.
 * `rmiPort`: The port to use when communicating with this server, for example to start and stop it.
+* `timeout`: The timeout (in ms) in which to determine if the container is successfully started or stopped (cargo sets this default to 120000ms).
 
 Within `local` you can define properties for specific local containers. At the moment the following containers are supported
 defined by these closures:
@@ -142,6 +143,7 @@ by project properties. The name of the project properties is the same as in the 
         local {
             homeDir = file('/home/user/dev/tools/apache-tomcat-6.0.32')
             output = file('build/output.log')
+            timeout = 60000
 
             tomcat {
                 ajpPort = 9091
@@ -155,6 +157,7 @@ The convention properties can be overridden by project properties via `gradle.pr
 
 * `cargo.container.id`: Overrides the convention property `containerId`.
 * `cargo.port`: Overrides the convention property `port`.
+* `cargo.timeout`: Overrides the convention property `timeout`.
 * `cargo.protocol`: Overrides the convention property `protocol`.
 * `cargo.hostname`: Overrides the convention property `hostname`.
 * `cargo.username`: Overrides the convention property `username`.
