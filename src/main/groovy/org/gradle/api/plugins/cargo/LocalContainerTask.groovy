@@ -138,7 +138,10 @@ class LocalContainerTask extends AbstractContainerTask {
     }
 
     private Map<String, String> getCargoAttributes() {
-        def cargoAttributes = ['containerId': getContainerId(), 'action': getAction(), 'timeout': getTimeout()]
+        def cargoAttributes = ['containerId': getContainerId(), 'action': getAction()]
+        if (getTimeout()) {
+            cargoAttributes['timeout'] = getTimeout()
+        }
 
         if(!getZipUrlInstaller().isValid()) {
             cargoAttributes['home'] = getHomeDir().canonicalPath

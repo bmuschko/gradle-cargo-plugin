@@ -58,7 +58,7 @@ The Cargo plugin defines the following convention properties in the `cargo` clos
 
 * `containerId`: The container ID you are targeting. Please see the [list of supported containers](http://cargo.codehaus.org/Home) on the Cargo website.
 * `port`: The TCP port the container responds on (defaults to 8080).
-* `timeout`: The timeout (in ms) in which to determine if the container is successfully started or stopped (defaults to 120000ms).
+* `timeout`: The timeout (in ms) in which to determine if the container is successfully started or stopped (cargo sets this default to 120000ms).
 
 Within `cargo` you can define optional properties for the 1..n deployment artifacts in a closure named `deployable`. Each
 deployment artifact would be specified in its own closure:
