@@ -44,11 +44,13 @@ class LocalContainerTask extends AbstractContainerTask {
     void validateConfiguration() {
         super.validateConfiguration()
 
-        getDeployables().each { deployable ->
-            if(deployable.file && !deployable.file.exists()) {
-                throw new InvalidUserDataException("Deployable "
-                        + (deployable.file == null ? "null" : deployable.file.canonicalPath)
-                        + " does not exist")
+        if(!getDeployables().isEmpty()) {
+            getDeployables().each { deployable ->
+                if(deployable.file && !deployable.file.exists()) {
+                    throw new InvalidUserDataException("Deployable "
+                            + (deployable.file == null ? "null" : deployable.file.canonicalPath)
+                            + " does not exist")
+                }
             }
 
             logger.info "Deployable artifacts = ${getDeployables().collect { it.file.canonicalPath }}"
