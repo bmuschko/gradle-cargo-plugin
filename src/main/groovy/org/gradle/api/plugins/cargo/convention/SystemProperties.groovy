@@ -16,11 +16,11 @@
 package org.gradle.api.plugins.cargo.convention
 
 /**
- * Container-specific properties.
+ * Properties that can be passed on to the local container.
  *
  * @author Benjamin Muschko
  */
-class ContainerProperties {
+class SystemProperties {
     Map<String, Object> properties = [:]
 
     void property(String key, Object value) {

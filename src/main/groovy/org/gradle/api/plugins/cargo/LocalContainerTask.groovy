@@ -38,6 +38,7 @@ class LocalContainerTask extends AbstractContainerTask {
     ZipUrlInstaller zipUrlInstaller
     List<ConfigFile> configFiles
     List<BinFile> files
+    @Input Map<String, Object> systemProperties = [:]
 
     @Override
     void validateConfiguration() {
@@ -120,6 +121,8 @@ class LocalContainerTask extends AbstractContainerTask {
                 }
             }
 
+            setSystemProperties()
+
             if(getZipUrlInstaller().isValid()) {
                 ant.zipUrlInstaller(installUrl: getZipUrlInstaller().installUrl, downloadDir: getZipUrlInstaller().downloadDir,
                         extractDir: getZipUrlInstaller().extractDir)
@@ -153,5 +156,13 @@ class LocalContainerTask extends AbstractContainerTask {
         }
 
         cargoAttributes
+    }
+
+    void setSystemProperties() {
+        logger.info "System properties = ${getSystemProperties()}"
+
+        getSystemProperties().each { key, value ->
+            ant.sysproperty(key: key, value: value)
+        }
     }
 }

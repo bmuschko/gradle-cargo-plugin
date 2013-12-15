@@ -40,7 +40,7 @@ abstract class AbstractContainerTask extends DefaultTask {
     String context
     @InputFiles FileCollection classpath
     @Input List<Deployable> deployables
-    @Input Map<String, Object> containerProperties   = [:]
+    @Input Map<String, Object> containerProperties = [:]
 
     @TaskAction
     void start() {

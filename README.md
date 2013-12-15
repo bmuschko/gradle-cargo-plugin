@@ -23,7 +23,7 @@ example on how to retrieve it from Bintray:
         }
 
         dependencies {
-            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.0'
+            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.1'
         }
     }
 
@@ -88,6 +88,8 @@ container's configuration. The `configFile` is a closure itself and requires you
 Multiple configuration file be defined by creating more than one `configFile` closure.
 * `rmiPort`: The port to use when communicating with this server, for example to start and stop it.
 
+### Container properties
+
 Within `local` and `remote` you can define container-specific properties. These properties can be looked up on
 the Cargo homepage. The following example shows how to set the AJP port for a local Tomcat container:
 
@@ -99,6 +101,20 @@ the Cargo homepage. The following example shows how to set the AJP port for a lo
         }
     }
 
+### System properties
+
+Local containers can use system properties passed to it. The following example shows how to set a single system property named `myproperty`:
+
+    cargo {
+        local {
+            systemProperties {
+                property 'myproperty', 'myvalue'
+            }
+        }
+    }
+
+### Automatically bootstrapping a local container
+
 If you decide to use the [ZIP installer](http://cargo.codehaus.org/Installer) Cargo will automatically download your container. You can
 define its properties in the closure `installer`. The installer only applies to "local" Cargo tasks.
 
@@ -106,7 +122,7 @@ define its properties in the closure `installer`. The installer only applies to 
 * `downloadDir`: Target directory to download the container distribution to.
 * `extractDir`: Directory to extract the downloaded container distribution to.
 
-Please refer to the individual configuration properties on the Cargo homepage. All of these properties can be overriden
+Please refer to the individual configuration properties on the Cargo homepage. All of these properties can be overridden
 by project properties. The name of the project properties is the same as in the Cargo manual.
 
 ### Example

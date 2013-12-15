@@ -35,6 +35,7 @@ class CargoLocalTaskConvention {
     def configFiles = []
     def files = []
     ContainerProperties containerProperties = new ContainerProperties()
+    SystemProperties systemProperties = new SystemProperties()
 
     def installer(Closure closure) {
         ConfigureUtil.configure(closure, zipUrlInstaller)
@@ -58,5 +59,9 @@ class CargoLocalTaskConvention {
 
     def containerProperties(Closure closure) {
         ConfigureUtil.configure(closure, containerProperties)
+    }
+
+    def systemProperties(Closure closure) {
+        ConfigureUtil.configure(closure, systemProperties)
     }
 }

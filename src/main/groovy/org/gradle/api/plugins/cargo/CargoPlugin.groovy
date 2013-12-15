@@ -93,6 +93,7 @@ class CargoPlugin implements Plugin<Project> {
             conventionMapping.map('configFiles') { cargoConvention.local.configFiles }
             conventionMapping.map('files') { cargoConvention.local.files }
             conventionMapping.map('containerProperties') { cargoConvention.local.containerProperties.properties }
+            conventionMapping.map('systemProperties') { cargoConvention.local.systemProperties.properties }
         }
     }
 
