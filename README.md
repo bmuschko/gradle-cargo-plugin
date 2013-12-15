@@ -13,9 +13,9 @@ To use the Cargo plugin, include in your build script:
     apply plugin: 'cargo'
 
 The plugin JAR needs to be defined in the classpath of your build script. It is directly available on
-[Maven Central](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22org.gradle.api.plugins%22%20AND%20a%3A%22gradle-cargo-plugin%22).
+[Bintray](https://bintray.com/bmuschko/gradle-plugins/gradle-cargo-plugin/).
 Alternatively, you can download it from GitHub and deploy it to your local repository. The following code snippet shows an
-example on how to retrieve it from Maven Central:
+example on how to retrieve it from Bintray:
 
     buildscript {
         repositories {
