@@ -40,6 +40,7 @@ abstract class AbstractContainerTask extends DefaultTask {
     String context
     @InputFiles FileCollection classpath
     @Input List<Deployable> deployables
+    @Input Map<String, Object> containerProperties   = [:]
 
     @TaskAction
     void start() {
@@ -63,10 +64,18 @@ abstract class AbstractContainerTask extends DefaultTask {
         }
     }
 
-    DeployableType getDeployableType(Deployable deployable) {
+    protected DeployableType getDeployableType(Deployable deployable) {
         String filenameExtension = FilenameUtils.getExtension(deployable.file.canonicalPath)
         DeployableType.getDeployableTypeForFilenameExtension(filenameExtension)
     }
 
-    abstract void runAction()
+    protected void setContainerSpecificProperties() {
+        logger.info "Container properties = ${getContainerProperties()}"
+
+        getContainerProperties().each { key, value ->
+            ant.property(name: key, value: value)
+        }
+    }
+
+    protected abstract void runAction()
 }

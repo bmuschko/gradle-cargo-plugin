@@ -15,6 +15,8 @@
  */
 package org.gradle.api.plugins.cargo.convention
 
+import org.gradle.util.ConfigureUtil
+
 /**
  * Defines Cargo remote task convention.
  *
@@ -25,4 +27,9 @@ class CargoRemoteTaskConvention {
     String hostname
     String username
     String password
+    ContainerProperties containerProperties = new ContainerProperties()
+
+    def containerProperties(Closure closure) {
+        ConfigureUtil.configure(closure, containerProperties)
+    }
 }

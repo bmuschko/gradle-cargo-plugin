@@ -16,11 +16,9 @@
 package org.gradle.api.plugins.cargo.property
 
 /**
- * Created by IntelliJ IDEA.
- * User: Ben
- * Date: 7/24/11
- * Time: 5:20 PM
- * To change this template use File | Settings | File Templates.
+ * Task property interface.
+ *
+ * @author Benjamin Muschko
  */
 interface TaskProperty {
     String getName()

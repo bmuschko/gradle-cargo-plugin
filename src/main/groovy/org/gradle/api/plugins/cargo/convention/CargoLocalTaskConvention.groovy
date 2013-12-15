@@ -16,6 +16,7 @@
 package org.gradle.api.plugins.cargo.convention
 
 import org.gradle.api.plugins.cargo.ZipUrlInstaller
+import org.gradle.util.ConfigureUtil
 
 /**
  * Defines Cargo local task convention.
@@ -30,49 +31,13 @@ class CargoLocalTaskConvention {
     File output
     File log
     Integer rmiPort
-    CargoLocalJettyConvention jetty = new CargoLocalJettyConvention()
-    CargoLocalJonasConvention jonas = new CargoLocalJonasConvention()
-    CargoLocalJRunConvention jrun = new CargoLocalJRunConvention()
-    CargoLocalTomcatConvention tomcat = new CargoLocalTomcatConvention()
-    CargoLocalWeblogicConvention weblogic = new CargoLocalWeblogicConvention()
     ZipUrlInstaller zipUrlInstaller = new ZipUrlInstaller()
     def configFiles = []
     def files = []
-
-    def jetty(Closure closure) {
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = jetty
-        closure()
-    }
-
-    def jonas(Closure closure) {
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = jonas
-        closure()
-    }
-
-    def jrun(Closure closure) {
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = jrun
-        closure()
-    }
-
-    def tomcat(Closure closure) {
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = tomcat
-        closure()
-    }
-
-    def weblogic(Closure closure) {
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = weblogic
-        closure()
-    }
+    ContainerProperties containerProperties = new ContainerProperties()
 
     def installer(Closure closure) {
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = zipUrlInstaller
-        closure()
+        ConfigureUtil.configure(closure, zipUrlInstaller)
     }
 
     def configFile(Closure closure) {
@@ -89,5 +54,9 @@ class CargoLocalTaskConvention {
         closure.delegate = file
         files << file
         closure()
+    }
+
+    def containerProperties(Closure closure) {
+        ConfigureUtil.configure(closure, containerProperties)
     }
 }

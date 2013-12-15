@@ -1,3 +1,9 @@
+### Version 1.0 (December 15, 2013)
+
+* Allow configuring container using generic properties.
+* Update of supported containers.
+* Upgrade to Gradle Wrapper 1.9.
+
 ### Version 0.6.1 (July 21, 2013)
 
 * Support for Jetty 9.x - [Pull request 48](https://github.com/bmuschko/gradle-cargo-plugin/pull/48).

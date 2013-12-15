@@ -18,13 +18,15 @@ package org.gradle.api.plugins.cargo
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.Task
-import org.gradle.api.artifacts.Configuration
+import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.plugins.WarPlugin
 import org.gradle.api.plugins.cargo.convention.CargoPluginConvention
 import org.gradle.api.plugins.cargo.convention.Deployable
+import org.gradle.api.plugins.cargo.property.AbstractContainerTaskProperty
+import org.gradle.api.plugins.cargo.property.CargoProjectProperty
+import org.gradle.api.plugins.cargo.property.LocalContainerTaskProperty
+import org.gradle.api.plugins.cargo.property.RemoteContainerTaskProperty
 import org.gradle.plugins.ear.EarPlugin
-import org.gradle.api.plugins.cargo.property.*
 
 /**
  * <p>A {@link org.gradle.api.Plugin} that provides tasks for deploying WAR/EAR files to local and remote web containers.</p>
@@ -34,11 +36,10 @@ import org.gradle.api.plugins.cargo.property.*
 class CargoPlugin implements Plugin<Project> {
     static final String CARGO_CONFIGURATION_NAME = 'cargo'
     static final String CARGO_TASK_GROUP = 'deployment'
-    static final String ACTION_CONVENTION_MAPPING_PARAM = 'action'
 
     @Override
     void apply(Project project) {
-        createConfiguration(project, CARGO_CONFIGURATION_NAME)
+        project.configurations.create(CARGO_CONFIGURATION_NAME)
                 .setVisible(false)
                 .setTransitive(true)
                 .setDescription('The Cargo Ant libraries to be used for this project.')
@@ -47,236 +48,106 @@ class CargoPlugin implements Plugin<Project> {
         project.convention.plugins.cargo = cargoConvention
 
         configureAbstractContainerTask(project, cargoConvention)
-        configureLocalContainerConventionMapping(project, cargoConvention)
-        configureDeployRemoteContainerTask(project, cargoConvention)
-        configureUndeployRemoteContainerTask(project, cargoConvention)
-        configureRedeployRemoteContainerTask(project, cargoConvention)
-        configureRunLocalContainerTask(project, cargoConvention)
-        configureStartLocalContainerTask(project, cargoConvention)
-        configureStopLocalContainerTask(project, cargoConvention)
-    }
-
-    private Configuration createConfiguration(Project project, String name) {
-        if (project.configurations.respondsTo('create', String)) {
-            return project.configurations.create(name)
-        }
-        project.configurations.add(name)
+        configureRemoteContainerTasks(project, cargoConvention)
+        configureLocalContainerTasks(project, cargoConvention)
+        checkValidContainerId(project, cargoConvention)
     }
 
     private void configureAbstractContainerTask(Project project, CargoPluginConvention cargoConvention) {
-        project.tasks.withType(AbstractContainerTask).whenTaskAdded { AbstractContainerTask abstractContainerTask ->
-            abstractContainerTask.conventionMapping.map('classpath') { project.configurations.getByName(CARGO_CONFIGURATION_NAME).asFileTree }
-            abstractContainerTask.conventionMapping.map('containerId') {
+        project.tasks.withType(AbstractContainerTask) {
+            conventionMapping.map('classpath') { project.configurations.getByName(CARGO_CONFIGURATION_NAME).asFileTree }
+            conventionMapping.map('containerId') {
                 CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.CONTAINER_ID, cargoConvention.containerId)
             }
-            abstractContainerTask.conventionMapping.map('port') {
+            conventionMapping.map('port') {
                 CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.PORT, cargoConvention.port)
             }
-            abstractContainerTask.conventionMapping.map('deployables') { resolveDeployables(project, cargoConvention) }
+            conventionMapping.map('deployables') { resolveDeployables(project, cargoConvention) }
         }
     }
 
     private void configureLocalContainerConventionMapping(Project project, CargoPluginConvention cargoConvention) {
-        project.tasks.withType(LocalContainerTask).whenTaskAdded { LocalContainerTask localContainerTask ->
-            localContainerTask.conventionMapping.map('jvmArgs') {
+        project.tasks.withType(LocalContainerTask) {
+            conventionMapping.map('jvmArgs') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.JVM_ARGS, cargoConvention.local.jvmArgs)
             }
-            localContainerTask.conventionMapping.map('logLevel') {
+            conventionMapping.map('logLevel') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
             }
-            localContainerTask.conventionMapping.map('homeDir') {
+            conventionMapping.map('homeDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
             }
-            localContainerTask.conventionMapping.map('configHomeDir') {
+            conventionMapping.map('configHomeDir') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.CONFIG_HOME_DIR, cargoConvention.local.configHomeDir)
             }
-            localContainerTask.conventionMapping.map('output') {
+            conventionMapping.map('output') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
             }
-            localContainerTask.conventionMapping.map('logFile') {
+            conventionMapping.map('logFile') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
             }
-            localContainerTask.conventionMapping.map('rmiPort') {
+            conventionMapping.map('rmiPort') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.RMI_PORT, cargoConvention.local.rmiPort)
             }
-            localContainerTask.conventionMapping.map('zipUrlInstaller') {
-                cargoConvention.local.zipUrlInstaller
-            }
-            localContainerTask.conventionMapping.map('configFiles') {
-                cargoConvention.local.configFiles
-            }
-            localContainerTask.conventionMapping.map('files') {
-                cargoConvention.local.files
-            }
+            conventionMapping.map('zipUrlInstaller') { cargoConvention.local.zipUrlInstaller }
+            conventionMapping.map('configFiles') { cargoConvention.local.configFiles }
+            conventionMapping.map('files') { cargoConvention.local.files }
+            conventionMapping.map('containerProperties') { cargoConvention.local.containerProperties.properties }
         }
     }
 
-    private void setRemoteContainerConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
-        project.tasks.withType(RemoteContainerTask).whenTaskAdded { RemoteContainerTask remoteContainerTask ->
-            remoteContainerTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            remoteContainerTask.conventionMapping.map('protocol') {
+    private void setRemoteContainerConventionMapping(Project project, CargoPluginConvention cargoConvention) {
+        project.tasks.withType(RemoteContainerTask) {
+            conventionMapping.map('protocol') {
                 CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.PROTOCOL, cargoConvention.remote.protocol)
             }
-            remoteContainerTask.conventionMapping.map('hostname') {
+            conventionMapping.map('hostname') {
                 CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.HOSTNAME, cargoConvention.remote.hostname)
             }
-            remoteContainerTask.conventionMapping.map('username') {
+            conventionMapping.map('username') {
                 CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.USERNAME, cargoConvention.remote.username)
             }
-            remoteContainerTask.conventionMapping.map('password') {
+            conventionMapping.map('password') {
                 CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.PASSWORD, cargoConvention.remote.password)
             }
+            conventionMapping.map('containerProperties') { cargoConvention.remote.containerProperties.properties }
         }
     }
 
-    private void setDefaultLocalContainerConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
-        project.tasks.withType(LocalContainerTask).whenTaskAdded { LocalContainerTask localContainerTask ->
-            localContainerTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-        }
+    private void configureRemoteContainerTasks(Project project, CargoPluginConvention cargoConvention) {
+        setRemoteContainerConventionMapping(project, cargoConvention)
+        addContainerTask(project, CargoPluginTask.DEPLOY_REMOTE)
+        addContainerTask(project, CargoPluginTask.UNDEPLOY_REMOTE)
+        addContainerTask(project, CargoPluginTask.REDEPLOY_REMOTE)
     }
 
-    private void setLocalJettyConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
-        project.tasks.withType(LocalJettyTask).whenTaskAdded { LocalJettyTask localJettyTask ->
-            localJettyTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            localJettyTask.conventionMapping.map('createContextXml') {
-                CargoProjectProperty.getTypedProperty(project, LocalJettyTaskProperty.CREATE_CONTEXT_XML, cargoConvention.local.jetty.createContextXml)
-            }
-            localJettyTask.conventionMapping.map('sessionPath') {
-                CargoProjectProperty.getTypedProperty(project, LocalJettyTaskProperty.SESSION_PATH, cargoConvention.local.jetty.sessionPath)
-            }
-            localJettyTask.conventionMapping.map('useFileMappedBuffer') {
-                CargoProjectProperty.getTypedProperty(project, LocalJettyTaskProperty.USE_FILE_MAPPED_BUFFER, cargoConvention.local.jetty.useFileMappedBuffer)
-            }
-        }
+    private void configureLocalContainerTasks(Project project, CargoPluginConvention cargoConvention) {
+        configureLocalContainerConventionMapping(project, cargoConvention)
+        addContainerTask(project, CargoPluginTask.RUN_LOCAL)
+        addContainerTask(project, CargoPluginTask.START_LOCAL)
+        addContainerTask(project, CargoPluginTask.STOP_LOCAL)
     }
 
-    private void setLocalJonasConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
-        project.tasks.withType(LocalJonasTask).whenTaskAdded { LocalJonasTask localJonasTask ->
-            localJonasTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            localJonasTask.conventionMapping.map('jmsPort') {
-                CargoProjectProperty.getTypedProperty(project, LocalJonasTaskProperty.JMS_PORT, cargoConvention.local.jonas.jmsPort)
-            }
-            localJonasTask.conventionMapping.map('serverName') {
-                CargoProjectProperty.getTypedProperty(project, LocalJonasTaskProperty.SERVER_NAME, cargoConvention.local.jonas.serverName)
-            }
-            localJonasTask.conventionMapping.map('servicesList') {
-                CargoProjectProperty.getTypedProperty(project, LocalJonasTaskProperty.SERVICES_LIST, cargoConvention.local.jonas.servicesList)
-            }
-            localJonasTask.conventionMapping.map('domainName') {
-                CargoProjectProperty.getTypedProperty(project, LocalJonasTaskProperty.DOMAIN_NAME, cargoConvention.local.jonas.domainName)
-            }
-        }
-    }
-
-    private void setLocalJRunConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
-        project.tasks.withType(LocalJRunTask).whenTaskAdded { LocalJRunTask localJRunTask ->
-            localJRunTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            localJRunTask.conventionMapping.map('home') {
-                CargoProjectProperty.getTypedProperty(project, LocalJRunTaskProperty.HOME, cargoConvention.local.jrun.home)
-            }
-        }
-    }
-
-    private void setLocalTomcatConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
-        project.tasks.withType(LocalTomcatTask).whenTaskAdded { LocalTomcatTask localTomcatTask ->
-            localTomcatTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            localTomcatTask.conventionMapping.map('webappsDir') {
-                CargoProjectProperty.getTypedProperty(project, LocalTomcatTaskProperty.WEBAPPS_DIRECTORY, cargoConvention.local.tomcat.webappsDir)
-            }
-            localTomcatTask.conventionMapping.map('copyWars') {
-                CargoProjectProperty.getTypedProperty(project, LocalTomcatTaskProperty.COPY_WARS, cargoConvention.local.tomcat.copyWars)
-            }
-            localTomcatTask.conventionMapping.map('contextReloadable') {
-                CargoProjectProperty.getTypedProperty(project, LocalTomcatTaskProperty.CONTEXT_RELOADABLE, cargoConvention.local.tomcat.contextReloadable)
-            }
-            localTomcatTask.conventionMapping.map('ajpPort') {
-                CargoProjectProperty.getTypedProperty(project, LocalTomcatTaskProperty.AJP_PORT, cargoConvention.local.tomcat.ajpPort)
-            }
-        }
-    }
-
-    private void setLocalWeblogicConventionMapping(Project project, CargoPluginConvention cargoConvention, Action action) {
-        project.tasks.withType(LocalWeblogicTask).whenTaskAdded { LocalWeblogicTask localWeblogicTask ->
-            localWeblogicTask.conventionMapping.map(ACTION_CONVENTION_MAPPING_PARAM) { action.name }
-            localWeblogicTask.conventionMapping.map('adminUser') {
-                CargoProjectProperty.getTypedProperty(project, LocalWeblogicTaskProperty.ADMIN_USER, cargoConvention.local.weblogic.adminUser)
-            }
-            localWeblogicTask.conventionMapping.map('adminPassword') {
-                CargoProjectProperty.getTypedProperty(project, LocalWeblogicTaskProperty.ADMIN_PASSWORD, cargoConvention.local.weblogic.adminPassword)
-            }
-            localWeblogicTask.conventionMapping.map('beaHome') {
-                CargoProjectProperty.getTypedProperty(project, LocalWeblogicTaskProperty.BEA_HOME, cargoConvention.local.weblogic.beaHome)
-            }
-            localWeblogicTask.conventionMapping.map('server') {
-                CargoProjectProperty.getTypedProperty(project, LocalWeblogicTaskProperty.SERVER, cargoConvention.local.weblogic.server)
-            }
-        }
-    }
-
-    private void configureDeployRemoteContainerTask(Project project, CargoPluginConvention cargoConvention) {
-        setRemoteContainerConventionMapping(project, cargoConvention, Action.DEPLOY)
-        addContainerTask(project, RemoteContainerTask, CargoPluginTask.DEPLOY_REMOTE)
-    }
-
-    private void configureUndeployRemoteContainerTask(Project project, CargoPluginConvention cargoConvention) {
-        setRemoteContainerConventionMapping(project, cargoConvention, Action.UNDEPLOY)
-        addContainerTask(project, RemoteContainerTask, CargoPluginTask.UNDEPLOY_REMOTE)
-    }
-
-    private void configureRedeployRemoteContainerTask(Project project, CargoPluginConvention cargoConvention) {
-        setRemoteContainerConventionMapping(project, cargoConvention, Action.REDEPLOY)
-        addContainerTask(project, RemoteContainerTask, CargoPluginTask.REDEPLOY_REMOTE)
-    }
-
-    private void configureRunLocalContainerTask(Project project, CargoPluginConvention cargoConvention) {
-        configureLocalContainer(project, cargoConvention, Action.RUN, CargoPluginTask.RUN_LOCAL)
-    }
-
-    private void configureStartLocalContainerTask(Project project, CargoPluginConvention cargoConvention) {
-        configureLocalContainer(project, cargoConvention, Action.START, CargoPluginTask.START_LOCAL)
-    }
-
-    private void configureStopLocalContainerTask(Project project, CargoPluginConvention cargoConvention) {
-        configureLocalContainer(project, cargoConvention, Action.STOP, CargoPluginTask.STOP_LOCAL)
-    }
-
-    private void configureLocalContainer(Project project, CargoPluginConvention cargoConvention, Action action, CargoPluginTask task) {
-        project.afterEvaluate { proj, state ->
-            if(state.getFailure() == null) {
+    private void checkValidContainerId(Project project, CargoPluginConvention cargoConvention) {
+        project.gradle.taskGraph.whenReady { TaskExecutionGraph taskGraph ->
+            if(containsCargoTask(taskGraph)) {
                 if(!cargoConvention.containerId) {
                     throw new InvalidUserDataException('Container ID was not defined.')
                 }
-
-                LocalContainerTaskMapping mapping = LocalContainerTaskMapping.getLocalContainerTaskMappingForContainerId(cargoConvention.containerId)
-
-                switch(mapping) {
-                    case LocalContainerTaskMapping.JETTY: setLocalJettyConventionMapping(project, cargoConvention, action)
-                        break
-                    case LocalContainerTaskMapping.JONAS: setLocalJonasConventionMapping(project, cargoConvention, action)
-                        break
-                    case LocalContainerTaskMapping.JRUN: setLocalJRunConventionMapping(project, cargoConvention, action)
-                        break
-                    case LocalContainerTaskMapping.TOMCAT: setLocalTomcatConventionMapping(project, cargoConvention, action)
-                        break
-                    case LocalContainerTaskMapping.WEBLOGIC: setLocalWeblogicConventionMapping(project, cargoConvention, action)
-                        break
-                    default: setDefaultLocalContainerConventionMapping(project, cargoConvention, action)
-                }
-
-                addContainerTask(project, mapping.taskClass, task)
             }
         }
     }
 
-    private void addContainerTask(Project project, Class taskClass, CargoPluginTask task) {
-        Task containerTask
-        if (project.tasks.respondsTo('create', String, Class)) {
-            containerTask = project.tasks.create(task.name, taskClass)
-        } else {
-            containerTask = project.tasks.add(task.name, taskClass)
+    private boolean containsCargoTask(TaskExecutionGraph taskGraph) {
+        taskGraph.allTasks.findAll { task -> task instanceof AbstractContainerTask }.size() > 0
+    }
+
+    private void addContainerTask(Project project, CargoPluginTask task) {
+        project.task(task.name, type: task.taskClass) {
+            description = task.description
+            group = CARGO_TASK_GROUP
+            conventionMapping.map('action') { task.action.name }
         }
-        containerTask.description = task.description
-        containerTask.group = CARGO_TASK_GROUP
     }
 
     private List<Deployable> resolveDeployables(Project project, CargoPluginConvention cargoConvention) {

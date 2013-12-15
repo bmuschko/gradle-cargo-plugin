@@ -32,7 +32,7 @@ class RemoteContainerTask extends AbstractContainerTask {
     void validateConfiguration() {
         super.validateConfiguration()
 
-        if(getAction() != Action.UNDEPLOY.name) {
+        if(getAction() != CargoPluginTask.Action.UNDEPLOY.name) {
             getDeployables().each { deployable ->
                 if(deployable.file && !deployable.file.exists()) {
                     throw new InvalidUserDataException("Deployable "
@@ -55,6 +55,7 @@ class RemoteContainerTask extends AbstractContainerTask {
                 property(name: 'cargo.protocol', value: getProtocol())
                 property(name: 'cargo.hostname', value: getHostname())
                 property(name: CARGO_SERVLET_PORT, value: getPort())
+                setContainerSpecificProperties()
 
                 if(getUsername() && getPassword()) {
                     property(name: 'cargo.remote.username', value: getUsername())
@@ -64,7 +65,7 @@ class RemoteContainerTask extends AbstractContainerTask {
                 getDeployables().each { deployable ->
                     if(deployable.context) {
                         // For the undeploy action do not set a file attribute
-                        if(getAction() == Action.UNDEPLOY.name) {
+                        if(getAction() == CargoPluginTask.Action.UNDEPLOY.name) {
                             ant.deployable(type: getDeployableType(deployable).filenameExtension) {
                                 property(name: CARGO_CONTEXT, value: deployable.context)
                             }

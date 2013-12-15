@@ -19,11 +19,11 @@ example on how to retrieve it from Maven Central:
 
     buildscript {
         repositories {
-            mavenCentral()
+            jcenter()
         }
 
         dependencies {
-            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:0.6.1'
+            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.0'
         }
     }
 
@@ -32,7 +32,7 @@ in your `dependencies` closure. Remote deployment functionality will only work w
 in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-962) for more information.
 
     dependencies {
-        def cargoVersion = '1.3.3'
+        def cargoVersion = '1.4.5'
         cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion",
               "org.codehaus.cargo:cargo-ant:$cargoVersion"
     }
@@ -88,30 +88,16 @@ container's configuration. The `configFile` is a closure itself and requires you
 Multiple configuration file be defined by creating more than one `configFile` closure.
 * `rmiPort`: The port to use when communicating with this server, for example to start and stop it.
 
-Within `local` you can define properties for specific local containers. At the moment the following containers are supported
-defined by these closures:
+Within `local` and `remote` you can define container-specific properties. These properties can be looked up on
+the Cargo homepage. The following example shows how to set the AJP port for a local Tomcat container:
 
-* `jetty`: Jetty
-    * `createContextXml`
-    * `sessionPath`
-    * `useFileMappedBuffer`
-* `jonas`: Jonas
-    * `jmsPort`
-    * `serverName`
-    * `servicesList`
-    * `domainName`
-* `jrun`: JRun
-    * `home`
-* `tomcat`: Tomcat
-    * `webappsDir`
-    * `copyWars`
-    * `contextReloadable`
-    * `ajpPort`
-* `weblogic`: WebLogic
-    * `adminUser`
-    * `adminPassword`
-    * `beaHome`
-    * `server`
+    cargo {
+        local {
+            containerProperties {
+                property 'cargo.tomcat.ajp.port', 9099
+            }
+        }
+    }
 
 If you decide to use the [ZIP installer](http://cargo.codehaus.org/Installer) Cargo will automatically download your container. You can
 define its properties in the closure `installer`. The installer only applies to "local" Cargo tasks.
@@ -143,8 +129,8 @@ by project properties. The name of the project properties is the same as in the 
             homeDir = file('/home/user/dev/tools/apache-tomcat-6.0.32')
             output = file('build/output.log')
 
-            tomcat {
-                ajpPort = 9091
+            containerProperties {
+                property 'cargo.tomcat.ajp.port', 9099
             }
         }
     }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2011 the original author or authors.
+ * Copyright 2013 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 package org.gradle.api.plugins.cargo.convention
 
-/**
- * Defines Cargo local Jonas convention.
- *
- * @author Benjamin Muschko
- */
-class CargoLocalJonasConvention {
-    String jmsPort
-    String serverName
-    String servicesList
-    String domainName
+class ContainerProperties {
+    Map<String, Object> properties = [:]
+
+    void property(String key, Object value) {
+        properties[key] = value
+    }
+
+    void properties(Map<String, ?> properties) {
+        this.properties.putAll(properties)
+    }
 }

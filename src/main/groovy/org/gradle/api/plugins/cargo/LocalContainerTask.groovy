@@ -98,6 +98,8 @@ class LocalContainerTask extends AbstractContainerTask {
                     ant.property(name: 'cargo.rmi.port', value: getRmiPort())
                 }
 
+                setContainerSpecificProperties()
+
                 getDeployables().each { deployable ->
                     if(deployable.context) {
                         ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file) {
@@ -116,8 +118,6 @@ class LocalContainerTask extends AbstractContainerTask {
                 getFiles().each { binFile ->
                     ant.file(file: binFile.file, todir: binFile.toDir)
                 }
-
-                setContainerSpecificProperties()
             }
 
             if(getZipUrlInstaller().isValid()) {
@@ -154,6 +154,4 @@ class LocalContainerTask extends AbstractContainerTask {
 
         cargoAttributes
     }
-
-    void setContainerSpecificProperties() {}
 }
