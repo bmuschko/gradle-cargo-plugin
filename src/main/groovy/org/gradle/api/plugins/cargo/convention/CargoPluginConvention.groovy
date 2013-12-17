@@ -23,6 +23,7 @@ package org.gradle.api.plugins.cargo.convention
 class CargoPluginConvention {
     String containerId
     Integer port = 8080
+    Integer timeout = null
     def deployables = []
     CargoRemoteTaskConvention remote = new CargoRemoteTaskConvention()
     CargoLocalTaskConvention local = new CargoLocalTaskConvention()

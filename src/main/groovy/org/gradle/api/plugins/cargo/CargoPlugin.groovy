@@ -89,11 +89,15 @@ class CargoPlugin implements Plugin<Project> {
             conventionMapping.map('rmiPort') {
                 CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.RMI_PORT, cargoConvention.local.rmiPort)
             }
+            conventionMapping.map('timeout') {
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.TIMEOUT, cargoConvention.timeout)
+            }
             conventionMapping.map('zipUrlInstaller') { cargoConvention.local.zipUrlInstaller }
             conventionMapping.map('configFiles') { cargoConvention.local.configFiles }
             conventionMapping.map('files') { cargoConvention.local.files }
             conventionMapping.map('containerProperties') { cargoConvention.local.containerProperties.properties }
             conventionMapping.map('systemProperties') { cargoConvention.local.systemProperties.properties }
+
         }
     }
 
