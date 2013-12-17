@@ -87,7 +87,7 @@ Within `cargo` you can define properties for local containers in a closure named
 container's configuration. The `configFile` is a closure itself and requires you to provide the attributes `file` and `todir`.
 Multiple configuration file be defined by creating more than one `configFile` closure.
 * `rmiPort`: The port to use when communicating with this server, for example to start and stop it.
-* `timeout`: The timeout (in ms) in which to determine if the container is successfully started or stopped (cargo sets this default to 120000ms).
+* `timeout`: The timeout (in ms) in which to determine if the container is successfully started or stopped (defaults to 120000ms).
 
 ### Container properties
 

@@ -1,3 +1,9 @@
+### Version 1.1 (December 16, 2013)
+
+* Adding support of the cargo timeout property - [Pull request 66](https://github.com/bmuschko/gradle-cargo-plugin/pull/66).
+* Harden validation code for deployables - [Issue 67](https://github.com/bmuschko/gradle-cargo-plugin/issues/67).
+* Add support for passing system properties to container - [Issue 68](https://github.com/bmuschko/gradle-cargo-plugin/issues/68).
+
 ### Version 1.0 (December 15, 2013)
 
 * Allow configuring container using generic properties.
