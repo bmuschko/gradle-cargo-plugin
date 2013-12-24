@@ -46,7 +46,7 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
 
 The Cargo plugin defines the following tasks:
 
-<table border="1">
+<table>
     <tr>
         <th>Task Name</th>
         <th>Depends On</th>
