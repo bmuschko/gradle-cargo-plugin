@@ -6,6 +6,11 @@ The plugin provides deployment capabilities for web applications to local and re
 Gradle build by leveraging the [Cargo Ant tasks](http://cargo.codehaus.org/Ant+support). The plugin supports WAR and EAR
 artifacts.
 
+The typical use case for this plugin is to support deployment during development. Cargo is not a good fit for
+continuous deployment scenarios as it does not provide container management support (starting/stopping of remote containers).
+Keep in mind that Cargo uses hot deployment which over time fills up the PermGen memory of the JVM process running your
+container. Continuously deploying an artifact will inevitablity lead to a `java.lang.OutOfMemoryError`.
+
 ## Usage
 
 To use the Cargo plugin, include in your build script:
@@ -23,7 +28,7 @@ example on how to retrieve it from Bintray:
         }
 
         dependencies {
-            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.1'
+            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.2'
         }
     }
 
@@ -41,12 +46,50 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
 
 The Cargo plugin defines the following tasks:
 
-* `cargoDeployRemote`: Deploys web application to remote container.
-* `cargoUndeployRemote`: Undeploys a web application from remote container.
-* `cargoRedeployRemote`: Redeploys web application to remote container.
-* `cargoRunLocal`: Starts the local container, deploys web application to it and wait for the user to press `CTRL + C` to stop.
-* `cargoStartLocal`: Starts the local container, deploys web application to it and then do other tasks (for example, execute tests).
-* `cargoStopLocal`: Stops local container.
+<table border="1">
+    <tr>
+        <th>Task Name</th>
+        <th>Depends On</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>`cargoDeployRemote`</td>
+        <td>-</td>
+        <td>CargoDeployRemote</td>
+        <td>Deploys web application to remote container.</td>
+    </tr>
+    <tr>
+        <td>`cargoUndeployRemote`</td>
+        <td>-</td>
+        <td>CargoUndeployRemote</td>
+        <td>Undeploys a web application from remote container.</td>
+    </tr>
+    <tr>
+        <td>`cargoRedeployRemote`</td>
+        <td>-</td>
+        <td>CargoRedeployRemote</td>
+        <td>Redeploys web application to remote container.</td>
+    </tr>
+    <tr>
+        <td>`cargoRunLocal`</td>
+        <td>-</td>
+        <td>CargoRunLocal</td>
+        <td>Starts the local container, deploys web application to it and wait for the user to press `CTRL + C` to stop.</td>
+    </tr>
+    <tr>
+        <td>`cargoStartLocal`</td>
+        <td>-</td>
+        <td>CargoStartLocal</td>
+        <td>Starts the local container, deploys web application to it and then do other tasks (for example, execute tests).</td>
+    </tr>
+    <tr>
+        <td>`cargoStopLocal`</td>
+        <td>-</td>
+        <td>CargoStopLocal</td>
+        <td>Stops local container.</td>
+    </tr>
+</table>
 
 ## Project layout
 

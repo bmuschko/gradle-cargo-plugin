@@ -20,12 +20,21 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.execution.TaskExecutionGraph
 import org.gradle.api.plugins.WarPlugin
-import org.gradle.api.plugins.cargo.convention.CargoPluginConvention
+import org.gradle.api.plugins.cargo.convention.CargoPluginExtension
 import org.gradle.api.plugins.cargo.convention.Deployable
 import org.gradle.api.plugins.cargo.property.AbstractContainerTaskProperty
 import org.gradle.api.plugins.cargo.property.CargoProjectProperty
 import org.gradle.api.plugins.cargo.property.LocalContainerTaskProperty
 import org.gradle.api.plugins.cargo.property.RemoteContainerTaskProperty
+import org.gradle.api.plugins.cargo.tasks.AbstractCargoContainerTask
+import org.gradle.api.plugins.cargo.tasks.local.CargoRunLocal
+import org.gradle.api.plugins.cargo.tasks.local.CargoStartLocal
+import org.gradle.api.plugins.cargo.tasks.local.CargoStopLocal
+import org.gradle.api.plugins.cargo.tasks.local.LocalCargoContainerTask
+import org.gradle.api.plugins.cargo.tasks.remote.CargoDeployRemote
+import org.gradle.api.plugins.cargo.tasks.remote.CargoRedeployRemote
+import org.gradle.api.plugins.cargo.tasks.remote.CargoUndeployRemote
+import org.gradle.api.plugins.cargo.tasks.remote.RemoteCargoContainerTask
 import org.gradle.plugins.ear.EarPlugin
 
 /**
@@ -34,8 +43,8 @@ import org.gradle.plugins.ear.EarPlugin
  * @author Benjamin Muschko
  */
 class CargoPlugin implements Plugin<Project> {
+    static final String CARGO_EXTENSION_NAME = 'cargo'
     static final String CARGO_CONFIGURATION_NAME = 'cargo'
-    static final String CARGO_TASK_GROUP = 'deployment'
 
     @Override
     void apply(Project project) {
@@ -44,98 +53,97 @@ class CargoPlugin implements Plugin<Project> {
                 .setTransitive(true)
                 .setDescription('The Cargo Ant libraries to be used for this project.')
 
-        CargoPluginConvention cargoConvention = new CargoPluginConvention()
-        project.convention.plugins.cargo = cargoConvention
+        CargoPluginExtension cargoPluginExtension = project.extensions.create(CARGO_EXTENSION_NAME, CargoPluginExtension)
 
-        configureAbstractContainerTask(project, cargoConvention)
-        configureRemoteContainerTasks(project, cargoConvention)
-        configureLocalContainerTasks(project, cargoConvention)
-        checkValidContainerId(project, cargoConvention)
+        configureAbstractContainerTask(project, cargoPluginExtension)
+        configureRemoteContainerTasks(project, cargoPluginExtension)
+        configureLocalContainerTasks(project, cargoPluginExtension)
+        checkValidContainerId(project, cargoPluginExtension)
     }
 
-    private void configureAbstractContainerTask(Project project, CargoPluginConvention cargoConvention) {
-        project.tasks.withType(AbstractContainerTask) {
+    private void configureAbstractContainerTask(Project project, CargoPluginExtension cargoPluginExtension) {
+        project.tasks.withType(AbstractCargoContainerTask) {
             conventionMapping.map('classpath') { project.configurations.getByName(CARGO_CONFIGURATION_NAME).asFileTree }
             conventionMapping.map('containerId') {
-                CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.CONTAINER_ID, cargoConvention.containerId)
+                CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.CONTAINER_ID, cargoPluginExtension.containerId)
             }
             conventionMapping.map('port') {
-                CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.PORT, cargoConvention.port)
+                CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.PORT, cargoPluginExtension.port)
             }
-            conventionMapping.map('deployables') { resolveDeployables(project, cargoConvention) }
+            conventionMapping.map('deployables') { resolveDeployables(project, cargoPluginExtension) }
         }
     }
 
-    private void configureLocalContainerConventionMapping(Project project, CargoPluginConvention cargoConvention) {
-        project.tasks.withType(LocalContainerTask) {
+    private void configureLocalContainerConventionMapping(Project project, CargoPluginExtension cargoPluginExtension) {
+        project.tasks.withType(LocalCargoContainerTask) {
             conventionMapping.map('jvmArgs') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.JVM_ARGS, cargoConvention.local.jvmArgs)
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.JVM_ARGS, cargoPluginExtension.local.jvmArgs)
             }
             conventionMapping.map('logLevel') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoConvention.local.logLevel)
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoPluginExtension.local.logLevel)
             }
             conventionMapping.map('homeDir') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoConvention.local.homeDir)
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoPluginExtension.local.homeDir)
             }
             conventionMapping.map('configHomeDir') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.CONFIG_HOME_DIR, cargoConvention.local.configHomeDir)
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.CONFIG_HOME_DIR, cargoPluginExtension.local.configHomeDir)
             }
             conventionMapping.map('output') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoConvention.local.output)
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoPluginExtension.local.output)
             }
             conventionMapping.map('logFile') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoConvention.local.log)
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoPluginExtension.local.log)
             }
             conventionMapping.map('rmiPort') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.RMI_PORT, cargoConvention.local.rmiPort)
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.RMI_PORT, cargoPluginExtension.local.rmiPort)
             }
             conventionMapping.map('timeout') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.TIMEOUT, cargoConvention.timeout)
+                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.TIMEOUT, cargoPluginExtension.timeout)
             }
-            conventionMapping.map('zipUrlInstaller') { cargoConvention.local.zipUrlInstaller }
-            conventionMapping.map('configFiles') { cargoConvention.local.configFiles }
-            conventionMapping.map('files') { cargoConvention.local.files }
-            conventionMapping.map('containerProperties') { cargoConvention.local.containerProperties.properties }
-            conventionMapping.map('systemProperties') { cargoConvention.local.systemProperties.properties }
+            conventionMapping.map('zipUrlInstaller') { cargoPluginExtension.local.zipUrlInstaller }
+            conventionMapping.map('configFiles') { cargoPluginExtension.local.configFiles }
+            conventionMapping.map('files') { cargoPluginExtension.local.files }
+            conventionMapping.map('containerProperties') { cargoPluginExtension.local.containerProperties.properties }
+            conventionMapping.map('systemProperties') { cargoPluginExtension.local.systemProperties.properties }
         }
     }
 
-    private void setRemoteContainerConventionMapping(Project project, CargoPluginConvention cargoConvention) {
-        project.tasks.withType(RemoteContainerTask) {
+    private void setRemoteContainerConventionMapping(Project project, CargoPluginExtension cargoPluginExtension) {
+        project.tasks.withType(RemoteCargoContainerTask) {
             conventionMapping.map('protocol') {
-                CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.PROTOCOL, cargoConvention.remote.protocol)
+                CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.PROTOCOL, cargoPluginExtension.remote.protocol)
             }
             conventionMapping.map('hostname') {
-                CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.HOSTNAME, cargoConvention.remote.hostname)
+                CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.HOSTNAME, cargoPluginExtension.remote.hostname)
             }
             conventionMapping.map('username') {
-                CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.USERNAME, cargoConvention.remote.username)
+                CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.USERNAME, cargoPluginExtension.remote.username)
             }
             conventionMapping.map('password') {
-                CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.PASSWORD, cargoConvention.remote.password)
+                CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.PASSWORD, cargoPluginExtension.remote.password)
             }
-            conventionMapping.map('containerProperties') { cargoConvention.remote.containerProperties.properties }
+            conventionMapping.map('containerProperties') { cargoPluginExtension.remote.containerProperties.properties }
         }
     }
 
-    private void configureRemoteContainerTasks(Project project, CargoPluginConvention cargoConvention) {
-        setRemoteContainerConventionMapping(project, cargoConvention)
-        addContainerTask(project, CargoPluginTask.DEPLOY_REMOTE)
-        addContainerTask(project, CargoPluginTask.UNDEPLOY_REMOTE)
-        addContainerTask(project, CargoPluginTask.REDEPLOY_REMOTE)
+    private void configureRemoteContainerTasks(Project project, CargoPluginExtension cargoPluginExtension) {
+        setRemoteContainerConventionMapping(project, cargoPluginExtension)
+        project.task('cargoDeployRemote', type: CargoDeployRemote)
+        project.task('cargoUndeployRemote', type: CargoUndeployRemote)
+        project.task('cargoRedeployRemote', type: CargoRedeployRemote)
     }
 
-    private void configureLocalContainerTasks(Project project, CargoPluginConvention cargoConvention) {
-        configureLocalContainerConventionMapping(project, cargoConvention)
-        addContainerTask(project, CargoPluginTask.RUN_LOCAL)
-        addContainerTask(project, CargoPluginTask.START_LOCAL)
-        addContainerTask(project, CargoPluginTask.STOP_LOCAL)
+    private void configureLocalContainerTasks(Project project, CargoPluginExtension cargoPluginExtension) {
+        configureLocalContainerConventionMapping(project, cargoPluginExtension)
+        project.task('cargoRunLocal', type: CargoRunLocal)
+        project.task('cargoStartLocal', type: CargoStartLocal)
+        project.task('cargoStopLocal', type: CargoStopLocal)
     }
 
-    private void checkValidContainerId(Project project, CargoPluginConvention cargoConvention) {
+    private void checkValidContainerId(Project project, CargoPluginExtension cargoPluginExtension) {
         project.gradle.taskGraph.whenReady { TaskExecutionGraph taskGraph ->
             if(containsCargoTask(taskGraph)) {
-                if(!cargoConvention.containerId) {
+                if(!cargoPluginExtension.containerId) {
                     throw new InvalidUserDataException('Container ID was not defined.')
                 }
             }
@@ -143,18 +151,10 @@ class CargoPlugin implements Plugin<Project> {
     }
 
     private boolean containsCargoTask(TaskExecutionGraph taskGraph) {
-        taskGraph.allTasks.findAll { task -> task instanceof AbstractContainerTask }.size() > 0
+        taskGraph.allTasks.findAll { task -> task instanceof AbstractCargoContainerTask }.size() > 0
     }
 
-    private void addContainerTask(Project project, CargoPluginTask task) {
-        project.task(task.name, type: task.taskClass) {
-            description = task.description
-            group = CARGO_TASK_GROUP
-            conventionMapping.map('action') { task.action.name }
-        }
-    }
-
-    private List<Deployable> resolveDeployables(Project project, CargoPluginConvention cargoConvention) {
+    private List<Deployable> resolveDeployables(Project project, CargoPluginExtension cargoConvention) {
         def deployables = []
 
         if(cargoConvention.deployables.size() == 0) {

@@ -1,3 +1,7 @@
+### Version 1.2 (December 24, 2013)
+
+* Create custom task types for each action - [Issue 20](https://github.com/bmuschko/gradle-cargo-plugin/issues/20).
+
 ### Version 1.1 (December 16, 2013)
 
 * Adding support of the cargo timeout property - [Pull request 66](https://github.com/bmuschko/gradle-cargo-plugin/pull/66).

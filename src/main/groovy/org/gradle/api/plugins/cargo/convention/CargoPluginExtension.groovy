@@ -16,11 +16,11 @@
 package org.gradle.api.plugins.cargo.convention
 
 /**
- * Defines Cargo convention.
+ * Defines Cargo extension.
  *
  * @author Benjamin Muschko
  */
-class CargoPluginConvention {
+class CargoPluginExtension {
     String containerId
     Integer port = 8080
     Integer timeout

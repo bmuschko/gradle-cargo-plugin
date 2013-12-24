@@ -13,16 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.api.plugins.cargo
+package org.gradle.api.plugins.cargo.tasks
 
 import org.gradle.api.DefaultTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.file.FileCollection
+import org.gradle.api.plugins.cargo.Container
+import org.gradle.api.plugins.cargo.DeployableType
 import org.gradle.api.plugins.cargo.convention.Deployable
 import org.gradle.api.plugins.cargo.util.FilenameUtils
 import org.gradle.api.plugins.cargo.util.LoggingHandler
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 
 /**
@@ -30,17 +33,56 @@ import org.gradle.api.tasks.TaskAction
  *
  * @author Benjamin Muschko
  */
-abstract class AbstractContainerTask extends DefaultTask {
+abstract class AbstractCargoContainerTask extends DefaultTask {
+    static final String CARGO_TASK_GROUP = 'deployment'
     static final CARGO_TASKS = 'cargo.tasks'
     static final CARGO_SERVLET_PORT = 'cargo.servlet.port'
     static final CARGO_CONTEXT = 'context'
+
+    /**
+     * The Cargo container identifier.
+     */
+    @Input
     String containerId
+
+    /**
+     * The action to run for the container.
+     */
+    @Input
     String action
-    Integer port
+
+    /**
+     * Port on which the Servlet/JSP container listens to.
+     */
+    @Input
+    Integer port = 8080
+
+    @Input
+    @Optional
     String context
-    @InputFiles FileCollection classpath
-    @Input List<Deployable> deployables
-    @Input Map<String, Object> containerProperties = [:]
+
+    /**
+     * The classpath containing the Cargo Ant tasks.
+     */
+    @InputFiles
+    FileCollection classpath
+
+    /**
+     * The list of deployable artifacts.
+     */
+    @Input
+    @Optional
+    List<Deployable> deployables = []
+
+    /**
+     * Container properties.
+     */
+    @Input
+    Map<String, Object> containerProperties = [:]
+
+    AbstractCargoContainerTask() {
+        group = CARGO_TASK_GROUP
+    }
 
     @TaskAction
     void start() {

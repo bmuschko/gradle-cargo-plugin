@@ -13,13 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.api.plugins.cargo
+package org.gradle.api.plugins.cargo.tasks.local
 
 import org.gradle.api.InvalidUserDataException
+import org.gradle.api.plugins.cargo.Container
+import org.gradle.api.plugins.cargo.ZipUrlInstaller
 import org.gradle.api.plugins.cargo.convention.BinFile
 import org.gradle.api.plugins.cargo.convention.ConfigFile
+import org.gradle.api.plugins.cargo.tasks.AbstractCargoContainerTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.Optional
 
 /**
@@ -27,19 +31,72 @@ import org.gradle.api.tasks.Optional
  *
  * @author Benjamin Muschko
  */
-class LocalContainerTask extends AbstractContainerTask {
+class LocalCargoContainerTask extends AbstractCargoContainerTask {
+    /**
+     * Level representing the quantity of information we wish to log.
+     */
+    @Input
+    @Optional
     String logLevel
+
+    /**
+     * JVM args to be used when starting/stopping containers.
+     */
+    @Input
+    @Optional
     String jvmArgs
-    @InputDirectory @Optional File homeDir
+
+    /**
+     * The container's installation home directory.
+     */
+    @InputDirectory
+    @Optional
+    File homeDir
+
+    /**
+     * The Cargo configuration home directory.
+     */
+    @InputFile
+    @Optional
     File configHomeDir
+
+    /**
+     * The log file of your local container.
+     */
+    @InputFile
+    @Optional
     File output
+
+    /**
+     * The log file to write output to.
+     */
+    @InputFile
+    @Optional
     File logFile
-    @Input @Optional Integer rmiPort
-    ZipUrlInstaller zipUrlInstaller
-    @Input @Optional Integer timeout
+
+    /**
+     * The port to use when communicating with this server.
+     */
+    @Input
+    @Optional
+    Integer rmiPort
+
+    /**
+     * Timeout after which the container start/stop is deemed failed.
+     */
+    @Input
+    @Optional
+    Integer timeout
+
+    /**
+     * The system properties passed-on the container.
+     */
+    @Input
+    Map<String, Object> systemProperties = [:]
+
     List<ConfigFile> configFiles
     List<BinFile> files
-    @Input Map<String, Object> systemProperties = [:]
+    ZipUrlInstaller zipUrlInstaller
 
     @Override
     void validateConfiguration() {
@@ -85,10 +142,10 @@ class LocalContainerTask extends AbstractContainerTask {
     void runAction() {
         logger.info "Starting action '${getAction()}' for local container '${Container.getContainerForId(getContainerId()).description}'"
 
-        ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)
+        ant.taskdef(resource: AbstractCargoContainerTask.CARGO_TASKS, classpath: getClasspath().asPath)
         ant.cargo(getCargoAttributes()) {
             ant.configuration(getConfigurationAttributes()) {
-                property(name: CARGO_SERVLET_PORT, value: getPort())
+                property(name: AbstractCargoContainerTask.CARGO_SERVLET_PORT, value: getPort())
 
                 if(getJvmArgs()) {
                     ant.property(name: 'cargo.jvmargs', value: getJvmArgs())
@@ -107,7 +164,7 @@ class LocalContainerTask extends AbstractContainerTask {
                 getDeployables().each { deployable ->
                     if(deployable.context) {
                         ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file) {
-                            ant.property(name: CARGO_CONTEXT, value: deployable.context)
+                            ant.property(name: AbstractCargoContainerTask.CARGO_CONTEXT, value: deployable.context)
                         }
                     }
                     else {
