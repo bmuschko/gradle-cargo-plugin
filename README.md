@@ -75,7 +75,7 @@ The Cargo plugin defines the following tasks:
         <td>cargoRunLocal</td>
         <td>-</td>
         <td>CargoRunLocal</td>
-        <td>Starts the local container, deploys web application to it and wait for the user to press `CTRL + C` to stop.</td>
+        <td>Starts the local container, deploys web application to it and wait for the user to press CTRL + C to stop.</td>
     </tr>
     <tr>
         <td>cargoStartLocal</td>
