@@ -1,3 +1,7 @@
+### Version 1.2.1 (December 28, 2013)
+
+* Fixed missing property `UNDEPLOY_ACTION` on remote task - [Issue 72](https://github.com/bmuschko/gradle-cargo-plugin/issues/72).
+
 ### Version 1.2 (December 24, 2013)
 
 * Create custom task types for each action - [Issue 20](https://github.com/bmuschko/gradle-cargo-plugin/issues/20).

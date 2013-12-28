@@ -28,7 +28,7 @@ example on how to retrieve it from Bintray:
         }
 
         dependencies {
-            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.2'
+            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.2.1'
         }
     }
 

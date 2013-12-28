@@ -27,7 +27,7 @@ import org.gradle.api.tasks.Optional
  * @author Benjamin Muschko
  */
 class RemoteCargoContainerTask extends AbstractCargoContainerTask {
-    private static final String UNDEPLOY_ACTION = 'undeploy'
+    static final String UNDEPLOY_ACTION = 'undeploy'
 
     /**
      * Protocol on which the container is listening to. Defaults to 'http'.
