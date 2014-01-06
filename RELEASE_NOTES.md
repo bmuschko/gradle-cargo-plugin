@@ -1,3 +1,7 @@
+### Version 1.2.2 (January 06, 2013)
+
+* Fix input annotation for `configHomeDir` property - [Pull request 73](https://github.com/bmuschko/gradle-cargo-plugin/pull/73).
+
 ### Version 1.2.1 (December 28, 2013)
 
 * Fixed missing property `UNDEPLOY_ACTION` on remote task - [Issue 72](https://github.com/bmuschko/gradle-cargo-plugin/issues/72).
