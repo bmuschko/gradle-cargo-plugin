@@ -13,14 +13,14 @@ container. Continuously deploying an artifact will inevitablity lead to a `java.
 
 ## Usage
 
-To use the Cargo plugin, include in your build script:
+To use the plugin's functionality, you will need to add the its binary artifact to your build script's classpath and apply
+the plugin.
 
-    apply plugin: 'cargo'
+### Adding the plugin binary to the build
 
 The plugin JAR needs to be defined in the classpath of your build script. It is directly available on
-[Bintray](https://bintray.com/bmuschko/gradle-plugins/gradle-cargo-plugin/).
-Alternatively, you can download it from GitHub and deploy it to your local repository. The following code snippet shows an
-example on how to retrieve it from Bintray:
+[Bintray](https://bintray.com/bmuschko/gradle-plugins/gradle-cargo-plugin/). Alternatively, you can download it from GitHub
+and deploy it to your local repository. The following code snippet shows an example on how to retrieve it from Bintray:
 
     buildscript {
         repositories {
@@ -28,13 +28,54 @@ example on how to retrieve it from Bintray:
         }
 
         dependencies {
-            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.2.2'
+            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.3'
         }
     }
 
-To define the Cargo dependencies please use the `cargo` configuration name
-in your `dependencies` closure. Remote deployment functionality will only work with a Cargo version >= 1.1.0 due to a bug
-in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-962) for more information.
+### Provided plugins
+
+The JAR file comes with two plugins:
+
+<table>
+    <tr>
+        <th>Plugin Identifier</th>
+        <th>Depends On</th>
+        <th>Type</th>
+        <th>Description</th>
+    </tr>
+    <tr>
+        <td>cargo-base</td>
+        <td>-</td>
+        <td>CargoBasePlugin</td>
+        <td>Provides Cargo custom task types, pre-configures classpath and deployables.</td>
+    </tr>
+    <tr>
+        <td>cargo</td>
+        <td>cargo-base</td>
+        <td>CargoPlugin</td>
+        <td>Provides a set of local and remote Cargo tasks and exposes extension for configuration.</td>
+    </tr>
+</table>
+
+The `cargo` plugin helps you get started quickly. If you only need to deal with a single container product, this is the
+preferrable option. Most plugin users will go with this option. To use the Cargo plugin, include the following code snippet
+in your build script:
+
+    apply plugin: 'cargo'
+
+If you need full control over your deployment tasks, you will want to use the `cargo-base` plugin The downside is that each task
+has to be configured individually in your build script. To use the Cargo base plugin, include the following code snippet
+in your build script:
+
+    apply plugin: 'cargo-base'
+
+### Configuring the Cargo version
+
+The `cargo-base` plugin already sets up the dependencies for Cargo. In order to do so, it chooses a default
+version of the libraries. Alternatively, you can define a custom version of the Cargo libraries. To do so, please use
+the `cargo` configuration name in your `dependencies` closure. Remote deployment functionality will only work with a Cargo
+version >= 1.1.0 due to a bug in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-962) for more information.
+The following example demonstrates how to use the version 1.4.5 of the Cargo libraries:
 
     dependencies {
         def cargoVersion = '1.4.5'
@@ -44,7 +85,7 @@ in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-96
 
 ## Tasks
 
-The Cargo plugin defines the following tasks:
+The `cargo` plugin pre-defines the following tasks out-of-the-box:
 
 <table>
     <tr>
@@ -95,7 +136,7 @@ The Cargo plugin defines the following tasks:
 
 The Cargo plugin uses the same layout as the War plugin.
 
-## Convention properties
+## Extension properties
 
 The Cargo plugin defines the following convention properties in the `cargo` closure:
 
@@ -215,6 +256,15 @@ The convention properties can be overridden by project properties via `gradle.pr
 
 ## FAQ
 
+**I want to automatically assemble my project's artifact when executing a Cargo deployment task.**
+
+The task `cargoRunLocal` does not automatically depend on the `assemble` task. The reason behind that is that you might
+not want to deploy your project's artifact or your project does not generate a WAR or EAR file. Instead you might want
+to deploy one or more external artifacts. If your workflow looks like "compile the code", "generate the artifact" and "deploy"
+then you make a Cargo deployment task depends on the `assemble` task. Here's one example:
+
+    cargoRunLocal.dependsOn assemble
+
 **I would like to deploy multiple artifacts to my container. How do I do that?**
 
 You would specify each artifact in a separate `deployable` closure. Each of the closures should assign a unique URL context.
@@ -299,3 +349,62 @@ To add binary file(s) you should use `file` closure(s) instead:
             }
         }
     }
+
+**I want to set up and configure my own Cargo task for more than one container. Can this be done?**
+
+Absolutely. The Cargo base plugin provides all tasks needed to set up deployment tasks. All you need to do is to create one
+or more tasks and configure the mandatory properties. The following example shows how to set up local container tasks
+for Tomcat and Jetty:
+
+    apply plugin: 'cargo-base'
+
+    task myTomcatRun(type: org.gradle.api.plugins.cargo.tasks.local.CargoRunLocal) {
+        containerId = 'tomcat7x'
+        homeDir = file('/home/user/dev/tools/apache-tomcat-7.0.42')
+    }
+
+    task myJettyRun(type: org.gradle.api.plugins.cargo.tasks.local.CargoRunLocal) {
+        containerId = 'jetty9x'
+        homeDir = file('/home/user/dev/tools/jetty-distribution-9.0.4.v20130625')
+    }
+
+**I'd like to create deployment tasks for a rolling deployment to multiple remote containers. How do I do this?**
+
+Gradle allows for dynamically creating tasks based on your build script logic. The following example shows how to create
+three Tomcat deployment tasks and how to configure them with the help of a simple data structure. At the end of the script we
+also add another task that triggers the deployment to all remote containers.
+
+    class RemoteContainer {
+        String name
+        String hostname
+        Integer port
+        String username
+        String password
+    }
+
+    def remoteContainers = [new RemoteContainer(name: 'tomcat1', hostname: 'remote-tomcat1',
+                                                port: 9090, username: 'admin', password: 's3cr3t'),
+                            new RemoteContainer(name: 'tomcat2', hostname: 'remote-tomcat2',
+                                                port: 8050, username: 'deployer', password: 'qwerty'),
+                            new RemoteContainer(name: 'tomcat3', hostname: 'remote-tomcat3',
+                                                port: 8888, username: 'su', password: 'powerful')]
+
+    apply plugin: 'cargo-base'
+
+    remoteContainers.each { config ->
+        task "deployRemote${config.name.capitalize()}"(type: org.gradle.api.plugins.cargo.tasks.remote.CargoDeployRemote) {
+            description = "Deploys WAR to remote Tomcat '${config.name}'."
+            containerId = 'tomcat7x'
+            hostname = config.hostname
+            port = config.port
+            username = config.username
+            password = config.password
+        }
+    }
+
+    task deployToAllRemoteTomcats {
+        dependsOn remoteContainers.collect { "deployRemote${it.name.capitalize()}" }
+        description = 'Deploys to all remote Tomcat containers.'
+        group = 'deployment'
+    }
+

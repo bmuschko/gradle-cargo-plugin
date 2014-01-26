@@ -1,3 +1,8 @@
+### Version 1.3 (January 25, 2014)
+
+* Broke out base plugin to allow full control for creating and configuring deployment tasks.
+* The Cargo libraries now get pre-configured. A custom Cargo version can still be assigned via the configuration `cargo`.
+
 ### Version 1.2.2 (January 06, 2013)
 
 * Fix input annotation for `configHomeDir` property - [Pull request 73](https://github.com/bmuschko/gradle-cargo-plugin/pull/73).

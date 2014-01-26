@@ -19,7 +19,6 @@ import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.execution.TaskExecutionGraph
-import org.gradle.api.plugins.WarPlugin
 import org.gradle.api.plugins.cargo.convention.CargoPluginExtension
 import org.gradle.api.plugins.cargo.convention.Deployable
 import org.gradle.api.plugins.cargo.property.AbstractContainerTaskProperty
@@ -35,25 +34,21 @@ import org.gradle.api.plugins.cargo.tasks.remote.CargoDeployRemote
 import org.gradle.api.plugins.cargo.tasks.remote.CargoRedeployRemote
 import org.gradle.api.plugins.cargo.tasks.remote.CargoUndeployRemote
 import org.gradle.api.plugins.cargo.tasks.remote.RemoteCargoContainerTask
-import org.gradle.plugins.ear.EarPlugin
+import org.gradle.api.plugins.cargo.util.ProjectInfoHelper
 
 /**
- * <p>A {@link org.gradle.api.Plugin} that provides tasks for deploying WAR/EAR files to local and remote web containers.</p>
+ * <p>A {@link org.gradle.api.Plugin} that provides pre-configured tasks for deploying WAR/EAR files to local and remote web containers.</p>
  *
  * @author Benjamin Muschko
  */
 class CargoPlugin implements Plugin<Project> {
-    static final String CARGO_EXTENSION_NAME = 'cargo'
-    static final String CARGO_CONFIGURATION_NAME = 'cargo'
+    static final String EXTENSION_NAME = 'cargo'
 
     @Override
     void apply(Project project) {
-        project.configurations.create(CARGO_CONFIGURATION_NAME)
-                .setVisible(false)
-                .setTransitive(true)
-                .setDescription('The Cargo Ant libraries to be used for this project.')
+        project.plugins.apply(CargoBasePlugin)
 
-        CargoPluginExtension cargoPluginExtension = project.extensions.create(CARGO_EXTENSION_NAME, CargoPluginExtension)
+        CargoPluginExtension cargoPluginExtension = project.extensions.create(EXTENSION_NAME, CargoPluginExtension)
 
         configureAbstractContainerTask(project, cargoPluginExtension)
         configureRemoteContainerTasks(project, cargoPluginExtension)
@@ -63,7 +58,6 @@ class CargoPlugin implements Plugin<Project> {
 
     private void configureAbstractContainerTask(Project project, CargoPluginExtension cargoPluginExtension) {
         project.tasks.withType(AbstractCargoContainerTask) {
-            conventionMapping.map('classpath') { project.configurations.getByName(CARGO_CONFIGURATION_NAME).asFileTree }
             conventionMapping.map('containerId') {
                 CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.CONTAINER_ID, cargoPluginExtension.containerId)
             }
@@ -158,12 +152,12 @@ class CargoPlugin implements Plugin<Project> {
         def deployables = []
 
         if(cargoConvention.deployables.size() == 0) {
-            deployables << new Deployable(file: getProjectDeployableFile(project))
+            deployables << new Deployable(file: ProjectInfoHelper.getProjectDeployableFile(project))
         }
         else {
             cargoConvention.deployables.each { deployable ->
                 if(!deployable.file) {
-                    deployable.file = getProjectDeployableFile(project)
+                    deployable.file = ProjectInfoHelper.getProjectDeployableFile(project)
                 }
 
                 deployables << deployable
@@ -171,14 +165,5 @@ class CargoPlugin implements Plugin<Project> {
         }
 
         deployables
-    }
-
-    private File getProjectDeployableFile(Project project) {
-        if(project.plugins.hasPlugin(WarPlugin.WAR_TASK_NAME)) {
-            return project.tasks.getByName(WarPlugin.WAR_TASK_NAME).archivePath
-        }
-        else if(project.plugins.hasPlugin(EarPlugin.EAR_TASK_NAME)) {
-            return project.tasks.getByName(EarPlugin.EAR_TASK_NAME).archivePath
-        }
     }
 }

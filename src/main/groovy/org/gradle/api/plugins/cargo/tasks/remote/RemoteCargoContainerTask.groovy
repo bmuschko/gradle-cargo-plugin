@@ -45,14 +45,12 @@ class RemoteCargoContainerTask extends AbstractCargoContainerTask {
      * Username to use to authenticate against a remote container.
      */
     @Input
-    @Optional
     String username
 
     /**
      * Password to use to authenticate against a remote container.
      */
     @Input
-    @Optional
     String password
 
     @Override

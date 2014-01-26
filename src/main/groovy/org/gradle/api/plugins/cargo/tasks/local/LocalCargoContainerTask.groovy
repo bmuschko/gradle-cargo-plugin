@@ -94,9 +94,23 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
     @Input
     Map<String, Object> systemProperties = [:]
 
-    List<ConfigFile> configFiles
-    List<BinFile> files
-    ZipUrlInstaller zipUrlInstaller
+    /**
+     * The list of configuration files.
+     */
+    @Input
+    List<ConfigFile> configFiles = []
+
+    /**
+     * The list of binary files.
+     */
+    @Input
+    List<BinFile> files = []
+
+    /**
+     * Configurable ZIP URL installer instance for automatically downloading a container.
+     */
+    @Input
+    ZipUrlInstaller zipUrlInstaller = new ZipUrlInstaller()
 
     @Override
     void validateConfiguration() {
