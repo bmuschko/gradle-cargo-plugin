@@ -63,7 +63,7 @@ in your build script:
 
     apply plugin: 'cargo'
 
-If you need full control over your deployment tasks, you will want to use the `cargo-base` plugin The downside is that each task
+If you need full control over your deployment tasks, you will want to use the `cargo-base` plugin. The downside is that each task
 has to be configured individually in your build script. To use the Cargo base plugin, include the following code snippet
 in your build script:
 
