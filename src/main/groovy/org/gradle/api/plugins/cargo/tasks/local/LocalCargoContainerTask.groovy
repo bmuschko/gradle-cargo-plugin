@@ -16,6 +16,7 @@
 package org.gradle.api.plugins.cargo.tasks.local
 
 import org.gradle.api.InvalidUserDataException
+import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.cargo.Container
 import org.gradle.api.plugins.cargo.ZipUrlInstaller
 import org.gradle.api.plugins.cargo.convention.BinFile
@@ -24,6 +25,7 @@ import org.gradle.api.plugins.cargo.tasks.AbstractCargoContainerTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputDirectory
 import org.gradle.api.tasks.InputFile
+import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Optional
 
 /**
@@ -111,6 +113,20 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
      */
     @Input
     ZipUrlInstaller zipUrlInstaller = new ZipUrlInstaller()
+
+    /**
+     * Additional libraries for your application's classpath that are not exposed to the container.
+     */
+    @InputFiles
+    @Optional
+    FileCollection sharedClasspath
+
+    /**
+     * Additional libraries added to the container's classpath
+     */
+    @InputFiles
+    @Optional
+    FileCollection extraClasspath
 
     @Override
     void validateConfiguration() {
@@ -200,6 +216,18 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
             if(getZipUrlInstaller().isValid()) {
                 ant.zipUrlInstaller(installUrl: getZipUrlInstaller().installUrl, downloadDir: getZipUrlInstaller().downloadDir,
                         extractDir: getZipUrlInstaller().extractDir)
+            }
+
+            if(getExtraClasspath()) {
+                ant.extraClasspath() {
+                    getExtraClasspath().addToAntBuilder(ant, 'fileset', FileCollection.AntType.FileSet)
+                }
+            }
+
+            if(getSharedClasspath()) {
+                ant.sharedClasspath() {
+                    getSharedClasspath().addToAntBuilder(ant, 'fileset', FileCollection.AntType.FileSet)
+                }
             }
         }
     }

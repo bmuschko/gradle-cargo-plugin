@@ -172,6 +172,11 @@ container's configuration. The `configFile` is a closure itself and requires you
 Multiple configuration file be defined by creating more than one `configFile` closure.
 * `rmiPort`: The port to use when communicating with this server, for example to start and stop it.
 * `timeout`: The timeout (in ms) in which to determine if the container is successfully started or stopped (defaults to 120000ms).
+* `extraClasspath`: A [`FileCollection`](http://www.gradle.org/docs/current/javadoc/org/gradle/api/file/FileCollection.html)
+that provides extra elements to the local [container classpath](http://cargo.codehaus.org/Container+Classpath) (optional).
+* `sharedClasspath`: A [`FileCollection`](http://www.gradle.org/docs/current/javadoc/org/gradle/api/file/FileCollection.html)
+that provides extra elements to the [application classpath](http://cargo.codehaus.org/Application+Classpath), and not to the
+local container (optional).
 
 ### Container properties
 
