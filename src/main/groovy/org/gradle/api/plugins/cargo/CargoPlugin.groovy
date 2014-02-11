@@ -100,9 +100,7 @@ class CargoPlugin implements Plugin<Project> {
             conventionMapping.map('containerProperties') { cargoPluginExtension.local.containerProperties.properties }
             conventionMapping.map('systemProperties') { cargoPluginExtension.local.systemProperties.properties }
             conventionMapping.map('extraClasspath') { cargoPluginExtension.local.extraClasspath }
-            dependsOn { getExtraClasspath() }
             conventionMapping.map('sharedClasspath') { cargoPluginExtension.local.sharedClasspath }
-            dependsOn { getSharedClasspath() }
         }
     }
 
