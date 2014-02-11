@@ -15,6 +15,7 @@
  */
 package org.gradle.api.plugins.cargo.convention
 
+import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.cargo.ZipUrlInstaller
 import org.gradle.util.ConfigureUtil
 
@@ -36,6 +37,8 @@ class CargoLocalTaskConvention {
     def files = []
     ContainerProperties containerProperties = new ContainerProperties()
     SystemProperties systemProperties = new SystemProperties()
+    FileCollection extraClasspath
+    FileCollection sharedClasspath
 
     def installer(Closure closure) {
         ConfigureUtil.configure(closure, zipUrlInstaller)
