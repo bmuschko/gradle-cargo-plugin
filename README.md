@@ -28,7 +28,7 @@ and deploy it to your local repository. The following code snippet shows an exam
         }
 
         dependencies {
-            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.3'
+            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.4'
         }
     }
 

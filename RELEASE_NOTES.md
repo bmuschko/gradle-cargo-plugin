@@ -1,3 +1,7 @@
+### Version 1.4 (February 15, 2014)
+
+* Added sharedClasspath and extraClasspath support for local containers - [Pull request 73](https://github.com/bmuschko/gradle-cargo-plugin/pull/77).
+
 ### Version 1.3 (January 25, 2014)
 
 * Broke out base plugin to allow full control for creating and configuring deployment tasks.

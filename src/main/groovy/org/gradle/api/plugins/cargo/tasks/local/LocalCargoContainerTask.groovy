@@ -122,7 +122,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
     FileCollection sharedClasspath
 
     /**
-     * Additional libraries added to the container's classpath
+     * Additional libraries added to the container's classpath.
      */
     @InputFiles
     @Optional
