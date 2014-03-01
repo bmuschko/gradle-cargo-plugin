@@ -278,7 +278,7 @@ for Ear projects). Use the `configure` method to apply the Cargo plugin and your
 code snippet:
 
     def webProjects() {
-       subprojects.findAll { subproject -> subproject.plugins.hasPlugin('war') }
+        subprojects.findAll { subproject -> subproject.plugins.hasPlugin('war') }
     }
 
     gradle.projectsEvaluated {
