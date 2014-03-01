@@ -270,6 +270,33 @@ then you make a Cargo deployment task depends on the `assemble` task. Here's one
 
     cargoRunLocal.dependsOn assemble
 
+**I am working on a multi-project build. Can I apply the same Cargo configuration to all of my web projects?**
+
+Gradle allows for filtering subprojects by certain criteria. To inject the relevant configuration from the root project
+of your build, you will need to identify all subprojects that apply the War plugin (of course the same concept works
+for Ear projects). Use the `configure` method to apply the Cargo plugin and your configuration as shown in the following
+code snippet:
+
+    def webProjects() {
+       subprojects.findAll { subproject -> subproject.plugins.hasPlugin('war') }
+    }
+
+    gradle.projectsEvaluated {
+        configure(webProjects()) {
+            apply plugin: 'cargo'
+
+            cargo {
+                containerId = 'tomcat7x'
+
+                remote {
+                    hostname = 'localhost'
+                    username = 'manager'
+                    password = 'manager'
+                }
+            }
+        }
+    }
+
 **I would like to deploy multiple artifacts to my container. How do I do that?**
 
 You would specify each artifact in a separate `deployable` closure. Each of the closures should assign a unique URL context.
