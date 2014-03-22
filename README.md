@@ -28,7 +28,7 @@ and deploy it to your local repository. The following code snippet shows an exam
         }
 
         dependencies {
-            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.4'
+            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.4.1'
         }
     }
 
@@ -162,8 +162,8 @@ Within `cargo` you can define properties for remote containers in a closure name
 Within `cargo` you can define properties for local containers in a closure named `local`:
 
 * `jvmArgs`: The JVM arguments for a local container.
-* `output`: The log file of your local container (defaults to writing to the console).
-* `log`: The Cargo log file of your local container (defaults to writing to the console).
+* `outputFile`: The log file of your local container (defaults to writing to the console).
+* `logFile`: The Cargo log file of your local container (defaults to writing to the console).
 * `logLevel`: The log level to run the container with (optional). The valid levels are `low`, `medium` and `high`.
 * `homeDir`: The home directory of your local container installation.
 * `configHomeDir`: The home directory of your local container's configuration.

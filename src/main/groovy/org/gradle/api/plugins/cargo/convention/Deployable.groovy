@@ -20,7 +20,7 @@ package org.gradle.api.plugins.cargo.convention
  *
  * @author Benjamin Muschko
  */
-class Deployable {
+class Deployable implements Serializable {
     File file
     String context
 }

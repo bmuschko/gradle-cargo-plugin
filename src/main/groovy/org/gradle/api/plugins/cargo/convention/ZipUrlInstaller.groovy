@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.gradle.api.plugins.cargo
+package org.gradle.api.plugins.cargo.convention
 
 /**
  * ZIP URL installer properties.
@@ -21,7 +21,7 @@ package org.gradle.api.plugins.cargo
  * @see <a href="http://cargo.codehaus.org/Installer">Installer documentation</a>
  * @author Benjamin Muschko
  */
-class ZipUrlInstaller {
+class ZipUrlInstaller implements Serializable {
     String installUrl
     File downloadDir
     File extractDir

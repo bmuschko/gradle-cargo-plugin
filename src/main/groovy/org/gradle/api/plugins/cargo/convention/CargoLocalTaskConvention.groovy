@@ -16,7 +16,6 @@
 package org.gradle.api.plugins.cargo.convention
 
 import org.gradle.api.file.FileCollection
-import org.gradle.api.plugins.cargo.ZipUrlInstaller
 import org.gradle.util.ConfigureUtil
 
 /**
@@ -29,7 +28,7 @@ class CargoLocalTaskConvention {
     String logLevel
     File homeDir
     File configHomeDir
-    File output
+    File outputFile
     File log
     Integer rmiPort
     ZipUrlInstaller zipUrlInstaller = new ZipUrlInstaller()

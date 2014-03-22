@@ -1,3 +1,10 @@
+### Version 1.4.1 (March 22, 2014)
+
+* `cargoStartLocal` and `cargoRunLocal` fail if log file doesn't exist - [Issue 83](https://github.com/bmuschko/gradle-cargo-plugin/issues/83).
+* Renamed property `output` to `outputFile`.
+* Some of the input properties needed to be `Serializable`.
+
+
 ### Version 1.4 (February 15, 2014)
 
 * Added sharedClasspath and extraClasspath support for local containers - [Pull request 73](https://github.com/bmuschko/gradle-cargo-plugin/pull/77).

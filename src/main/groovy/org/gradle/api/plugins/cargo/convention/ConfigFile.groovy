@@ -20,7 +20,7 @@ package org.gradle.api.plugins.cargo.convention
  *
  * @author Benjamin Muschko
  */
-class ConfigFile {
+class ConfigFile implements Serializable {
     File file
     File toDir
 }

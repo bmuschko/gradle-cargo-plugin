@@ -20,7 +20,7 @@ package org.gradle.api.plugins.cargo.convention
  *
  * @author Sascha Kiedrowski
  */
-class BinFile {
+class BinFile implements Serializable {
     File file
     File toDir
 }

@@ -17,7 +17,7 @@ def compatibilityVersion = 1.5
 sourceCompatibility = compatibilityVersion
 targetCompatibility = compatibilityVersion
 group = 'org.gradle.api.plugins'
-version = '1.4'
+version = '1.4.1'
 
 repositories {
     mavenCentral()
@@ -26,7 +26,7 @@ repositories {
 dependencies {
     compile localGroovy(), gradleApi()
     testCompile 'org.spockframework:spock-core:0.6-groovy-1.8'
-    testCompile 'org.codehaus.cargo:cargo-ant:1.4.5'
+    testCompile 'org.codehaus.cargo:cargo-ant:1.4.7'
 }
 
 jar {

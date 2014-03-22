@@ -18,15 +18,11 @@ package org.gradle.api.plugins.cargo.tasks.local
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.file.FileCollection
 import org.gradle.api.plugins.cargo.Container
-import org.gradle.api.plugins.cargo.ZipUrlInstaller
+import org.gradle.api.plugins.cargo.convention.ZipUrlInstaller
 import org.gradle.api.plugins.cargo.convention.BinFile
 import org.gradle.api.plugins.cargo.convention.ConfigFile
 import org.gradle.api.plugins.cargo.tasks.AbstractCargoContainerTask
-import org.gradle.api.tasks.Input
-import org.gradle.api.tasks.InputDirectory
-import org.gradle.api.tasks.InputFile
-import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.*
 
 /**
  * Deploys WAR to local container.
@@ -63,16 +59,16 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
     File configHomeDir
 
     /**
-     * The log file of your local container.
+     * The path to a file where container logs are saved.
      */
-    @InputFile
+    @OutputFile
     @Optional
-    File output
+    File outputFile
 
     /**
-     * The log file to write output to.
+     * The path to a file where Cargo logs are saved.
      */
-    @InputFile
+    @OutputFile
     @Optional
     File logFile
 
@@ -252,8 +248,8 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
             cargoAttributes['home'] = getHomeDir().canonicalPath
         }
 
-        if(getOutput()) {
-            cargoAttributes['output'] = getOutput()
+        if(getOutputFile()) {
+            cargoAttributes['output'] = getOutputFile()
         }
 
         if(getLogFile()) {
