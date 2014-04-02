@@ -19,6 +19,7 @@ import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.cargo.convention.Deployable
 import org.gradle.api.plugins.cargo.tasks.AbstractCargoContainerTask
+import org.gradle.api.plugins.cargo.tasks.daemon.CargoDaemon
 import org.gradle.api.plugins.cargo.util.ProjectInfoHelper
 
 /**
@@ -30,7 +31,8 @@ import org.gradle.api.plugins.cargo.util.ProjectInfoHelper
  */
 class CargoBasePlugin implements Plugin<Project> {
     static final String CONFIGURATION_NAME = 'cargo'
-    static final String CARGO_DEFAULT_VERSION = '1.4.5'
+    static final String DAEMON_CONFIGURATION_NAME = 'cargoDaemon'
+    static final String CARGO_DEFAULT_VERSION = '1.4.8'
 
     @Override
     void apply(Project project) {
@@ -38,6 +40,11 @@ class CargoBasePlugin implements Plugin<Project> {
                .setVisible(false)
                .setTransitive(true)
                .setDescription('The Cargo Ant libraries to be used for this project.')
+
+        project.configurations.create(DAEMON_CONFIGURATION_NAME)
+                .setVisible(false)
+                .setTransitive(true)
+                .setDescription('The Cargo daemon client libraries to be used for this project.')
 
         configureAbstractContainerTask(project)
     }
@@ -58,6 +65,20 @@ class CargoBasePlugin implements Plugin<Project> {
             }
 
             conventionMapping.map('deployables') { resolveDeployables(project) }
+        }
+
+        project.tasks.withType(CargoDaemon) {
+            conventionMapping.map('classpath') {
+                def config = project.configurations[DAEMON_CONFIGURATION_NAME]
+
+                if(config.dependencies.empty) {
+                    project.dependencies {
+                        cargoDaemon "org.codehaus.cargo:cargo-daemon-client:$CARGO_DEFAULT_VERSION"
+                    }
+                }
+
+                config
+            }
         }
     }
 
