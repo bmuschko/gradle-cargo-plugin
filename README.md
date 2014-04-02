@@ -6,10 +6,11 @@ The plugin provides deployment capabilities for web applications to local and re
 Gradle build by leveraging the [Cargo Ant tasks](http://cargo.codehaus.org/Ant+support). The plugin supports WAR and EAR
 artifacts.
 
-The typical use case for this plugin is to support deployment during development. Cargo is not a good fit for
-continuous deployment scenarios as it does not provide container management support (starting/stopping of remote containers).
-Keep in mind that Cargo uses hot deployment which over time fills up the PermGen memory of the JVM process running your
-container. Continuously deploying an artifact will inevitablity lead to a `java.lang.OutOfMemoryError`.
+The typical use case for this plugin is to support deployment during development. Keep in mind that Cargo uses hot deployment
+which over time fills up the PermGen memory of the JVM process running your container. Continuously deploying an artifact will
+inevitablity lead to a `java.lang.OutOfMemoryError`. Cargo does support container management capabilities (starting/stopping
+of remote containers) via the so-called [Cargo daemon](http://cargo.codehaus.org/Cargo+Daemon). However, in continuous deployment
+scenarios you often want to need perform more complex operations.
 
 ## Usage
 
@@ -28,7 +29,7 @@ and deploy it to your local repository. The following code snippet shows an exam
         }
 
         dependencies {
-            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.4.1'
+            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.5'
         }
     }
 
@@ -439,4 +440,30 @@ also add another task that triggers the deployment to all remote containers.
         description = 'Deploys to all remote Tomcat containers.'
         group = 'deployment'
     }
+
+** Before a remote deployment I would like to restart my container. Can this be done?**
+
+Yes, this is possible with the help of the [Cargo daemon](http://cargo.codehaus.org/Cargo+Daemon) functionality. Please
+refer to the Cargo online documentation for setting up the Cargo daemon JVM process and configuring a container. With
+this plugin, you can use custom tasks to start and stop a container. The following example stops, starts and then redeploys
+an artifact.
+
+    apply plugin: 'cargo'
+
+    cargo {
+        ...
+    }
+
+    ext.tomcat7HandleId = 'tomcat7'
+
+    task cargoDaemonStop(type: org.gradle.api.plugins.cargo.tasks.daemon.CargoDaemonStop) {
+        handleId = tomcat7HandleId
+    }
+
+    task cargoDaemonStart(type: org.gradle.api.plugins.cargo.tasks.daemon.CargoDaemonStart) {
+        handleId = tomcat7HandleId
+    }
+
+    cargoDaemonStart.mustRunAfter cargoDaemonStop
+    cargoRedeployRemote.dependsOn cargoDaemonStop, cargoDaemonStart
 
