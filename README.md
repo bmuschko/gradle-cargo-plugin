@@ -441,7 +441,7 @@ also add another task that triggers the deployment to all remote containers.
         group = 'deployment'
     }
 
-** Before a remote deployment I would like to restart my container. Can this be done?**
+**Before a remote deployment I would like to restart my container. Can this be done?**
 
 Yes, this is possible with the help of the [Cargo daemon](http://cargo.codehaus.org/Cargo+Daemon) functionality. Please
 refer to the Cargo online documentation for setting up the Cargo daemon JVM process and configuring a container. With
