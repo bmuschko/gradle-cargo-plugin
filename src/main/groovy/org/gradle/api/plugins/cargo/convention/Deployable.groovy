@@ -23,4 +23,6 @@ package org.gradle.api.plugins.cargo.convention
 class Deployable implements Serializable {
     File file
     String context
+    String pingUrl
+    Integer pingTimeout
 }
