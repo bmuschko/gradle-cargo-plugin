@@ -135,6 +135,9 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
                             + (deployable.file == null ? "null" : deployable.file.canonicalPath)
                             + " does not exist")
                 }
+                if(deployable.pingTimeout && !deployable.pingUrl) {
+                    throw new InvalidUserDataException("Deployable has ping timeout, but no ping url")
+                }
             }
 
             logger.info "Deployable artifacts = ${getDeployables().collect { it.file.canonicalPath }}"
@@ -189,8 +192,27 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
 
                 getDeployables().each { deployable ->
                     if(deployable.context) {
-                        ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file) {
-                            ant.property(name: AbstractCargoContainerTask.CARGO_CONTEXT, value: deployable.context)
+                        if (deployable.pingUrl) {
+                            if (deployable.pingTimeout) {
+                                ant.deployable(type: getDeployableType(deployable).filenameExtension,
+                                        file: deployable.file,
+                                        pingUrl: deployable.pingUrl,
+                                        pingTimeout: deployable.pingTimeout) {
+                                    ant.property(name: AbstractCargoContainerTask.CARGO_CONTEXT, value: deployable.context)
+                                }
+                            }
+                            else {
+                                ant.deployable(type: getDeployableType(deployable).filenameExtension,
+                                        file: deployable.file,
+                                        pingUrl: deployable.pingUrl) {
+                                    ant.property(name: AbstractCargoContainerTask.CARGO_CONTEXT, value: deployable.context)
+                                }
+                            }
+                        }
+                        else {
+                            ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file) {
+                                ant.property(name: AbstractCargoContainerTask.CARGO_CONTEXT, value: deployable.context)
+                            }
                         }
                     }
                     else {
