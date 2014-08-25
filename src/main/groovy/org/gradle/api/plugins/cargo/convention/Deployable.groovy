@@ -23,4 +23,15 @@ package org.gradle.api.plugins.cargo.convention
 class Deployable implements Serializable {
     File file
     String context
+    
+    boolean equals(obj) {
+        if (obj == null) {
+            return false
+        } else if (!(obj instanceof Deployable)) {
+            return false
+        } else {
+            Deployable that = obj
+            return that.file == this.file && that.context == this.context
+        }
+    }
 }
