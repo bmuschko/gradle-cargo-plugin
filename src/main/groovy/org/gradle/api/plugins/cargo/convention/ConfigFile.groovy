@@ -23,4 +23,15 @@ package org.gradle.api.plugins.cargo.convention
 class ConfigFile implements Serializable {
     File file
     File toDir
+    
+    boolean equals(obj) {
+        if (obj == null) {
+            return false
+        } else if (!(obj instanceof ConfigFile)) {
+            return false
+        } else {
+            ConfigFile that = obj
+            return that.file == this.file && that.toDir == this.toDir
+        }
+    }
 }

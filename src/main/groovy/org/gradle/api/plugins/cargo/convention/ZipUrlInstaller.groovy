@@ -29,4 +29,16 @@ class ZipUrlInstaller implements Serializable {
     boolean isValid() {
         installUrl && downloadDir && extractDir
     }
+    
+    boolean equals(obj) {
+        if (obj == null) {
+            return false
+        } else if (!(obj instanceof ZipUrlInstaller)) {
+            return false
+        } else {
+            ZipUrlInstaller that = obj
+            return that.installUrl == this.installUrl && that.downloadDir == this.downloadDir && that.extractDir == this.extractDir
+        }
+    }
+
 }

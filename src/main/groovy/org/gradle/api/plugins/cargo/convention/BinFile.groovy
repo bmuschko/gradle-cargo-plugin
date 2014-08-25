@@ -23,4 +23,15 @@ package org.gradle.api.plugins.cargo.convention
 class BinFile implements Serializable {
     File file
     File toDir
+    
+    boolean equals(obj) {
+        if (obj == null) {
+            return false
+        } else if (!(obj instanceof BinFile)) {
+            return false
+        } else {
+            BinFile that = obj
+            return that.file == this.file && that.toDir == this.toDir
+        }
+    }
 }
