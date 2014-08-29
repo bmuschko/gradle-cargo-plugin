@@ -29,4 +29,27 @@ class ZipUrlInstaller implements Serializable {
     boolean isValid() {
         installUrl && downloadDir && extractDir
     }
+
+    @Override
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        ZipUrlInstaller that = (ZipUrlInstaller) o
+
+        if (downloadDir != that.downloadDir) return false
+        if (extractDir != that.extractDir) return false
+        if (installUrl != that.installUrl) return false
+
+        return true
+    }
+
+    @Override
+    int hashCode() {
+        int result
+        result = (installUrl != null ? installUrl.hashCode() : 0)
+        result = 31 * result + (downloadDir != null ? downloadDir.hashCode() : 0)
+        result = 31 * result + (extractDir != null ? extractDir.hashCode() : 0)
+        return result
+    }
 }

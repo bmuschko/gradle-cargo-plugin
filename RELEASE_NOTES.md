@@ -1,3 +1,7 @@
+### Version 1.5.1 (August 29, 2014)
+
+* Provide `equals`/`hashCode` for POJO input properties [Issue 97](https://github.com/bmuschko/gradle-cargo-plugin/issues/97). 
+
 ### Version 1.5 (April 2, 2014)
 
 * Support for starting and stopping containers with the help of Cargo daemon.

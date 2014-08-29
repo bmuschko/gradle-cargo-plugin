@@ -23,4 +23,25 @@ package org.gradle.api.plugins.cargo.convention
 class ConfigFile implements Serializable {
     File file
     File toDir
+
+    @Override
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        ConfigFile that = (ConfigFile) o
+
+        if (file != that.file) return false
+        if (toDir != that.toDir) return false
+
+        return true
+    }
+
+    @Override
+    int hashCode() {
+        int result
+        result = (file != null ? file.hashCode() : 0)
+        result = 31 * result + (toDir != null ? toDir.hashCode() : 0)
+        return result
+    }
 }

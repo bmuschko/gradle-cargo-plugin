@@ -23,4 +23,25 @@ package org.gradle.api.plugins.cargo.convention
 class Deployable implements Serializable {
     File file
     String context
+
+    @Override
+    boolean equals(o) {
+        if (this.is(o)) return true
+        if (getClass() != o.class) return false
+
+        Deployable that = (Deployable) o
+
+        if (context != that.context) return false
+        if (file != that.file) return false
+
+        return true
+    }
+
+    @Override
+    int hashCode() {
+        int result
+        result = (file != null ? file.hashCode() : 0)
+        result = 31 * result + (context != null ? context.hashCode() : 0)
+        return result
+    }
 }
