@@ -5,6 +5,7 @@ buildscript {
 
     dependencies {
         classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.3'
+        classpath 'org.ajoberstar:gradle-git:0.3.0'
     }
 }
 
@@ -12,6 +13,7 @@ apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
 apply plugin: 'bintray'
+apply plugin: 'github-pages'
 
 def compatibilityVersion = 1.5
 sourceCompatibility = compatibilityVersion
@@ -115,6 +117,19 @@ bintray {
         repo = 'gradle-plugins'
         name = 'gradle-cargo-plugin'
         licenses = ['Apache-2.0']
+    }
+}
+
+githubPages {
+    repoUri = 'git@github.com:bmuschko/gradle-cargo-plugin.git'
+
+    pages {
+        from(javadoc.outputs.files) {
+            into 'docs/javadoc'
+        }
+        from(groovydoc.outputs.files) {
+            into 'docs/groovydoc'
+        }
     }
 }
 

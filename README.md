@@ -47,13 +47,13 @@ The JAR file comes with two plugins:
     <tr>
         <td>cargo-base</td>
         <td>-</td>
-        <td>CargoBasePlugin</td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/CargoBasePlugin.html">CargoBasePlugin</a></td>
         <td>Provides Cargo custom task types, pre-configures classpath and deployables.</td>
     </tr>
     <tr>
         <td>cargo</td>
         <td>cargo-base</td>
-        <td>CargoPlugin</td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/CargoPlugin.html">CargoPlugin</a></td>
         <td>Provides a set of local and remote Cargo tasks and exposes extension for configuration.</td>
     </tr>
 </table>
@@ -98,37 +98,37 @@ The `cargo` plugin pre-defines the following tasks out-of-the-box:
     <tr>
         <td>cargoDeployRemote</td>
         <td>-</td>
-        <td>CargoDeployRemote</td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/tasks/remote/CargoDeployRemote.html">CargoDeployRemote</a></td>
         <td>Deploys web application to remote container.</td>
     </tr>
     <tr>
         <td>cargoUndeployRemote</td>
         <td>-</td>
-        <td>CargoUndeployRemote</td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/tasks/remote/CargoUndeployRemote.html">CargoUndeployRemote</a></td>
         <td>Undeploys a web application from remote container.</td>
     </tr>
     <tr>
         <td>cargoRedeployRemote</td>
         <td>-</td>
-        <td>CargoRedeployRemote</td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/tasks/remote/CargoRedeployRemote.html">CargoRedeployRemote</a></td>
         <td>Redeploys web application to remote container.</td>
     </tr>
     <tr>
         <td>cargoRunLocal</td>
         <td>-</td>
-        <td>CargoRunLocal</td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/tasks/local/CargoRunLocal.html">CargoRunLocal</a></td>
         <td>Starts the local container, deploys web application to it and wait for the user to press CTRL + C to stop.</td>
     </tr>
     <tr>
         <td>cargoStartLocal</td>
         <td>-</td>
-        <td>CargoStartLocal</td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/tasks/local/CargoStartLocal.html">CargoStartLocal</a></td>
         <td>Starts the local container, deploys web application to it and then do other tasks (for example, execute tests).</td>
     </tr>
     <tr>
         <td>cargoStopLocal</td>
         <td>-</td>
-        <td>CargoStopLocal</td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/tasks/local/CargoStopLocal.html">CargoStopLocal</a></td>
         <td>Stops local container.</td>
     </tr>
 </table>
