@@ -16,7 +16,7 @@
 package org.gradle.api.plugins.cargo.tasks.local
 
 /**
- * Starts the local container, deploys web application to it and wait for the user to press `CTRL + C` to stop.
+ * Starts the local container, deploys web application to it and wait for the user to press CTRL + C to stop.
  *
  * @author Benjamin Muschko
  */
