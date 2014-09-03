@@ -1,0 +1,8 @@
+org.gradle.api.plugins.cargo
+org.gradle.api.plugins.cargo.convention
+org.gradle.api.plugins.cargo.property
+org.gradle.api.plugins.cargo.tasks
+org.gradle.api.plugins.cargo.tasks.daemon
+org.gradle.api.plugins.cargo.tasks.local
+org.gradle.api.plugins.cargo.tasks.remote
+org.gradle.api.plugins.cargo.util
