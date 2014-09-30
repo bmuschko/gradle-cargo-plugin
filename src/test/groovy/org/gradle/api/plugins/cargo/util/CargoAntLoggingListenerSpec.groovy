@@ -49,7 +49,7 @@ class CargoAntLoggingListenerSpec extends Specification {
             0 * mockLogger.lifecycle('Cargo started')
     }
 
-    void "Message logged for Cargo Ant task with debug priority"() {
+    void "Message not logged for Cargo Ant task with debug priority"() {
         given:
             Task antCargoTask = new CargoTask()
             BuildEvent buildEvent = new BuildEvent(antCargoTask)
