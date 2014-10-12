@@ -82,6 +82,11 @@ abstract class AbstractCargoContainerTask extends DefaultTask {
 
     AbstractCargoContainerTask() {
         group = CARGO_TASK_GROUP
+
+        // No matter what the inputs and outputs make sure that run tasks are never up-to-date
+        outputs.upToDateWhen {
+            false
+        }
     }
 
     @TaskAction
