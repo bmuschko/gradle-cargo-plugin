@@ -1,8 +1,8 @@
-org.gradle.api.plugins.cargo
-org.gradle.api.plugins.cargo.convention
-org.gradle.api.plugins.cargo.property
-org.gradle.api.plugins.cargo.tasks
-org.gradle.api.plugins.cargo.tasks.daemon
-org.gradle.api.plugins.cargo.tasks.local
-org.gradle.api.plugins.cargo.tasks.remote
-org.gradle.api.plugins.cargo.util
+com.bmuschko.gradle.cargo
+com.bmuschko.gradle.cargo.convention
+com.bmuschko.gradle.cargo.property
+com.bmuschko.gradle.cargo.tasks
+com.bmuschko.gradle.cargo.tasks.daemon
+com.bmuschko.gradle.cargo.tasks.local
+com.bmuschko.gradle.cargo.tasks.remote
+com.bmuschko.gradle.cargo.util
