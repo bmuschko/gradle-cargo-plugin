@@ -1,3 +1,8 @@
+### Version 1.5.2 (October 11, 2014)
+
+* Deployment task should never be up-to-date [Issue 103](https://github.com/bmuschko/gradle-cargo-plugin/issues/103).
+* Support for JBoss74x (aka EAP 6.3.x) container [Pull request 105](https://github.com/bmuschko/gradle-cargo-plugin/pull/105).
+
 ### Version 1.5.1 (August 29, 2014)
 
 * Provide `equals`/`hashCode` for POJO input properties [Issue 97](https://github.com/bmuschko/gradle-cargo-plugin/issues/97). 
