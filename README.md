@@ -234,7 +234,7 @@ by project properties. The name of the project properties is the same as in the 
 
         local {
             homeDir = file('/home/user/dev/tools/apache-tomcat-6.0.32')
-            output = file('build/output.log')
+            outputFile = file('build/output.log')
             timeout = 60000
 
             containerProperties {
