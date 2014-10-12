@@ -20,8 +20,8 @@ the plugin.
 ### Adding the plugin binary to the build
 
 The plugin JAR needs to be defined in the classpath of your build script. It is directly available on
-[Bintray](https://bintray.com/bmuschko/gradle-plugins/gradle-cargo-plugin/). Alternatively, you can download it from GitHub
-and deploy it to your local repository. The following code snippet shows an example on how to retrieve it from Bintray:
+[Bintray](https://bintray.com/bmuschko/gradle-plugins/com.bmuschko%3Agradle-cargo-plugin/). The following code snippet 
+shows an example on how to retrieve it from Bintray:
 
     buildscript {
         repositories {
@@ -29,7 +29,7 @@ and deploy it to your local repository. The following code snippet shows an exam
         }
 
         dependencies {
-            classpath 'org.gradle.api.plugins:gradle-cargo-plugin:1.5.2'
+            classpath 'com.bmuschko:gradle-cargo-plugin:2.0'
         }
     }
 
@@ -45,34 +45,34 @@ The JAR file comes with two plugins:
         <th>Description</th>
     </tr>
     <tr>
-        <td>cargo-base</td>
+        <td>com.bmuschko.cargo-base</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/CargoBasePlugin.html">CargoBasePlugin</a></td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/CargoBasePlugin.html">CargoBasePlugin</a></td>
         <td>Provides Cargo custom task types, pre-configures classpath and deployables.</td>
     </tr>
     <tr>
-        <td>cargo</td>
-        <td>cargo-base</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/CargoPlugin.html">CargoPlugin</a></td>
+        <td>com.bmuschko.cargo</td>
+        <td>com.bmuschko.cargo-base</td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/CargoPlugin.html">CargoPlugin</a></td>
         <td>Provides a set of local and remote Cargo tasks and exposes extension for configuration.</td>
     </tr>
 </table>
 
-The `cargo` plugin helps you get started quickly. If you only need to deal with a single container product, this is the
+The `com.bmuschko.cargo` plugin helps you get started quickly. If you only need to deal with a single container product, this is the
 preferrable option. Most plugin users will go with this option. To use the Cargo plugin, include the following code snippet
 in your build script:
 
-    apply plugin: 'cargo'
+    apply plugin: 'com.bmuschko.cargo'
 
-If you need full control over your deployment tasks, you will want to use the `cargo-base` plugin. The downside is that each task
+If you need full control over your deployment tasks, you will want to use the `com.bmuschko.cargo-base` plugin. The downside is that each task
 has to be configured individually in your build script. To use the Cargo base plugin, include the following code snippet
 in your build script:
 
-    apply plugin: 'cargo-base'
+    apply plugin: 'com.bmuschko.cargo-base'
 
 ### Configuring the Cargo version
 
-The `cargo-base` plugin already sets up the dependencies for Cargo. In order to do so, it chooses a default
+The `com.bmuschko.cargo-base` plugin already sets up the dependencies for Cargo. In order to do so, it chooses a default
 version of the libraries. Alternatively, you can define a custom version of the Cargo libraries. To do so, please use
 the `cargo` configuration name in your `dependencies` closure. Remote deployment functionality will only work with a Cargo
 version >= 1.1.0 due to a bug in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-962) for more information.
@@ -98,37 +98,37 @@ The `cargo` plugin pre-defines the following tasks out-of-the-box:
     <tr>
         <td>cargoDeployRemote</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/tasks/remote/CargoDeployRemote.html">CargoDeployRemote</a></td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/remote/CargoDeployRemote.html">CargoDeployRemote</a></td>
         <td>Deploys web application to remote container.</td>
     </tr>
     <tr>
         <td>cargoUndeployRemote</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/tasks/remote/CargoUndeployRemote.html">CargoUndeployRemote</a></td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/remote/CargoUndeployRemote.html">CargoUndeployRemote</a></td>
         <td>Undeploys a web application from remote container.</td>
     </tr>
     <tr>
         <td>cargoRedeployRemote</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/tasks/remote/CargoRedeployRemote.html">CargoRedeployRemote</a></td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/remote/CargoRedeployRemote.html">CargoRedeployRemote</a></td>
         <td>Redeploys web application to remote container.</td>
     </tr>
     <tr>
         <td>cargoRunLocal</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/tasks/local/CargoRunLocal.html">CargoRunLocal</a></td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoRunLocal.html">CargoRunLocal</a></td>
         <td>Starts the local container, deploys web application to it and wait for the user to press CTRL + C to stop.</td>
     </tr>
     <tr>
         <td>cargoStartLocal</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/tasks/local/CargoStartLocal.html">CargoStartLocal</a></td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoStartLocal.html">CargoStartLocal</a></td>
         <td>Starts the local container, deploys web application to it and then do other tasks (for example, execute tests).</td>
     </tr>
     <tr>
         <td>cargoStopLocal</td>
         <td>-</td>
-        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/org/gradle/api/plugins/cargo/tasks/local/CargoStopLocal.html">CargoStopLocal</a></td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoStopLocal.html">CargoStopLocal</a></td>
         <td>Stops local container.</td>
     </tr>
 </table>
@@ -284,7 +284,7 @@ code snippet:
 
     gradle.projectsEvaluated {
         configure(webProjects()) {
-            apply plugin: 'cargo'
+            apply plugin: 'com.bmuschko.cargo'
 
             cargo {
                 containerId = 'tomcat7x'
@@ -389,14 +389,14 @@ Absolutely. The Cargo base plugin provides all tasks needed to set up deployment
 or more tasks and configure the mandatory properties. The following example shows how to set up local container tasks
 for Tomcat and Jetty:
 
-    apply plugin: 'cargo-base'
+    apply plugin: 'com.bmuschko.cargo-base'
 
-    task myTomcatRun(type: org.gradle.api.plugins.cargo.tasks.local.CargoRunLocal) {
+    task myTomcatRun(type: com.bmuschko.gradle.cargo.tasks.local.CargoRunLocal) {
         containerId = 'tomcat7x'
         homeDir = file('/home/user/dev/tools/apache-tomcat-7.0.42')
     }
 
-    task myJettyRun(type: org.gradle.api.plugins.cargo.tasks.local.CargoRunLocal) {
+    task myJettyRun(type: com.bmuschko.gradle.cargo.tasks.local.CargoRunLocal) {
         containerId = 'jetty9x'
         homeDir = file('/home/user/dev/tools/jetty-distribution-9.0.4.v20130625')
     }
@@ -422,10 +422,10 @@ also add another task that triggers the deployment to all remote containers.
                             new RemoteContainer(name: 'tomcat3', hostname: 'remote-tomcat3',
                                                 port: 8888, username: 'su', password: 'powerful')]
 
-    apply plugin: 'cargo-base'
+    apply plugin: 'com.bmuschko.cargo-base'
 
     remoteContainers.each { config ->
-        task "deployRemote${config.name.capitalize()}"(type: org.gradle.api.plugins.cargo.tasks.remote.CargoDeployRemote) {
+        task "deployRemote${config.name.capitalize()}"(type: com.bmuschko.gradle.cargo.tasks.remote.CargoDeployRemote) {
             description = "Deploys WAR to remote Tomcat '${config.name}'."
             containerId = 'tomcat7x'
             hostname = config.hostname
@@ -448,7 +448,7 @@ refer to the Cargo online documentation for setting up the Cargo daemon JVM proc
 this plugin, you can use custom tasks to start and stop a container. The following example stops, starts and then redeploys
 an artifact.
 
-    apply plugin: 'cargo'
+    apply plugin: 'com.bmuschko.cargo'
 
     cargo {
         ...
@@ -456,11 +456,11 @@ an artifact.
 
     ext.tomcat7HandleId = 'tomcat7'
 
-    task cargoDaemonStop(type: org.gradle.api.plugins.cargo.tasks.daemon.CargoDaemonStop) {
+    task cargoDaemonStop(type: com.bmuschko.gradle.cargo.tasks.daemon.CargoDaemonStop) {
         handleId = tomcat7HandleId
     }
 
-    task cargoDaemonStart(type: org.gradle.api.plugins.cargo.tasks.daemon.CargoDaemonStart) {
+    task cargoDaemonStart(type: com.bmuschko.gradle.cargo.tasks.daemon.CargoDaemonStart) {
         handleId = tomcat7HandleId
     }
 

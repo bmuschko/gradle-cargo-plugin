@@ -1,3 +1,10 @@
+### Version 2.0 (October 11, 2014)
+
+* Upgrade to Gradle Wrapper 2.1.
+* Changed package name to `com.bmuschko.gradle.vagrant`.
+* Changed group ID to `com.bmuschko`.
+* Adapted plugin IDs to be compatible with Gradle's plugin portal.
+
 ### Version 1.5.2 (October 11, 2014)
 
 * Deployment task should never be up-to-date [Issue 103](https://github.com/bmuschko/gradle-cargo-plugin/issues/103).
