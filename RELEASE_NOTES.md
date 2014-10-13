@@ -1,3 +1,7 @@
+### Version 2.0.1 (October 13, 2014)
+
+* Fix implementation class of Cargo plugin identifier - [Issue 107](https://github.com/bmuschko/gradle-cargo-plugin/issues/107).
+
 ### Version 2.0 (October 11, 2014)
 
 * Upgrade to Gradle Wrapper 2.1.
@@ -7,8 +11,8 @@
 
 ### Version 1.5.2 (October 11, 2014)
 
-* Deployment task should never be up-to-date [Issue 103](https://github.com/bmuschko/gradle-cargo-plugin/issues/103).
-* Support for JBoss74x (aka EAP 6.3.x) container [Pull request 105](https://github.com/bmuschko/gradle-cargo-plugin/pull/105).
+* Deployment task should never be up-to-date - [Issue 103](https://github.com/bmuschko/gradle-cargo-plugin/issues/103).
+* Support for JBoss74x (aka EAP 6.3.x) container - [Pull request 105](https://github.com/bmuschko/gradle-cargo-plugin/pull/105).
 
 ### Version 1.5.1 (August 29, 2014)
 
