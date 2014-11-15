@@ -15,7 +15,6 @@
  */
 package com.bmuschko.gradle.cargo.tasks.daemon
 
-import org.apache.tools.ant.AntClassLoader
 import org.gradle.api.DefaultTask
 import org.gradle.api.UncheckedIOException
 import org.gradle.api.file.FileCollection
@@ -117,8 +116,7 @@ abstract class CargoDaemon extends DefaultTask {
     }
 
     private URLClassLoader createCargoDaemonClassLoader() {
-        ClassLoader rootClassLoader = new AntClassLoader(getClass().classLoader, false)
-        new URLClassLoader(toURLArray(getClasspath().files), rootClassLoader)
+        new URLClassLoader(toURLArray(getClasspath().files), ClassLoader.systemClassLoader.parent)
     }
 
     private URL[] toURLArray(Collection<File> files) {
