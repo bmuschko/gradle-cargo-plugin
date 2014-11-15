@@ -1,3 +1,9 @@
+### Version 2.0.2 (Novemver 15, 2014)
+
+* Directory for property `configHomeDir` is created automatically if it doesn't exist - [Issue 101](https://github.com/bmuschko/gradle-cargo-plugin/issues/101).
+* Upgrade to Cargo version 1.4.10.
+* Don't use `AntClassLoader` as parent classloader for daemon tasks.
+
 ### Version 2.0.1 (October 13, 2014)
 
 * Fix implementation class of Cargo plugin identifier - [Issue 107](https://github.com/bmuschko/gradle-cargo-plugin/issues/107).
