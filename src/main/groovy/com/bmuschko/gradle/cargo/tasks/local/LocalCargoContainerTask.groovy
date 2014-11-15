@@ -232,6 +232,10 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
         def config = [:]
 
         if(getConfigHomeDir()) {
+            if(!getConfigHomeDir().exists()) {
+                ant.mkdir(getConfigHomeDir())
+            }
+
             config['home'] = getConfigHomeDir().absolutePath
         }
 
