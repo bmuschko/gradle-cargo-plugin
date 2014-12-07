@@ -1,3 +1,7 @@
+### Version 2.0.3 (December 7, 2014)
+
+* Set Java target compatibility back to 1.6 - [Pull request 113](https://github.com/bmuschko/gradle-cargo-plugin/pull/113).
+
 ### Version 2.0.2 (Novemver 15, 2014)
 
 * Directory for property `configHomeDir` is created automatically if it doesn't exist - [Issue 101](https://github.com/bmuschko/gradle-cargo-plugin/issues/101).
