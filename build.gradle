@@ -15,11 +15,11 @@ apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'github-pages'
 
-def compatibilityVersion = 1.7
+def compatibilityVersion = 1.6
 sourceCompatibility = compatibilityVersion
 targetCompatibility = compatibilityVersion
 group = 'com.bmuschko'
-version = '2.0.2'
+version = '2.0.3'
 
 repositories {
     mavenCentral()
