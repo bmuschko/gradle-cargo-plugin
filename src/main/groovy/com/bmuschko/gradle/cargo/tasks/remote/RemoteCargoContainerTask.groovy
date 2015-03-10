@@ -16,6 +16,7 @@
 package com.bmuschko.gradle.cargo.tasks.remote
 
 import com.bmuschko.gradle.cargo.Container
+import com.bmuschko.gradle.cargo.DeployableType
 import com.bmuschko.gradle.cargo.tasks.AbstractCargoContainerTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.tasks.Input
@@ -62,6 +63,10 @@ class RemoteCargoContainerTask extends AbstractCargoContainerTask {
                     throw new InvalidUserDataException("Deployable "
                             + (deployable.file == null ? "null" : deployable.file.canonicalPath)
                             + " does not exist")
+                }
+
+                if(DeployableType.EXPLODED == getDeployableType(deployable)) {
+                    throw new InvalidUserDataException("Deployable type: EXPLODED is invalid for remote deployment")
                 }
 
                 logger.info "Deployable artifacts = ${getDeployables().collect { it.file.canonicalPath }}"

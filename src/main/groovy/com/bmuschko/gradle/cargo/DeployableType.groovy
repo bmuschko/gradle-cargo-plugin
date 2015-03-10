@@ -24,7 +24,7 @@ import groovy.util.logging.Slf4j
  */
 @Slf4j
 enum DeployableType {
-    WAR('war'), EAR('ear')
+    WAR('war'), EAR('ear'), EXPLODED('')
 
     static final Map DEPLOYABLE_TYPES
 

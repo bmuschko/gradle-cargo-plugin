@@ -16,6 +16,7 @@
 package com.bmuschko.gradle.cargo.tasks.local
 
 import com.bmuschko.gradle.cargo.Container
+import com.bmuschko.gradle.cargo.DeployableType
 import com.bmuschko.gradle.cargo.convention.BinFile
 import com.bmuschko.gradle.cargo.convention.ConfigFile
 import com.bmuschko.gradle.cargo.convention.ZipUrlInstaller
@@ -188,13 +189,19 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
                 setContainerSpecificProperties()
 
                 getDeployables().each { deployable ->
+                    def deployableType = getDeployableType(deployable)
+
+                    if (DeployableType.EXPLODED == deployableType) {
+                        deployableType = DeployableType.WAR
+                    }
+
                     if(deployable.context) {
-                        ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file) {
+                        ant.deployable(type: deployableType.filenameExtension, file: deployable.file) {
                             ant.property(name: AbstractCargoContainerTask.CARGO_CONTEXT, value: deployable.context)
                         }
                     }
                     else {
-                        ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file)
+                        ant.deployable(type: deployableType.filenameExtension, file: deployable.file)
                     }
                 }
 
