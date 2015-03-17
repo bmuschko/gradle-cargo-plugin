@@ -21,8 +21,17 @@ package com.bmuschko.gradle.cargo.convention
  * @author Sascha Kiedrowski
  */
 class BinFile implements Serializable {
+
+    /**
+     * This specifies the path to the file that should be used.
+     * Can also specify a directory path if a whole directory needs to be copied over.
+     */
     File file
-    File toDir
+
+    /**
+     * This specified the name the directory that the file should be copied to relative to the configurations home.
+     */
+    String toDir
 
     @Override
     boolean equals(o) {
