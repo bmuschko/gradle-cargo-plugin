@@ -1,3 +1,7 @@
+### Version 2.0.4
+
+* Fixed configFile and file destination dir specification - [Pull request 121](https://github.com/bmuschko/gradle-cargo-plugin/pull/121).
+
 ### Version 2.0.3 (December 7, 2014)
 
 * Set Java target compatibility back to 1.6 - [Pull request 113](https://github.com/bmuschko/gradle-cargo-plugin/pull/113).
