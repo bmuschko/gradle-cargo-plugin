@@ -1,3 +1,8 @@
+### Version 2.1 (March 30, 2015)
+
+* Upgrade to Cargo Ant tasks version 1.4.13.
+* Support for exploded WAR deployment - [Issue 115](https://github.com/bmuschko/gradle-cargo-plugin/issues/115).
+
 ### Version 2.0.3 (December 7, 2014)
 
 * Set Java target compatibility back to 1.6 - [Pull request 113](https://github.com/bmuschko/gradle-cargo-plugin/pull/113).

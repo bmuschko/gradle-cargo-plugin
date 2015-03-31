@@ -17,8 +17,10 @@ package com.bmuschko.gradle.cargo.tasks.local
 
 import com.bmuschko.gradle.cargo.Container
 import com.bmuschko.gradle.cargo.DeployableType
+import com.bmuschko.gradle.cargo.DeployableTypeFactory
 import com.bmuschko.gradle.cargo.convention.BinFile
 import com.bmuschko.gradle.cargo.convention.ConfigFile
+import com.bmuschko.gradle.cargo.convention.Deployable
 import com.bmuschko.gradle.cargo.convention.ZipUrlInstaller
 import com.bmuschko.gradle.cargo.tasks.AbstractCargoContainerTask
 import org.gradle.api.InvalidUserDataException
@@ -188,20 +190,16 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
 
                 setContainerSpecificProperties()
 
-                getDeployables().each { deployable ->
-                    def deployableType = getDeployableType(deployable)
-
-                    if (DeployableType.EXPLODED == deployableType) {
-                        deployableType = DeployableType.WAR
-                    }
+                getDeployables().each { Deployable deployable ->
+                    DeployableType deployableType = DeployableTypeFactory.instance.getType(deployable)
 
                     if(deployable.context) {
-                        ant.deployable(type: deployableType.filenameExtension, file: deployable.file) {
+                        ant.deployable(type: deployableType.type, file: deployable.file) {
                             ant.property(name: AbstractCargoContainerTask.CARGO_CONTEXT, value: deployable.context)
                         }
                     }
                     else {
-                        ant.deployable(type: deployableType.filenameExtension, file: deployable.file)
+                        ant.deployable(type: deployableType.type, file: deployable.file)
                     }
                 }
 

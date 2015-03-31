@@ -17,6 +17,8 @@ package com.bmuschko.gradle.cargo.tasks.remote
 
 import com.bmuschko.gradle.cargo.Container
 import com.bmuschko.gradle.cargo.DeployableType
+import com.bmuschko.gradle.cargo.DeployableTypeFactory
+import com.bmuschko.gradle.cargo.convention.Deployable
 import com.bmuschko.gradle.cargo.tasks.AbstractCargoContainerTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.tasks.Input
@@ -65,7 +67,7 @@ class RemoteCargoContainerTask extends AbstractCargoContainerTask {
                             + " does not exist")
                 }
 
-                if(DeployableType.EXPLODED == getDeployableType(deployable)) {
+                if(DeployableType.EXPLODED == DeployableTypeFactory.instance.getType(deployable)) {
                     throw new InvalidUserDataException("Deployable type: EXPLODED is invalid for remote deployment")
                 }
 
@@ -91,22 +93,24 @@ class RemoteCargoContainerTask extends AbstractCargoContainerTask {
                     property(name: 'cargo.remote.password', value: getPassword())
                 }
 
-                getDeployables().each { deployable ->
+                getDeployables().each { Deployable deployable ->
+                    DeployableType deployableType = DeployableTypeFactory.instance.getType(deployable)
+
                     if(deployable.context) {
                         // For the undeploy action do not set a file attribute
                         if(getAction() == UNDEPLOY_ACTION) {
-                            ant.deployable(type: getDeployableType(deployable).filenameExtension) {
+                            ant.deployable(type: deployableType.type) {
                                 property(name: AbstractCargoContainerTask.CARGO_CONTEXT, value: deployable.context)
                             }
                         }
                         else {
-                            ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file) {
+                            ant.deployable(type: deployableType.type, file: deployable.file) {
                                 property(name: AbstractCargoContainerTask.CARGO_CONTEXT, value: deployable.context)
                             }
                         }
                     }
                     else {
-                        ant.deployable(type: getDeployableType(deployable).filenameExtension, file: deployable.file)
+                        ant.deployable(type: deployableType.type, file: deployable.file)
                     }
                 }
             }

@@ -20,14 +20,22 @@ package com.bmuschko.gradle.cargo.util
  *
  * @author Benjamin Muschko
  */
-final class FilenameUtils {
-    private FilenameUtils() {}
+class DefaultFileUtil implements FileUtil {
+    @Override
+    String getExtension(File file) {
+        if(!file.exists()) {
+            throw new IllegalArgumentException("File '$file.canonicalPath' does not exist")
+        }
 
-    static String getExtension(String fileName) {
-        int index = fileName.lastIndexOf('.')
+        if(file.isDirectory()) {
+            return ''
+        }
+
+        String filename = file.canonicalPath
+        int index = filename.lastIndexOf('.')
 
         if (index > 0) {
-            return fileName.substring(index + 1)
+            return filename.substring(index + 1)
         }
 
         ''

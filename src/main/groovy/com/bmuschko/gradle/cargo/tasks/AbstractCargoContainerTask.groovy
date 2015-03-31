@@ -16,9 +16,7 @@
 package com.bmuschko.gradle.cargo.tasks
 
 import com.bmuschko.gradle.cargo.Container
-import com.bmuschko.gradle.cargo.DeployableType
 import com.bmuschko.gradle.cargo.convention.Deployable
-import com.bmuschko.gradle.cargo.util.FilenameUtils
 import com.bmuschko.gradle.cargo.util.LoggingHandler
 import org.gradle.api.DefaultTask
 import org.gradle.api.InvalidUserDataException
@@ -109,11 +107,6 @@ abstract class AbstractCargoContainerTask extends DefaultTask {
         else {
             logger.info "Container ID = ${getContainerId()}"
         }
-    }
-
-    protected DeployableType getDeployableType(Deployable deployable) {
-        String filenameExtension = FilenameUtils.getExtension(deployable.file.canonicalPath)
-        DeployableType.getDeployableTypeForFilenameExtension(filenameExtension)
     }
 
     protected void setContainerSpecificProperties() {

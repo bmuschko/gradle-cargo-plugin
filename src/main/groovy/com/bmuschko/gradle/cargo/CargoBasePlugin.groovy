@@ -32,7 +32,7 @@ import org.gradle.api.Project
 class CargoBasePlugin implements Plugin<Project> {
     static final String CONFIGURATION_NAME = 'cargo'
     static final String DAEMON_CONFIGURATION_NAME = 'cargoDaemon'
-    static final String CARGO_DEFAULT_VERSION = '1.4.8'
+    static final String CARGO_DEFAULT_VERSION = '1.4.13'
 
     @Override
     void apply(Project project) {
