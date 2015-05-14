@@ -22,6 +22,7 @@ import com.bmuschko.gradle.cargo.property.CargoProjectProperty
 import com.bmuschko.gradle.cargo.property.LocalContainerTaskProperty
 import com.bmuschko.gradle.cargo.property.RemoteContainerTaskProperty
 import com.bmuschko.gradle.cargo.tasks.AbstractCargoContainerTask
+import com.bmuschko.gradle.cargo.tasks.local.CargoRedeployLocal
 import com.bmuschko.gradle.cargo.tasks.local.CargoRunLocal
 import com.bmuschko.gradle.cargo.tasks.local.CargoStartLocal
 import com.bmuschko.gradle.cargo.tasks.local.CargoStopLocal
@@ -134,6 +135,7 @@ class CargoPlugin implements Plugin<Project> {
         project.task('cargoRunLocal', type: CargoRunLocal)
         project.task('cargoStartLocal', type: CargoStartLocal)
         project.task('cargoStopLocal', type: CargoStopLocal)
+        project.task('cargoRedeployLocal', type: CargoRedeployLocal)
     }
 
     private void checkValidContainerId(Project project, CargoPluginExtension cargoPluginExtension) {
