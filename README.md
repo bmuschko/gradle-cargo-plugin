@@ -126,6 +126,12 @@ The `cargo` plugin pre-defines the following tasks out-of-the-box:
         <td>Starts the local container, deploys web application to it and then do other tasks (for example, execute tests).</td>
     </tr>
     <tr>
+        <td>cargoRedeployLocal</td>
+        <td>-</td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoRedeployLocal.html">CargoRedeployLocal</a></td>
+        <td>Undeploy and deploy again a deployable. If the deployable was not deployed before calling redeploy, it will simply be deployed.</td>
+    </tr>
+    <tr>
         <td>cargoStopLocal</td>
         <td>-</td>
         <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoStopLocal.html">CargoStopLocal</a></td>
