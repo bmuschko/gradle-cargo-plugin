@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.property
 
 /**
  * Defines property data type.
- *
- * @author Benjamin Muschko
  */
 enum PropertyDataType {
     STRING, INTEGER, BOOLEAN, FILE

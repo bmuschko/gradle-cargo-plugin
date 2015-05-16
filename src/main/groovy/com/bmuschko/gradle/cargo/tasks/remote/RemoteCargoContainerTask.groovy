@@ -25,8 +25,6 @@ import org.gradle.api.tasks.Input
 
 /**
  * Deploys WAR to remote container.
- *
- * @author Benjamin Muschko
  */
 class RemoteCargoContainerTask extends AbstractCargoContainerTask {
     static final String UNDEPLOY_ACTION = 'undeploy'

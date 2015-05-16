@@ -19,7 +19,6 @@ package com.bmuschko.gradle.cargo.convention
  * ZIP URL installer properties.
  *
  * @see <a href="http://cargo.codehaus.org/Installer">Installer documentation</a>
- * @author Benjamin Muschko
  */
 class ZipUrlInstaller implements Serializable {
     String installUrl

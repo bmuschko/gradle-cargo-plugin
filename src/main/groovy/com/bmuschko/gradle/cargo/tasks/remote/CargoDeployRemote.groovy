@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.tasks.remote
 
 /**
  * Deploys web application to remote container.
- *
- * @author Benjamin Muschko
  */
 class CargoDeployRemote extends RemoteCargoContainerTask {
     CargoDeployRemote() {

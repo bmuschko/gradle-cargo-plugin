@@ -28,8 +28,6 @@ import org.gradle.api.tasks.TaskAction
 
 /**
  * Abstract container task.
- *
- * @author Benjamin Muschko
  */
 abstract class AbstractCargoContainerTask extends DefaultTask {
     static final String CARGO_TASK_GROUP = 'deployment'

@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.convention
 
 /**
  * Container-specific properties.
- *
- * @author Benjamin Muschko
  */
 class ContainerProperties {
     Map<String, Object> properties = [:]

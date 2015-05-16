@@ -19,8 +19,6 @@ import groovy.util.logging.Slf4j
 
 /**
  * Defines abstract container task properties.
- *
- * @author Benjamin Muschko
  */
 @Slf4j
 enum AbstractContainerTaskProperty implements TaskProperty {

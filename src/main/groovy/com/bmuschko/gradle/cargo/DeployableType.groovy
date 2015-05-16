@@ -19,8 +19,6 @@ import groovy.util.logging.Slf4j
 
 /**
  * Type of deployable.
- *
- * @author Benjamin Muschko
  */
 @Slf4j
 enum DeployableType {

@@ -35,8 +35,6 @@ import org.gradle.api.execution.TaskExecutionGraph
 
 /**
  * <p>A {@link org.gradle.api.Plugin} that provides pre-configured tasks for deploying WAR/EAR files to local and remote web containers.</p>
- *
- * @author Benjamin Muschko
  */
 class CargoPlugin implements Plugin<Project> {
     static final String EXTENSION_NAME = 'cargo'

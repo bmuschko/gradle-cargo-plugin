@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.tasks.local
 
 /**
  * Starts the local container, deploys web application to it and then do other tasks (for example, execute tests).
- *
- * @author Benjamin Muschko
  */
 class CargoStartLocal extends LocalCargoContainerTask {
     CargoStartLocal() {

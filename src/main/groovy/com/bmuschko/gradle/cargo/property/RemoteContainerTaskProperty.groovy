@@ -19,8 +19,6 @@ import groovy.util.logging.Slf4j
 
 /**
  * Defines remote container task properties.
- *
- * @author Benjamin Muschko
  */
 @Slf4j
 enum RemoteContainerTaskProperty implements TaskProperty {

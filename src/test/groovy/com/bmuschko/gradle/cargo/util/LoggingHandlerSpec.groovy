@@ -21,8 +21,6 @@ import spock.lang.Specification
 
 /**
  * Logging handler unit tests.
- *
- * @author Benjamin Muschko
  */
 class LoggingHandlerSpec extends Specification {
     Project project

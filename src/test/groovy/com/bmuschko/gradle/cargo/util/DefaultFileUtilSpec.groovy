@@ -21,8 +21,6 @@ import spock.lang.Unroll
 
 /**
  * Filename utilities unit tests.
- *
- * @author Benjamin Muschko
  */
 class DefaultFileUtilSpec extends Specification {
     FileUtil fileUtil = new DefaultFileUtil()

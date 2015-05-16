@@ -19,8 +19,6 @@ import org.gradle.util.ConfigureUtil
 
 /**
  * Defines Cargo remote task convention.
- *
- * @author Benjamin Muschko
  */
 class CargoRemoteTaskConvention {
     String protocol = 'http'

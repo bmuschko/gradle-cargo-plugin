@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.convention
 
 /**
  * Defines a binary file to be used in a local container.
- *
- * @author Sascha Kiedrowski
  */
 class BinFile implements Serializable {
     File file

@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.property
 
 /**
  * Task property interface.
- *
- * @author Benjamin Muschko
  */
 interface TaskProperty {
     String getName()

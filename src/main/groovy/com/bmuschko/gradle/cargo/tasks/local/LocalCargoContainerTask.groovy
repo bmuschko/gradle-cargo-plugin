@@ -29,8 +29,6 @@ import org.gradle.api.tasks.*
 
 /**
  * Deploys WAR to local container.
- *
- * @author Benjamin Muschko
  */
 class LocalCargoContainerTask extends AbstractCargoContainerTask {
     /**

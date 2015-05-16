@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.tasks.daemon
 
 /**
  * Stops the configured container via the Cargo daemon process.
- *
- * @author Benjamin Muschko
  */
 class CargoDaemonStop extends CargoDaemon {
     @Override

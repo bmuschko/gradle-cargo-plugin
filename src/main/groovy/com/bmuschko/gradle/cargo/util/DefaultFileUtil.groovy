@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.util
 
 /**
  * Filename utilities.
- *
- * @author Benjamin Muschko
  */
 class DefaultFileUtil implements FileUtil {
     @Override

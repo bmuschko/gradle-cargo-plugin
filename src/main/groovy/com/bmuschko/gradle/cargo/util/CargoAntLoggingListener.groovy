@@ -24,8 +24,6 @@ import org.gradle.api.logging.Logging
 
 /**
  * Cargo Ant build listener.
- *
- * @author Benjamin Muschko
  */
 class CargoAntLoggingListener implements BuildListener {
     Logger logger = Logging.getLogger(CargoAntLoggingListener)

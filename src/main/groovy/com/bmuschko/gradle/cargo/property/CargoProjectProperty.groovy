@@ -21,8 +21,6 @@ import org.gradle.api.Project
 
 /**
  * Retrieves Cargo project property.
- *
- * @author Benjamin Muschko
  */
 class CargoProjectProperty {
     static getTypedProperty(Project project, TaskProperty taskProperty, conventionValue) {

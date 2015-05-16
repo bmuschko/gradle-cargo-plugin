@@ -19,8 +19,6 @@ import groovy.util.logging.Slf4j
 
 /**
  * Defines supported containers.
- *
- * @author Benjamin Muschko
  */
 @Slf4j
 enum Container {

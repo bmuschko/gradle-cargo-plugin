@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.convention
 
 /**
  * Properties that can be passed on to the local container.
- *
- * @author Benjamin Muschko
  */
 class SystemProperties {
     Map<String, Object> properties = [:]

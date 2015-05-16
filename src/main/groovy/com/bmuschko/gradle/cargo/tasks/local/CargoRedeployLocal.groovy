@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.tasks.local
 
 /**
  * Redeploys a deployable on local container.
- *
- * @author Sebl29@users.noreply.github.com
  */
 class CargoRedeployLocal extends LocalCargoContainerTask {
     CargoRedeployLocal() {

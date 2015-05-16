@@ -21,8 +21,6 @@ import org.gradle.plugins.ear.EarPlugin
 
 /**
  * Provides helper method for retrieving project information.
- *
- * @author Benjamin Muschko
  */
 final class ProjectInfoHelper {
     private ProjectInfoHelper() {}

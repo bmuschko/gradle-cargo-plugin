@@ -21,7 +21,6 @@ import org.gradle.util.ConfigureUtil
 /**
  * Defines Cargo local task convention.
  *
- * @author Benjamin Muschko
  */
 class CargoLocalTaskConvention {
     String jvmArgs

@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.tasks.local
 
 /**
  * Starts the local container, deploys web application to it and wait for the user to press CTRL + C to stop.
- *
- * @author Benjamin Muschko
  */
 class CargoRunLocal extends LocalCargoContainerTask {
     CargoRunLocal() {

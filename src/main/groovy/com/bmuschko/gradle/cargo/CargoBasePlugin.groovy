@@ -26,8 +26,6 @@ import org.gradle.api.Project
  * <p>A {@link org.gradle.api.Plugin} that provides custom task types for deploying WAR/EAR files to local and remote web containers.
  * The plugin pre-configures the dependencies on the external Cargo libraries. You will still need to define at least
  * one repository that the plugin can use to look for the libraries.</p>
- *
- * @author Benjamin Muschko
  */
 class CargoBasePlugin implements Plugin<Project> {
     static final String CONFIGURATION_NAME = 'cargo'

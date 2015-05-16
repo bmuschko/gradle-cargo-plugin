@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.convention
 
 /**
  * Defines Deployable convention.
- *
- * @author Benjamin Muschko
  */
 class ConfigFile implements Serializable {
     File file

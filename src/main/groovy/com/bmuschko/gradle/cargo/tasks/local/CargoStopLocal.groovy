@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.tasks.local
 
 /**
  * Stops local container.
- *
- * @author Benjamin Muschko
  */
 class CargoStopLocal extends LocalCargoContainerTask {
     CargoStopLocal() {

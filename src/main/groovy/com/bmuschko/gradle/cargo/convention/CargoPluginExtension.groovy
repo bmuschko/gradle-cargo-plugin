@@ -17,8 +17,6 @@ package com.bmuschko.gradle.cargo.convention
 
 /**
  * Defines Cargo extension.
- *
- * @author Benjamin Muschko
  */
 class CargoPluginExtension {
     String containerId

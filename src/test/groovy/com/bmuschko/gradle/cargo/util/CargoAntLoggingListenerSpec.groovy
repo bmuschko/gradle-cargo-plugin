@@ -26,8 +26,6 @@ import spock.lang.Specification
 
 /**
  * Cargo Ant build listener unit tests.
- *
- * @author Benjamin Muschko
  */
 class CargoAntLoggingListenerSpec extends Specification {
     BuildListener buildListener

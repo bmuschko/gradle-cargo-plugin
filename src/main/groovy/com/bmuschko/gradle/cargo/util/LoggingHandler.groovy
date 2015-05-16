@@ -20,8 +20,6 @@ import org.gradle.api.AntBuilder
 
 /**
  * Logging handler support.
- *
- * @author Benjamin Muschko
  */
 class LoggingHandler {
     /**

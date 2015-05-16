@@ -19,8 +19,6 @@ import groovy.util.logging.Slf4j
 
 /**
  * Defines local container task property.
- *
- * @author Benjamin Muschko
  */
 @Slf4j
 enum LocalContainerTaskProperty implements TaskProperty {
