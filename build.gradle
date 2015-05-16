@@ -4,7 +4,7 @@ buildscript {
     }
 
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.6'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
         classpath 'org.ajoberstar:gradle-git:0.9.0'
     }
 }
@@ -29,7 +29,7 @@ dependencies {
     compile localGroovy(), gradleApi()
     def cargoVersion = '1.4.10'
     compile "org.codehaus.cargo:cargo-daemon-client:$cargoVersion"
-    testCompile('org.spockframework:spock-core:0.7-groovy-2.0') {
+    testCompile('org.spockframework:spock-core:1.0-groovy-2.3') {
         exclude group: 'org.codehaus.groovy'
     }
     testCompile "org.codehaus.cargo:cargo-ant:$cargoVersion"
@@ -164,8 +164,4 @@ githubPages {
             into 'docs/groovydoc'
         }
     }
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.1'
 }
