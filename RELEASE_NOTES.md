@@ -1,4 +1,4 @@
-### Version 2.1 (May 16, 2015)
+### Version 2.1.1 (May 16, 2015)
 
 * Upgrade to Gradle Wrapper 2.4.
 * Introduced redeploy task for local containers - [Pull request 126](https://github.com/bmuschko/gradle-cargo-plugin/pull/126).
