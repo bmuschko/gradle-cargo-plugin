@@ -22,11 +22,7 @@ import com.bmuschko.gradle.cargo.property.CargoProjectProperty
 import com.bmuschko.gradle.cargo.property.LocalContainerTaskProperty
 import com.bmuschko.gradle.cargo.property.RemoteContainerTaskProperty
 import com.bmuschko.gradle.cargo.tasks.AbstractCargoContainerTask
-import com.bmuschko.gradle.cargo.tasks.local.CargoRedeployLocal
-import com.bmuschko.gradle.cargo.tasks.local.CargoRunLocal
-import com.bmuschko.gradle.cargo.tasks.local.CargoStartLocal
-import com.bmuschko.gradle.cargo.tasks.local.CargoStopLocal
-import com.bmuschko.gradle.cargo.tasks.local.LocalCargoContainerTask
+import com.bmuschko.gradle.cargo.tasks.local.*
 import com.bmuschko.gradle.cargo.tasks.remote.CargoDeployRemote
 import com.bmuschko.gradle.cargo.tasks.remote.CargoRedeployRemote
 import com.bmuschko.gradle.cargo.tasks.remote.CargoUndeployRemote

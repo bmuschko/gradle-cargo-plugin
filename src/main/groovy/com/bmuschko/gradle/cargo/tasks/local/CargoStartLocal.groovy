@@ -23,6 +23,6 @@ package com.bmuschko.gradle.cargo.tasks.local
 class CargoStartLocal extends LocalCargoContainerTask {
     CargoStartLocal() {
         action = 'start'
-        description = 'Starts the container, deploys WAR to it and then do other tasks (for example, execute tests).'
+        description = 'Starts the container, deploys a deployable and then do other tasks (for example, execute tests).'
     }
 }

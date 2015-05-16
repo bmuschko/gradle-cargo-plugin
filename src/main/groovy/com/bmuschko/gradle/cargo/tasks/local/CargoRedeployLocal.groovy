@@ -16,13 +16,13 @@
 package com.bmuschko.gradle.cargo.tasks.local
 
 /**
- * Undeploy and deploy again a deployable to local. If the deployable was not deployed before calling redeploy, it will simply be deployed.
+ * Redeploys a deployable on local container.
  *
  * @author Sebl29@users.noreply.github.com
  */
 class CargoRedeployLocal extends LocalCargoContainerTask {
     CargoRedeployLocal() {
         action = 'redeploy'
-        description = 'Undeploy and deploy again a deployable. If the deployable was not deployed before calling redeploy, it will simply be deployed.'
+        description = 'Redeploys a deployable on local container.'
     }
 }

@@ -23,6 +23,6 @@ package com.bmuschko.gradle.cargo.tasks.local
 class CargoRunLocal extends LocalCargoContainerTask {
     CargoRunLocal() {
         action = 'run'
-        description = 'Starts the container, deploys WAR to it and wait for the user to press CTRL + C to stop.'
+        description = 'Starts the container, deploys a deployable and waita for the user to press CTRL + C to stop.'
     }
 }

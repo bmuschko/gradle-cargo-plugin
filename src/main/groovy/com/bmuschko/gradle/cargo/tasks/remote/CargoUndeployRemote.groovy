@@ -23,6 +23,6 @@ package com.bmuschko.gradle.cargo.tasks.remote
 class CargoUndeployRemote extends RemoteCargoContainerTask {
     CargoUndeployRemote() {
         action = 'undeploy'
-        description = 'Undeploys WAR from remote container.'
+        description = 'Undeploys a deployable from remote container.'
     }
 }
