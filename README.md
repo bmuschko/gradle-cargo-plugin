@@ -1,6 +1,8 @@
 # Gradle Cargo plugin
 
-![Cargo Logo](http://docs.codehaus.org/download/attachments/27913/cargo-banner-left.png)
+![Cargo Logo](https://codehaus-cargo.github.io/cargo/attachments/cargo-banner-left.png)
+
+[![Build Status](https://snap-ci.com/bmuschko/gradle-cargo-plugin/branch/master/build_image)](https://snap-ci.com/bmuschko/gradle-cargo-plugin/branch/master)
 
 The plugin provides deployment capabilities for web applications to local and remote containers in any given
 Gradle build by leveraging the [Cargo Ant tasks](http://cargo.codehaus.org/Ant+support). The plugin supports WAR and EAR
