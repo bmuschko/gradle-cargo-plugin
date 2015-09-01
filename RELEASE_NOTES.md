@@ -1,3 +1,9 @@
+### Version 2.2 (August 31, 2015)
+
+* Upgrade to Gradle Wrapper 2.6.
+* Removed container ID validation - [Issue 134](https://github.com/bmuschko/gradle-cargo-plugin/issues/134).
+* Cargo home directory is not an `@Input`, hashing can run into problems with locked files - [Pull request 133](https://github.com/bmuschko/gradle-cargo-plugin/pull/133).
+
 ### Version 2.1.1 (May 16, 2015)
 
 * Upgrade to Gradle Wrapper 2.4.
@@ -12,7 +18,7 @@
 
 * Set Java target compatibility back to 1.6 - [Pull request 113](https://github.com/bmuschko/gradle-cargo-plugin/pull/113).
 
-### Version 2.0.2 (Novemver 15, 2014)
+### Version 2.0.2 (November 15, 2014)
 
 * Directory for property `configHomeDir` is created automatically if it doesn't exist - [Issue 101](https://github.com/bmuschko/gradle-cargo-plugin/issues/101).
 * Upgrade to Cargo version 1.4.10.
