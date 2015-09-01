@@ -15,7 +15,6 @@
  */
 package com.bmuschko.gradle.cargo.tasks.remote
 
-import com.bmuschko.gradle.cargo.Container
 import com.bmuschko.gradle.cargo.DeployableType
 import com.bmuschko.gradle.cargo.DeployableTypeFactory
 import com.bmuschko.gradle.cargo.convention.Deployable
@@ -76,7 +75,7 @@ class RemoteCargoContainerTask extends AbstractCargoContainerTask {
 
     @Override
     void runAction() {
-        logger.info "Starting action '${getAction()}' for remote container '${Container.getContainerForId(getContainerId()).description}' on '${getProtocol()}://${getHostname()}:${getPort()}'"
+        logger.info "Starting action '${getAction()}' for remote container '${getContainerId()}' on '${getProtocol()}://${getHostname()}:${getPort()}'"
 
         ant.taskdef(resource: AbstractCargoContainerTask.CARGO_TASKS, classpath: getClasspath().asPath)
         ant.cargo(containerId: getContainerId(), type: 'remote', action: getAction()) {

@@ -15,7 +15,6 @@
  */
 package com.bmuschko.gradle.cargo.tasks.local
 
-import com.bmuschko.gradle.cargo.Container
 import com.bmuschko.gradle.cargo.DeployableType
 import com.bmuschko.gradle.cargo.DeployableTypeFactory
 import com.bmuschko.gradle.cargo.convention.BinFile
@@ -167,7 +166,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
 
     @Override
     void runAction() {
-        logger.info "Starting action '${getAction()}' for local container '${Container.getContainerForId(getContainerId()).description}'"
+        logger.info "Starting action '${getAction()}' for local container '${getContainerId()}'"
 
         ant.taskdef(resource: AbstractCargoContainerTask.CARGO_TASKS, classpath: getClasspath().asPath)
         ant.cargo(getCargoAttributes()) {

@@ -15,7 +15,6 @@
  */
 package com.bmuschko.gradle.cargo.tasks
 
-import com.bmuschko.gradle.cargo.Container
 import com.bmuschko.gradle.cargo.convention.Deployable
 import com.bmuschko.gradle.cargo.util.LoggingHandler
 import org.gradle.api.DefaultTask
@@ -97,13 +96,6 @@ abstract class AbstractCargoContainerTask extends DefaultTask {
     void validateConfiguration() {
         if(!getDeployables()) {
             throw new InvalidUserDataException('No deployables assigned!')
-        }
-
-        if(!getContainerId() || !Container.CONTAINERS.containsKey(getContainerId())) {
-            throw new InvalidUserDataException("Unsupported container ID '${getContainerId()}'. Please pick a valid one: ${Container.containerIds}")
-        }
-        else {
-            logger.info "Container ID = ${getContainerId()}"
         }
     }
 
