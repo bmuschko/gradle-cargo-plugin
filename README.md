@@ -31,7 +31,7 @@ shows an example on how to retrieve it from Bintray:
         }
 
         dependencies {
-            classpath 'com.bmuschko:gradle-cargo-plugin:2.1.1'
+            classpath 'com.bmuschko:gradle-cargo-plugin:2.2'
         }
     }
 
