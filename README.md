@@ -5,13 +5,13 @@
 [![Build Status](https://snap-ci.com/bmuschko/gradle-cargo-plugin/branch/master/build_image)](https://snap-ci.com/bmuschko/gradle-cargo-plugin/branch/master)
 
 The plugin provides deployment capabilities for web applications to local and remote containers in any given
-Gradle build by leveraging the [Cargo Ant tasks](http://cargo.codehaus.org/Ant+support). The plugin supports WAR and EAR
+Gradle build by leveraging the [Cargo Ant tasks](https://codehaus-cargo.github.io/cargo/Ant+support.html). The plugin supports WAR and EAR
 artifacts.
 
 The typical use case for this plugin is to support deployment during development. Keep in mind that Cargo uses hot deployment
 which over time fills up the PermGen memory of the JVM process running your container. Continuously deploying an artifact will
 inevitablity lead to a `java.lang.OutOfMemoryError`. Cargo does support container management capabilities (starting/stopping
-of remote containers) via the so-called [Cargo daemon](http://cargo.codehaus.org/Cargo+Daemon). However, in continuous deployment
+of remote containers) via the so-called [Cargo daemon](https://codehaus-cargo.github.io/cargo/Cargo+Daemon.html). However, in continuous deployment
 scenarios you often want to need perform more complex operations.
 
 ## Usage
@@ -77,7 +77,7 @@ in your build script:
 The `com.bmuschko.cargo-base` plugin already sets up the dependencies for Cargo. In order to do so, it chooses a default
 version of the libraries. Alternatively, you can define a custom version of the Cargo libraries. To do so, please use
 the `cargo` configuration name in your `dependencies` closure. Remote deployment functionality will only work with a Cargo
-version >= 1.1.0 due to a bug in the library. Please see [CARGO-962](https://jira.codehaus.org/browse/CARGO-962) for more information.
+version >= 1.1.0 due to a bug in the library. Please see [CARGO-962](https://codehaus-cargo.atlassian.net/browse/CARGO-962) for more information.
 The following example demonstrates how to use the version 1.4.5 of the Cargo libraries:
 
     dependencies {
@@ -149,7 +149,7 @@ The Cargo plugin uses the same layout as the War plugin.
 
 The Cargo plugin defines the following convention properties in the `cargo` closure:
 
-* `containerId`: The container ID you are targeting. Please see the [list of supported containers](http://cargo.codehaus.org/Home) on the Cargo website.
+* `containerId`: The container ID you are targeting. Please see the [list of supported containers](https://codehaus-cargo.github.io/cargo/Home.html) on the Cargo website.
 * `port`: The TCP port the container responds on (defaults to 8080).
 
 Within `cargo` you can define optional properties for the 1..n deployment artifacts in a closure named `deployable`. Each
@@ -176,7 +176,7 @@ Within `cargo` you can define properties for local containers in a closure named
 * `logLevel`: The log level to run the container with (optional). The valid levels are `low`, `medium` and `high`.
 * `homeDir`: The home directory of your local container installation.
 * `configHomeDir`: The home directory of your local container's configuration.
-* `configFile`: The [configuration files](http://cargo.codehaus.org/Configuration+files+option) you want to add to your
+* `configFile`: The [configuration files](https://codehaus-cargo.github.io/cargo/Configuration+files+option.html) you want to add to your
 container's configuration. The `configFile` is a closure itself and requires you to provide the attributes `file` and `todir`.
 Multiple configuration file be defined by creating more than one `configFile` closure.
 * `rmiPort`: The port to use when communicating with this server, for example to start and stop it.
@@ -184,7 +184,7 @@ Multiple configuration file be defined by creating more than one `configFile` cl
 * `extraClasspath`: A [`FileCollection`](http://www.gradle.org/docs/current/javadoc/org/gradle/api/file/FileCollection.html)
 that provides extra elements to the local [container classpath](http://cargo.codehaus.org/Container+Classpath) (optional).
 * `sharedClasspath`: A [`FileCollection`](http://www.gradle.org/docs/current/javadoc/org/gradle/api/file/FileCollection.html)
-that provides extra elements to the [application classpath](http://cargo.codehaus.org/Application+Classpath), and not to the
+that provides extra elements to the [application classpath](https://codehaus-cargo.github.io/cargo/Application+Classpath.html), and not to the
 local container (optional).
 
 ### Container properties
@@ -214,7 +214,7 @@ Local containers can use system properties passed to it. The following example s
 
 ### Automatically bootstrapping a local container
 
-If you decide to use the [ZIP installer](http://cargo.codehaus.org/Installer) Cargo will automatically download your container. You can
+If you decide to use the [ZIP installer](https://codehaus-cargo.github.io/cargo/Installer.html) Cargo will automatically download your container. You can
 define its properties in the closure `installer`. The installer only applies to "local" Cargo tasks.
 
 * `installUrl`: The URL to download the container distribtion from.
@@ -451,7 +451,7 @@ also add another task that triggers the deployment to all remote containers.
 
 **Before a remote deployment I would like to restart my container. Can this be done?**
 
-Yes, this is possible with the help of the [Cargo daemon](http://cargo.codehaus.org/Cargo+Daemon) functionality. Please
+Yes, this is possible with the help of the [Cargo daemon](https://codehaus-cargo.github.io/cargo/Cargo+Daemon.html) functionality. Please
 refer to the Cargo online documentation for setting up the Cargo daemon JVM process and configuring a container. With
 this plugin, you can use custom tasks to start and stop a container. The following example stops, starts and then redeploys
 an artifact.
