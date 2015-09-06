@@ -251,23 +251,6 @@ by project properties. The name of the project properties is the same as in the 
         }
     }
 
-## Project properties
-
-The convention properties can be overridden by project properties via `gradle.properties` or `-P` command line parameter:
-
-* `cargo.container.id`: Overrides the convention property `containerId`.
-* `cargo.port`: Overrides the convention property `port`.
-* `cargo.timeout`: Overrides the convention property `timeout`.
-* `cargo.protocol`: Overrides the convention property `protocol`.
-* `cargo.hostname`: Overrides the convention property `hostname`.
-* `cargo.username`: Overrides the convention property `username`.
-* `cargo.password`: Overrides the convention property `password`.
-* `cargo.jvmargs`: Overrides the convention property `jvmArgs`.
-* `cargo.output`: Overrides the convention property `output`.
-* `cargo.log`: Overrides the convention property `log`.
-* `cargo.log.level`: Overrides the convention property `logLevel`.
-* `cargo.home.dir`: Overrides the convention property `homeDir`.
-
 ## FAQ
 
 **I want to automatically assemble my project's artifact when executing a Cargo deployment task.**

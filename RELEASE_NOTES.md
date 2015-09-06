@@ -1,6 +1,8 @@
 ### Version 2.2.1
 
+* Fix typo in task description - [Pull request 135](https://github.com/bmuschko/gradle-cargo-plugin/pull/135).
 * Fixed configFile and file destination dir specification - [Pull request 121](https://github.com/bmuschko/gradle-cargo-plugin/pull/121).
+* Removed "magic" project properties.
 
 ### Version 2.2 (August 31, 2015)
 

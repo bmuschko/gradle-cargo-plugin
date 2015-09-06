@@ -17,10 +17,6 @@ package com.bmuschko.gradle.cargo
 
 import com.bmuschko.gradle.cargo.convention.CargoPluginExtension
 import com.bmuschko.gradle.cargo.convention.Deployable
-import com.bmuschko.gradle.cargo.property.AbstractContainerTaskProperty
-import com.bmuschko.gradle.cargo.property.CargoProjectProperty
-import com.bmuschko.gradle.cargo.property.LocalContainerTaskProperty
-import com.bmuschko.gradle.cargo.property.RemoteContainerTaskProperty
 import com.bmuschko.gradle.cargo.tasks.AbstractCargoContainerTask
 import com.bmuschko.gradle.cargo.tasks.local.*
 import com.bmuschko.gradle.cargo.tasks.remote.CargoDeployRemote
@@ -53,42 +49,22 @@ class CargoPlugin implements Plugin<Project> {
 
     private void configureAbstractContainerTask(Project project, CargoPluginExtension cargoPluginExtension) {
         project.tasks.withType(AbstractCargoContainerTask) {
-            conventionMapping.map('containerId') {
-                CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.CONTAINER_ID, cargoPluginExtension.containerId)
-            }
-            conventionMapping.map('port') {
-                CargoProjectProperty.getTypedProperty(project, AbstractContainerTaskProperty.PORT, cargoPluginExtension.port)
-            }
+            conventionMapping.map('containerId') { cargoPluginExtension.containerId }
+            conventionMapping.map('port') { cargoPluginExtension.port }
             conventionMapping.map('deployables') { resolveDeployables(project, cargoPluginExtension) }
         }
     }
 
     private void configureLocalContainerConventionMapping(Project project, CargoPluginExtension cargoPluginExtension) {
         project.tasks.withType(LocalCargoContainerTask) {
-            conventionMapping.map('jvmArgs') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.JVM_ARGS, cargoPluginExtension.local.jvmArgs)
-            }
-            conventionMapping.map('logLevel') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG_LEVEL, cargoPluginExtension.local.logLevel)
-            }
-            conventionMapping.map('homeDir') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.HOME_DIR, cargoPluginExtension.local.homeDir)
-            }
-            conventionMapping.map('configHomeDir') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.CONFIG_HOME_DIR, cargoPluginExtension.local.configHomeDir)
-            }
-            conventionMapping.map('outputFile') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.OUTPUT, cargoPluginExtension.local.outputFile)
-            }
-            conventionMapping.map('logFile') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.LOG, cargoPluginExtension.local.log)
-            }
-            conventionMapping.map('rmiPort') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.RMI_PORT, cargoPluginExtension.local.rmiPort)
-            }
-            conventionMapping.map('timeout') {
-                CargoProjectProperty.getTypedProperty(project, LocalContainerTaskProperty.TIMEOUT, cargoPluginExtension.timeout)
-            }
+            conventionMapping.map('jvmArgs') { cargoPluginExtension.local.jvmArgs }
+            conventionMapping.map('logLevel') { cargoPluginExtension.local.logLevel }
+            conventionMapping.map('homeDir') { cargoPluginExtension.local.homeDir }
+            conventionMapping.map('configHomeDir') { cargoPluginExtension.local.configHomeDir }
+            conventionMapping.map('outputFile') { cargoPluginExtension.local.outputFile }
+            conventionMapping.map('logFile') { cargoPluginExtension.local.log }
+            conventionMapping.map('rmiPort') { cargoPluginExtension.local.rmiPort }
+            conventionMapping.map('timeout') { cargoPluginExtension.timeout }
             conventionMapping.map('zipUrlInstaller') { cargoPluginExtension.local.zipUrlInstaller }
             conventionMapping.map('configFiles') { cargoPluginExtension.local.configFiles }
             conventionMapping.map('files') { cargoPluginExtension.local.files }
@@ -101,18 +77,10 @@ class CargoPlugin implements Plugin<Project> {
 
     private void setRemoteContainerConventionMapping(Project project, CargoPluginExtension cargoPluginExtension) {
         project.tasks.withType(RemoteCargoContainerTask) {
-            conventionMapping.map('protocol') {
-                CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.PROTOCOL, cargoPluginExtension.remote.protocol)
-            }
-            conventionMapping.map('hostname') {
-                CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.HOSTNAME, cargoPluginExtension.remote.hostname)
-            }
-            conventionMapping.map('username') {
-                CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.USERNAME, cargoPluginExtension.remote.username)
-            }
-            conventionMapping.map('password') {
-                CargoProjectProperty.getTypedProperty(project, RemoteContainerTaskProperty.PASSWORD, cargoPluginExtension.remote.password)
-            }
+            conventionMapping.map('protocol') { cargoPluginExtension.remote.protocol }
+            conventionMapping.map('hostname') { cargoPluginExtension.remote.hostname }
+            conventionMapping.map('username') { cargoPluginExtension.remote.username }
+            conventionMapping.map('password') { cargoPluginExtension.remote.password }
             conventionMapping.map('containerProperties') { cargoPluginExtension.remote.containerProperties.properties }
         }
     }
