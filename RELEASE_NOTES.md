@@ -1,4 +1,4 @@
-### Version 2.2.1
+### Version 2.2.1 (September 6, 2015)
 
 * Fix typo in task description - [Pull request 135](https://github.com/bmuschko/gradle-cargo-plugin/pull/135).
 * Fixed configFile and file destination dir specification - [Pull request 121](https://github.com/bmuschko/gradle-cargo-plugin/pull/121).
