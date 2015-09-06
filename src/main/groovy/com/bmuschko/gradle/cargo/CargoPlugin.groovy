@@ -62,7 +62,7 @@ class CargoPlugin implements Plugin<Project> {
             conventionMapping.map('homeDir') { cargoPluginExtension.local.homeDir }
             conventionMapping.map('configHomeDir') { cargoPluginExtension.local.configHomeDir }
             conventionMapping.map('outputFile') { cargoPluginExtension.local.outputFile }
-            conventionMapping.map('logFile') { cargoPluginExtension.local.log }
+            conventionMapping.map('logFile') { cargoPluginExtension.local.logFile }
             conventionMapping.map('rmiPort') { cargoPluginExtension.local.rmiPort }
             conventionMapping.map('timeout') { cargoPluginExtension.timeout }
             conventionMapping.map('zipUrlInstaller') { cargoPluginExtension.local.zipUrlInstaller }

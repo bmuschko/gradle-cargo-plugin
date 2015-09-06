@@ -28,7 +28,7 @@ class CargoLocalTaskConvention {
     File homeDir
     File configHomeDir
     File outputFile
-    File log
+    File logFile
     Integer rmiPort
     ZipUrlInstaller zipUrlInstaller = new ZipUrlInstaller()
     def configFiles = []
