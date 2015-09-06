@@ -363,17 +363,17 @@ to use the file from at runtime. If you need more than one just create multiple 
         local {
             configFile {
                 file = file('src/main/jboss5/login-config.xml')
-                toDir = file('conf')
+                toDir = 'conf'
             }
 
             configFile {
                 file = file('src/main/jboss5/sample-roles.properties')
-                toDir = file('conf/props')
+                toDir = 'conf/props'
             }
 
             configFile {
                 file = file('src/main/jboss5/sample-users.properties')
-                toDir = file('conf/props')
+                toDir = 'conf/props'
             }
         }
     }
@@ -386,7 +386,7 @@ To add binary file(s) you should use `file` closure(s) instead:
         local {
             file {
                 file = file('../config/db/mysql-connector-java-5.1.23-bin.jar')
-                toDir = file('lib')
+                toDir = 'lib'
             }
         }
     }

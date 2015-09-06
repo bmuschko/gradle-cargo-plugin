@@ -147,7 +147,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
                 }
             }
 
-            logger.info "Config files = ${getConfigFiles().collect { it.file.canonicalPath + " -> " + it.toDir.canonicalPath }}"
+            logger.info "Config files = ${getConfigFiles().collect { it.file.canonicalPath + " -> " + it.toDir }}"
         }
 
         if (!getFiles().isEmpty()) {
@@ -158,7 +158,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
                     + " does not exist")
                 }
             }
-            logger.info "Binary files = ${getFiles().collect { it.file.canonicalPath + " -> " + it.toDir.canonicalPath }}"
+            logger.info "Binary files = ${getFiles().collect { it.file.canonicalPath + " -> " + it.toDir }}"
         }
     }
 

@@ -1,3 +1,7 @@
+### Version 2.2.1
+
+* Fixed configFile and file destination dir specification - [Pull request 121](https://github.com/bmuschko/gradle-cargo-plugin/pull/121).
+
 ### Version 2.2 (August 31, 2015)
 
 * Upgrade to Gradle Wrapper 2.6.
