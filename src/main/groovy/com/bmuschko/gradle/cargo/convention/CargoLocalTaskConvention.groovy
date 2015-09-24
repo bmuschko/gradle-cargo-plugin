@@ -24,6 +24,7 @@ import org.gradle.util.ConfigureUtil
  */
 class CargoLocalTaskConvention {
     String jvmArgs
+	String jvmRunArgs
     String logLevel
     File homeDir
     File configHomeDir
