@@ -60,6 +60,7 @@ class CargoPlugin implements Plugin<Project> {
             conventionMapping.map('jvmArgs') { cargoPluginExtension.local.jvmArgs }
             conventionMapping.map('logLevel') { cargoPluginExtension.local.logLevel }
             conventionMapping.map('homeDir') { cargoPluginExtension.local.homeDir }
+            conventionMapping.map('configType') { cargoPluginExtension.local.configType }
             conventionMapping.map('configHomeDir') { cargoPluginExtension.local.configHomeDir }
             conventionMapping.map('outputFile') { cargoPluginExtension.local.outputFile }
             conventionMapping.map('logFile') { cargoPluginExtension.local.logFile }
