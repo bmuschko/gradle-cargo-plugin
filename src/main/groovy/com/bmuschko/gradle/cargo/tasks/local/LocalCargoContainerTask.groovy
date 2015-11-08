@@ -59,6 +59,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
     /**
      * The Cargo configuration type.
      */
+    @Input
     @Optional
     String configType
 
