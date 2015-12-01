@@ -4,6 +4,19 @@
 
 [![Build Status](https://snap-ci.com/bmuschko/gradle-cargo-plugin/branch/master/build_image)](https://snap-ci.com/bmuschko/gradle-cargo-plugin/branch/master)
 
+<table border=1>
+    <tr>
+        <td>
+            Over the past couple of years this plugin has seen many releases. Thanks to everyone involved! 
+            Unfortunately, I don't have much time to contribute anymore. In practice this means far less activity, 
+            responsiveness on issues and new releases from my end. I am 
+            <a href="https://discuss.gradle.org/t/looking-for-new-owners-for-gradle-plugins/9735">actively looking for contributors</a> 
+            willing to take on maintenance and implementation of the project. If you are interested and would love to see this 
+            plugin continue to thrive, shoot me a <a href="mailto:benjamin.muschko@gmail.com">mail</a>.
+        </td>
+    </tr>
+</table>
+
 The plugin provides deployment capabilities for web applications to local and remote containers in any given
 Gradle build by leveraging the [Cargo Ant tasks](https://codehaus-cargo.github.io/cargo/Ant+support.html). The plugin supports WAR and EAR
 artifacts.
