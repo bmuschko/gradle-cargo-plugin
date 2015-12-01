@@ -9,7 +9,10 @@
         <td>
             Over the past couple of years this plugin has seen many releases. Thanks to everyone involved! 
             Unfortunately, I don't have much time to contribute anymore. In practice this means far less activity, 
-            responsiveness on issues and new releases from my end. I am 
+            responsiveness on issues and new releases from my end.
+         </td>
+         <td>
+            I am 
             <a href="https://discuss.gradle.org/t/looking-for-new-owners-for-gradle-plugins/9735">actively looking for contributors</a> 
             willing to take on maintenance and implementation of the project. If you are interested and would love to see this 
             plugin continue to thrive, shoot me a <a href="mailto:benjamin.muschko@gmail.com">mail</a>.
