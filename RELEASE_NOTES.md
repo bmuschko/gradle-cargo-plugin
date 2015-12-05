@@ -1,3 +1,7 @@
+### Version 2.2.2 (December 4, 2015)
+
+* Expose properties for configuring a local embedded container - [Pull request 141](https://github.com/bmuschko/gradle-cargo-plugin/pull/141).
+
 ### Version 2.2.1 (September 6, 2015)
 
 * Fix typo in task description - [Pull request 135](https://github.com/bmuschko/gradle-cargo-plugin/pull/135).
