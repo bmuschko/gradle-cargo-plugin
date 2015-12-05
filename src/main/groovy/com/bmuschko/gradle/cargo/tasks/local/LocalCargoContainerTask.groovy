@@ -57,6 +57,13 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
     File configHomeDir
 
     /**
+     * The Cargo configuration type.
+     */
+    @Input
+    @Optional
+    String configType
+
+    /**
      * The path to a file where container logs are saved.
      */
     @OutputFile
@@ -160,6 +167,12 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
             }
             logger.info "Binary files = ${getFiles().collect { it.file.canonicalPath + " -> " + it.toDir }}"
         }
+
+        if (getConfigType()) {
+            if (!['standalone','existing'].contains(getConfigType())) {
+                throw new InvalidUserDataException("Configuration type " + getConfigType() + " is not supported, use 'standalone' or 'existing'")
+            }
+        }
     }
 
     @Override
@@ -237,6 +250,10 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
             }
 
             config['home'] = getConfigHomeDir().absolutePath
+        }
+
+        if(getConfigType()) {
+            config['type'] = getConfigType()
         }
 
         return config

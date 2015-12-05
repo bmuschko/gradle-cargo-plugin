@@ -26,6 +26,7 @@ class CargoLocalTaskConvention {
     String jvmArgs
     String logLevel
     File homeDir
+    String configType
     File configHomeDir
     File outputFile
     File logFile
