@@ -1,3 +1,8 @@
+### Version 2.2.3 (June 4, 2016)
+
+* Remove use of Gradle internal methods.
+* Upgrade to Gradle Wrapper 2.13.
+
 ### Version 2.2.2 (December 4, 2015)
 
 * Expose properties for configuring a local embedded container - [Pull request 141](https://github.com/bmuschko/gradle-cargo-plugin/pull/141).
