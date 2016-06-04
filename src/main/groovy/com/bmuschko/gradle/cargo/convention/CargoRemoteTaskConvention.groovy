@@ -15,8 +15,6 @@
  */
 package com.bmuschko.gradle.cargo.convention
 
-import org.gradle.util.ConfigureUtil
-
 /**
  * Defines Cargo remote task convention.
  */
@@ -28,6 +26,8 @@ class CargoRemoteTaskConvention {
     ContainerProperties containerProperties = new ContainerProperties()
 
     def containerProperties(Closure closure) {
-        ConfigureUtil.configure(closure, containerProperties)
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure.delegate = containerProperties
+        closure()
     }
 }

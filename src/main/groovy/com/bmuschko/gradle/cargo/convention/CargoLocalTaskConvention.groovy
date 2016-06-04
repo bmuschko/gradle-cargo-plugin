@@ -16,11 +16,9 @@
 package com.bmuschko.gradle.cargo.convention
 
 import org.gradle.api.file.FileCollection
-import org.gradle.util.ConfigureUtil
 
 /**
  * Defines Cargo local task convention.
- *
  */
 class CargoLocalTaskConvention {
     String jvmArgs
@@ -40,7 +38,9 @@ class CargoLocalTaskConvention {
     FileCollection sharedClasspath
 
     def installer(Closure closure) {
-        ConfigureUtil.configure(closure, zipUrlInstaller)
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure.delegate = zipUrlInstaller
+        closure()
     }
 
     def configFile(Closure closure) {
@@ -60,10 +60,14 @@ class CargoLocalTaskConvention {
     }
 
     def containerProperties(Closure closure) {
-        ConfigureUtil.configure(closure, containerProperties)
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure.delegate = containerProperties
+        closure()
     }
 
     def systemProperties(Closure closure) {
-        ConfigureUtil.configure(closure, systemProperties)
+        closure.resolveStrategy = Closure.DELEGATE_FIRST
+        closure.delegate = systemProperties
+        closure()
     }
 }
