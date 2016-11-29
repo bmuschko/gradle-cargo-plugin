@@ -22,6 +22,7 @@ import org.gradle.api.file.FileCollection
  */
 class CargoLocalTaskConvention {
     String jvmArgs
+    String jvmRunArgs
     String logLevel
     File homeDir
     String configType
