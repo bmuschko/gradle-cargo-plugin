@@ -190,7 +190,7 @@ Within `cargo` you can define properties for local containers in a closure named
 
 * `jvmArgs`: The JVM arguments for a local container.
 * `outputFile`: The log file of your local container (defaults to writing to the console).
-* `logFile`: The Cargo log file of your local container (defaults to writing to the console).
+* `log`: The Cargo log file of your local container (defaults to writing to the console).
 * `logLevel`: The log level to run the container with (optional). The valid levels are `low`, `medium` and `high`.
 * `homeDir`: The home directory of your local container installation.
 * `configHomeDir`: The home directory of your local container's configuration.
