@@ -1,8 +1,6 @@
-# Gradle Cargo plugin
+# Gradle Cargo plugin [![Build Status](https://travis-ci.org/bmuschko/gradle-cargo-plugin.svg?branch=master)](https://travis-ci.org/bmuschko/gradle-cargo-plugin)
 
 ![Cargo Logo](https://codehaus-cargo.github.io/cargo/attachments/cargo-banner-left.png)
-
-[![Build Status](https://snap-ci.com/bmuschko/gradle-cargo-plugin/branch/master/build_image)](https://snap-ci.com/bmuschko/gradle-cargo-plugin/branch/master)
 
 <table border=1>
     <tr>
