@@ -1,3 +1,9 @@
+### Version 2.3 (January 2, 2018)
+
+* Introduce task for configuring local container - [Pull request 144](https://github.com/bmuschko/gradle-cargo-plugin/pull/144).
+* Upgrade to Cargo Ant tasks version 1.6.6.
+* Upgrade to Gradle Wrapper 4.4.1.
+
 ### Version 2.2.3 (June 4, 2016)
 
 * Remove use of Gradle internal methods.

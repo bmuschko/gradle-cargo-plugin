@@ -1,11 +1,11 @@
 buildscript {
     repositories {
-        maven { url 'http://jcenter.bintray.com' }
+        jcenter()
     }
 
     dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.2'
-        classpath 'org.ajoberstar:gradle-git:0.9.0'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.0'
+        classpath 'org.ajoberstar:gradle-git:1.4.2'
     }
 }
 
@@ -13,13 +13,13 @@ apply plugin: 'groovy'
 apply plugin: 'idea'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'github-pages'
+apply plugin: 'org.ajoberstar.github-pages'
 
 def compatibilityVersion = 1.6
 sourceCompatibility = compatibilityVersion
 targetCompatibility = compatibilityVersion
 group = 'com.bmuschko'
-version = '2.2.3'
+version = '2.3'
 
 repositories {
     mavenCentral()
@@ -27,7 +27,7 @@ repositories {
 
 dependencies {
     compile localGroovy(), gradleApi()
-    def cargoVersion = '1.4.15'
+    def cargoVersion = '1.6.6'
     compile "org.codehaus.cargo:cargo-daemon-client:$cargoVersion"
     testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
         exclude group: 'org.codehaus.groovy'
@@ -122,6 +122,7 @@ bintray {
     user = project.hasProperty('bintrayUser') ? project.getProperty('bintrayUser') : null
     key =  project.hasProperty('bintrayKey') ? project.getProperty('bintrayKey') : null
     publications = ['mavenJava']
+    publish = true
 
     pkg {
         repo = 'gradle-plugins'
