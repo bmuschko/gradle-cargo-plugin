@@ -99,6 +99,7 @@ class CargoPlugin implements Plugin<Project> {
         project.task('cargoStartLocal', type: CargoStartLocal)
         project.task('cargoStopLocal', type: CargoStopLocal)
         project.task('cargoRedeployLocal', type: CargoRedeployLocal)
+        project.task('cargoConfigureLocal', type: CargoConfigureLocal)
     }
 
     private void checkValidContainerId(Project project, CargoPluginExtension cargoPluginExtension) {

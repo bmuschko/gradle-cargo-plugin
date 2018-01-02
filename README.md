@@ -155,6 +155,12 @@ The `cargo` plugin pre-defines the following tasks out-of-the-box:
         <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoStopLocal.html">CargoStopLocal</a></td>
         <td>Stops local container.</td>
     </tr>
+    <tr>
+        <td>cargoConfigureLocal</td>
+        <td>-</td>
+        <td><a href="http://bmuschko.github.io/gradle-cargo-plugin/docs/groovydoc/com/bmuschko/gradle/cargo/tasks/local/CargoConfigureLocal.html">CargoConfigureLocal</a></td>
+        <td>Configures the local container.</td>
+    </tr>
 </table>
 
 ## Project layout
