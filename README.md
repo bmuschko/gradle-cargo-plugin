@@ -20,6 +20,27 @@
     </tr>
 </table>
 
+* [Usage](#usage)
+  + [Adding the plugin binary to the build](#adding-the-plugin-binary-to-the-build)
+  + [Provided plugins](#provided-plugins)
+  + [Configuring the Cargo version](#configuring-the-cargo-version)
+* [Tasks](#tasks)
+* [Project layout](#project-layout)
+* [Extension properties](#extension-properties)
+  + [Container properties](#container-properties)
+  + [System properties](#system-properties)
+  + [Automatically bootstrapping a local container](#automatically-bootstrapping-a-local-container)
+  + [Example](#example)
+* [FAQ](#faq)
+  + [I want to automatically assemble my project's artifact when executing a Cargo deployment task.](#i-want-to-automatically-assemble-my-projects-artifact-when-executing-a-cargo-deployment-task)
+  + [I am working on a multi-project build. Can I apply the same Cargo configuration to all of my web projects?](#i-am-working-on-a-multi-project-build-can-i-apply-the-same-cargo-configuration-to-all-of-my-web-projects)
+  + [I would like to deploy multiple artifacts to my container. How do I do that?](#i-would-like-to-deploy-multiple-artifacts-to-my-container-how-do-i-do-that)
+  + [Is there a way to let Cargo automatically install the container I'd like to use?](#is-there-a-way-to-let-cargo-automatically-install-the-container-id-like-to-use)
+  + [I'd like to add a configuration file to my local container. How do I do that?](#id-like-to-add-a-configuration-file-to-my-local-container-how-do-i-do-that)
+  + [I want to set up and configure my own Cargo task for more than one container. Can this be done?](#i-want-to-set-up-and-configure-my-own-cargo-task-for-more-than-one-container-can-this-be-done)
+  + [I'd like to create deployment tasks for a rolling deployment to multiple remote containers. How do I do this?](#id-like-to-create-deployment-tasks-for-a-rolling-deployment-to-multiple-remote-containers-how-do-i-do-this)
+  + [Before a remote deployment I would like to restart my container. Can this be done?](#before-a-remote-deployment-i-would-like-to-restart-my-container-can-this-be-done)
+  
 The plugin provides deployment capabilities for web applications to local and remote containers in any given
 Gradle build by leveraging the [Cargo Ant tasks](https://codehaus-cargo.github.io/cargo/Ant+support.html). The plugin supports WAR and EAR
 artifacts.
@@ -40,7 +61,7 @@ the plugin.
 The plugin JAR needs to be defined in the classpath of your build script. It is directly available on
 [Bintray](https://bintray.com/bmuschko/gradle-plugins/com.bmuschko%3Agradle-cargo-plugin/). The following code snippet 
 shows an example on how to retrieve it from Bintray:
-
+```groovy
     buildscript {
         repositories {
             jcenter()
@@ -50,6 +71,7 @@ shows an example on how to retrieve it from Bintray:
             classpath 'com.bmuschko:gradle-cargo-plugin:2.3'
         }
     }
+```
 
 ### Provided plugins
 
@@ -80,13 +102,17 @@ The `com.bmuschko.cargo` plugin helps you get started quickly. If you only need 
 preferrable option. Most plugin users will go with this option. To use the Cargo plugin, include the following code snippet
 in your build script:
 
+```groovy
     apply plugin: 'com.bmuschko.cargo'
+```
 
 If you need full control over your deployment tasks, you will want to use the `com.bmuschko.cargo-base` plugin. The downside is that each task
 has to be configured individually in your build script. To use the Cargo base plugin, include the following code snippet
 in your build script:
 
+```groovy
     apply plugin: 'com.bmuschko.cargo-base'
+```
 
 ### Configuring the Cargo version
 
@@ -96,11 +122,13 @@ the `cargo` configuration name in your `dependencies` closure. Remote deployment
 version >= 1.1.0 due to a bug in the library. Please see [CARGO-962](https://codehaus-cargo.atlassian.net/browse/CARGO-962) for more information.
 The following example demonstrates how to use the version 1.4.5 of the Cargo libraries:
 
+```groovy
     dependencies {
         def cargoVersion = '1.4.5'
         cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion",
               "org.codehaus.cargo:cargo-ant:$cargoVersion"
     }
+```
 
 ## Tasks
 
@@ -214,6 +242,7 @@ local container (optional).
 Within `local` and `remote` you can define container-specific properties. These properties can be looked up on
 the Cargo homepage. The following example shows how to set the AJP port for a local Tomcat container:
 
+```groovy
     cargo {
         local {
             containerProperties {
@@ -221,11 +250,13 @@ the Cargo homepage. The following example shows how to set the AJP port for a lo
             }
         }
     }
+```
 
 ### System properties
 
 Local containers can use system properties passed to it. The following example shows how to set a single system property named `myproperty`:
 
+```groovy
     cargo {
         local {
             systemProperties {
@@ -233,6 +264,7 @@ Local containers can use system properties passed to it. The following example s
             }
         }
     }
+```
 
 ### Automatically bootstrapping a local container
 
@@ -248,6 +280,7 @@ by project properties. The name of the project properties is the same as in the 
 
 ### Example
 
+```groovy
     cargo {
         containerId = 'tomcat6x'
         port = 9090
@@ -272,25 +305,29 @@ by project properties. The name of the project properties is the same as in the 
             }
         }
     }
+```
 
 ## FAQ
 
-**I want to automatically assemble my project's artifact when executing a Cargo deployment task.**
+#### I want to automatically assemble my project's artifact when executing a Cargo deployment task.
 
 The task `cargoRunLocal` does not automatically depend on the `assemble` task. The reason behind that is that you might
 not want to deploy your project's artifact or your project does not generate a WAR or EAR file. Instead you might want
 to deploy one or more external artifacts. If your workflow looks like "compile the code", "generate the artifact" and "deploy"
 then you make a Cargo deployment task depends on the `assemble` task. Here's one example:
 
+```groovy
     cargoRunLocal.dependsOn assemble
+```
 
-**I am working on a multi-project build. Can I apply the same Cargo configuration to all of my web projects?**
+#### I am working on a multi-project build. Can I apply the same Cargo configuration to all of my web projects?
 
 Gradle allows for filtering subprojects by certain criteria. To inject the relevant configuration from the root project
 of your build, you will need to identify all subprojects that apply the War plugin (of course the same concept works
 for Ear projects). Use the `configure` method to apply the Cargo plugin and your configuration as shown in the following
 code snippet:
 
+```groovy
     def webProjects() {
         subprojects.findAll { subproject -> subproject.plugins.hasPlugin('war') }
     }
@@ -310,12 +347,14 @@ code snippet:
             }
         }
     }
+```
 
-**I would like to deploy multiple artifacts to my container. How do I do that?**
+#### I would like to deploy multiple artifacts to my container. How do I do that?
 
 You would specify each artifact in a separate `deployable` closure. Each of the closures should assign a unique URL context.
 The following example demonstrates how a Cargo setup with three different artifacts deployed to a local Tomcat:
 
+```groovy
     cargo {
         containerId = 'tomcat6x'
         port = 9090
@@ -339,12 +378,14 @@ The following example demonstrates how a Cargo setup with three different artifa
             homeDir = file('/home/user/dev/tools/apache-tomcat-6.0.32')
         }
     }
+```
 
-**Is there a way to let Cargo automatically install the container I'd like to use?**
+#### Is there a way to let Cargo automatically install the container I'd like to use?
 
 Cargo allows for defining a container that gets automatically downloaded and installed on your local disk. All you need to
 do is to specify the `installer` closure. The following code snippet downloads, installs and uses Tomcat 7:
 
+```groovy
     cargo {
         containerId = 'tomcat7x'
 
@@ -356,12 +397,14 @@ do is to specify the `installer` closure. The following code snippet downloads, 
             }
         }
     }
+```
 
-**I'd like to add a configuration file to my local container. How do I do that?**
+#### I'd like to add a configuration file to my local container. How do I do that?
 
 For local containers a closure named `configFile` can be used that defines the source file and directory you would like
 to use the file from at runtime. If you need more than one just create multiple `configFile` closures.
 
+```groovy
     cargo {
         containerId = 'jboss5x'
 
@@ -382,9 +425,11 @@ to use the file from at runtime. If you need more than one just create multiple 
             }
         }
     }
+```
 
 To add binary file(s) you should use `file` closure(s) instead:
 
+```groovy
     cargo {
         containerId = 'glassfish3x'
 
@@ -395,13 +440,15 @@ To add binary file(s) you should use `file` closure(s) instead:
             }
         }
     }
+```
 
-**I want to set up and configure my own Cargo task for more than one container. Can this be done?**
+#### I want to set up and configure my own Cargo task for more than one container. Can this be done?
 
 Absolutely. The Cargo base plugin provides all tasks needed to set up deployment tasks. All you need to do is to create one
 or more tasks and configure the mandatory properties. The following example shows how to set up local container tasks
 for Tomcat and Jetty:
 
+```groovy
     apply plugin: 'com.bmuschko.cargo-base'
 
     task myTomcatRun(type: com.bmuschko.gradle.cargo.tasks.local.CargoRunLocal) {
@@ -413,13 +460,17 @@ for Tomcat and Jetty:
         containerId = 'jetty9x'
         homeDir = file('/home/user/dev/tools/jetty-distribution-9.0.4.v20130625')
     }
+```
 
-**I'd like to create deployment tasks for a rolling deployment to multiple remote containers. How do I do this?**
+#### I'd like to create deployment tasks for a rolling deployment to multiple remote containers. How do I do this?
 
 Gradle allows for dynamically creating tasks based on your build script logic. The following example shows how to create
 three Tomcat deployment tasks and how to configure them with the help of a simple data structure. At the end of the script we
 also add another task that triggers the deployment to all remote containers.
 
+_Please note that for this advanced configuration you would need to apply the `cargo-base` and not the `cargo` plugin._  
+
+```groovy
     class RemoteContainer {
         String name
         String hostname
@@ -453,14 +504,16 @@ also add another task that triggers the deployment to all remote containers.
         description = 'Deploys to all remote Tomcat containers.'
         group = 'deployment'
     }
+```
 
-**Before a remote deployment I would like to restart my container. Can this be done?**
+#### Before a remote deployment I would like to restart my container. Can this be done?
 
 Yes, this is possible with the help of the [Cargo daemon](https://codehaus-cargo.github.io/cargo/Cargo+Daemon.html) functionality. Please
 refer to the Cargo online documentation for setting up the Cargo daemon JVM process and configuring a container. With
 this plugin, you can use custom tasks to start and stop a container. The following example stops, starts and then redeploys
 an artifact.
 
+```groovy
     apply plugin: 'com.bmuschko.cargo'
 
     cargo {
@@ -479,4 +532,4 @@ an artifact.
 
     cargoDaemonStart.mustRunAfter cargoDaemonStop
     cargoRedeployRemote.dependsOn cargoDaemonStop, cargoDaemonStart
-
+```
