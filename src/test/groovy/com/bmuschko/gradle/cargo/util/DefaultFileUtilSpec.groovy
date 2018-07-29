@@ -15,7 +15,8 @@
  */
 package com.bmuschko.gradle.cargo.util
 
-import org.gradle.util.GFileUtils
+import org.junit.Rule
+import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -23,16 +24,10 @@ import spock.lang.Unroll
  * Filename utilities unit tests.
  */
 class DefaultFileUtilSpec extends Specification {
+    @Rule
+    TemporaryFolder temporaryFolder = new TemporaryFolder()
+
     FileUtil fileUtil = new DefaultFileUtil()
-    File tempDir
-
-    def setup() {
-        tempDir = createDirectory('build/tests/tmp')
-    }
-
-    def cleanup() {
-        GFileUtils.deleteDirectory(tempDir)
-    }
 
     def "throws exception for non-existent file"() {
         when:
@@ -45,46 +40,28 @@ class DefaultFileUtilSpec extends Specification {
     @Unroll
     def "get file extension for file with name '#filename'"() {
         when:
-        String extension = fileUtil.getExtension(createFile(tempDir, filename))
+        String extension = fileUtil.getExtension(temporaryFolder.newFile(filename))
 
         then:
         extension == expectedExtension
 
         where:
-        filename              | expectedExtension
-        '/Users/ben/test.war' | 'war'
-        '/Users/ben/test'     | ''
+        filename   | expectedExtension
+        'test.war' | 'war'
+        'test'     | ''
     }
 
     @Unroll
     def "get file extension for directory with name '#dirname'"() {
         when:
-        String extension = fileUtil.getExtension(createDirectory(tempDir, dirname))
+        String extension = fileUtil.getExtension(temporaryFolder.newFolder(dirname))
 
         then:
         extension == expectedExtension
 
         where:
-        dirname               | expectedExtension
-        '/Users/ben/test'     | ''
-        '/Users/ben/test-1.0' | ''
-    }
-
-    private File createDirectory(String dirname) {
-        File dir = new File(dirname)
-        GFileUtils.mkdirs(dir)
-        dir
-    }
-
-    private File createDirectory(File parent, String dirname) {
-        File dir = new File(parent, dirname)
-        GFileUtils.mkdirs(dir)
-        dir
-    }
-
-    private File createFile(File parent, String filename) {
-        File file = new File(parent, filename)
-        GFileUtils.touch(file)
-        file
+        dirname    | expectedExtension
+        'test'     | ''
+        'test-1.0' | ''
     }
 }
