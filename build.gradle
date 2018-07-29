@@ -10,7 +10,6 @@ buildscript {
 }
 
 apply plugin: 'groovy'
-apply plugin: 'idea'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'org.ajoberstar.github-pages'
@@ -19,7 +18,7 @@ def compatibilityVersion = 1.6
 sourceCompatibility = compatibilityVersion
 targetCompatibility = compatibilityVersion
 group = 'com.bmuschko'
-version = '2.3'
+version = '2.4'
 
 repositories {
     mavenCentral()
@@ -27,7 +26,7 @@ repositories {
 
 dependencies {
     compile localGroovy(), gradleApi()
-    def cargoVersion = '1.6.6'
+    def cargoVersion = '1.6.8'
     compile "org.codehaus.cargo:cargo-daemon-client:$cargoVersion"
     testCompile('org.spockframework:spock-core:1.0-groovy-2.4') {
         exclude group: 'org.codehaus.groovy'
@@ -43,22 +42,6 @@ jar {
                    'Built-Date': new Date(),
                    'Built-JDK': System.getProperty('java.version'),
                    'Built-Gradle': gradle.gradleVersion
-    }
-}
-
-idea.project {
-    jdkName = compatibilityVersion
-  
-    ipr.withXml { provider ->
-        def node = provider.asNode()
-
-        // Use GIT
-        def vcsConfig = node.component.find { it.'@name' == 'VcsDirectoryMappings' }
-        vcsConfig.mapping[0].'@vcs' = 'Git'
-
-        // Set Gradle home
-        def gradleSettings = node.appendNode('component', [name: 'GradleSettings'])
-        gradleSettings.appendNode('option', [name: 'SDK_HOME', value: gradle.gradleHomeDir])
     }
 }
 

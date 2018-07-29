@@ -1,3 +1,9 @@
+### Version 2.4 (July 29, 2018)
+
+* Allow setting timeout to 0 - [Pull request 169](https://github.com/bmuschko/gradle-cargo-plugin/pull/169).
+* Upgrade to Cargo Ant tasks version 1.6.8.
+* Upgrade to Gradle Wrapper 4.9.
+
 ### Version 2.3 (January 2, 2018)
 
 * Introduce task for configuring local container - [Pull request 144](https://github.com/bmuschko/gradle-cargo-plugin/pull/144).
