@@ -261,7 +261,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
 
     private Map<String, String> getCargoAttributes() {
         def cargoAttributes = ['containerId': getContainerId(), 'action': getAction()]
-        if (getTimeout() >= 0) {
+        if (getTimeout() && getTimeout() >= 0) {
             cargoAttributes['timeout'] = getTimeout()
         }
 
