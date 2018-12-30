@@ -47,19 +47,21 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
     /**
      * The container's installation home directory.
      */
+    @Internal
     @Optional
     File homeDir
 
     /**
      * The Cargo configuration home directory.
      */
+    @Internal
     @Optional
     File configHomeDir
 
     /**
      * The Cargo configuration type.
      */
-    @Input
+    @Internal
     @Optional
     String configType
 
@@ -175,6 +177,12 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
         }
     }
 
+    @Input
+    @Optional
+    protected String getHomeDirPath() {
+        getHomeDir()?.canonicalPath
+    }
+
     @Override
     void runAction() {
         logger.info "Starting action '${getAction()}' for local container '${getContainerId()}'"
@@ -241,6 +249,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
         }
     }
 
+    @Input
     protected Map<String, String> getConfigurationAttributes() {
         def config = [:]
 
@@ -266,7 +275,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
         }
 
         if(!getZipUrlInstaller().isValid()) {
-            cargoAttributes['home'] = getHomeDir().canonicalPath
+            cargoAttributes['home'] = homeDirPath
         }
 
         if(getOutputFile()) {
