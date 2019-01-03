@@ -20,6 +20,7 @@ import com.bmuschko.gradle.cargo.DeployableTypeFactory
 import com.bmuschko.gradle.cargo.convention.Deployable
 import com.bmuschko.gradle.cargo.tasks.AbstractCargoContainerTask
 import org.gradle.api.InvalidUserDataException
+import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 
 /**
@@ -32,82 +33,86 @@ class RemoteCargoContainerTask extends AbstractCargoContainerTask {
      * Protocol on which the container is listening to. Defaults to 'http'.
      */
     @Input
-    String protocol = 'http'
+    Property<String> protocol = project.objects.property(String)
 
     /**
      * Host name on which the container listens to. Defaults to 'localhost'.
      */
     @Input
-    String hostname = 'localhost'
+    Property<String> hostname = project.objects.property(String)
 
     /**
      * Username to use to authenticate against a remote container.
      */
     @Input
-    String username
+    Property<String> username = project.objects.property(String)
 
     /**
      * Password to use to authenticate against a remote container.
      */
     @Input
-    String password
+    Property<String> password = project.objects.property(String)
+
+    RemoteCargoContainerTask() {
+        protocol.set("http")
+        hostname.set("localhost")
+    }
 
     @Override
     void validateConfiguration() {
         super.validateConfiguration()
 
         if(getAction() != UNDEPLOY_ACTION) {
-            getDeployables().each { deployable ->
-                if(deployable.file && !deployable.file.exists()) {
+            getDeployables().get().each { deployable ->
+                if(deployable.getFile().present && !deployable.getFile().get().exists()) {
                     throw new InvalidUserDataException("Deployable "
-                            + (deployable.file == null ? "null" : deployable.file.canonicalPath)
+                            + (!deployable.getFile().present ? "null" : deployable.file.get().canonicalPath)
                             + " does not exist")
                 }
 
-                if(DeployableType.EXPLODED == DeployableTypeFactory.instance.getType(deployable.file)) {
+                if(DeployableType.EXPLODED == DeployableTypeFactory.instance.getType(deployable.getFile().get())) {
                     throw new InvalidUserDataException("Deployable type: EXPLODED is invalid for remote deployment")
                 }
-
-                logger.info "Deployable artifacts = ${getDeployables().collect { it.file.canonicalPath }}"
             }
+            logger.info "Deployable artifacts = ${getDeployables().get().collect { it.file.canonicalPath }}"
         }
     }
 
     @Override
     void runAction() {
-        logger.info "Starting action '${getAction()}' for remote container '${getContainerId()}' on '${getProtocol()}://${getHostname()}:${getPort()}'"
+        logger.info "Starting action '${getAction()}' for remote container '${getContainerId().get()}' on '${getProtocol().get()}://${getHostname().get()}:${getPort().get()}'"
 
-        ant.taskdef(resource: AbstractCargoContainerTask.CARGO_TASKS, classpath: getClasspath().asPath)
+        ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)
         ant.cargo(containerId: getContainerId(), type: 'remote', action: getAction()) {
             configuration(type: 'runtime') {
-                property(name: 'cargo.protocol', value: getProtocol())
-                property(name: 'cargo.hostname', value: getHostname())
-                property(name: AbstractCargoContainerTask.CARGO_SERVLET_PORT, value: getPort())
+                property(name: 'cargo.protocol', value: getProtocol().get())
+                property(name: 'cargo.hostname', value: getHostname().get())
+                property(name: CARGO_SERVLET_PORT, value: getPort().get())
                 setContainerSpecificProperties()
 
-                if(getUsername() && getPassword()) {
-                    property(name: 'cargo.remote.username', value: getUsername())
-                    property(name: 'cargo.remote.password', value: getPassword())
+                if(getUsername().present && getPassword().present) {
+                    property(name: 'cargo.remote.username', value: getUsername().get())
+                    property(name: 'cargo.remote.password', value: getPassword().get())
                 }
 
                 getDeployables().each { Deployable deployable ->
-                    DeployableType deployableType = DeployableTypeFactory.instance.getType(deployable.file)
+                    DeployableType deployableType = DeployableTypeFactory.instance.getType(deployable.file.get())
 
-                    if(deployable.context) {
+                    if(deployable.getContext().present) {
                         // For the undeploy action do not set a file attribute
                         if(getAction() == UNDEPLOY_ACTION) {
-                            ant.deployable(type: deployableType.type) {
-                                property(name: AbstractCargoContainerTask.CARGO_CONTEXT, value: deployable.context)
+                            ant.deployable(type: deployableType.getType()) {
+                                property(name: CARGO_CONTEXT, value: deployable.context.get())
                             }
                         }
                         else {
-                            ant.deployable(type: deployableType.type, file: deployable.file) {
-                                property(name: AbstractCargoContainerTask.CARGO_CONTEXT, value: deployable.context)
+                            ant.deployable(type: deployableType.getType(), file: deployable.getFile().get()) {
+                                property(name: CARGO_CONTEXT, value: deployable.context.get())
                             }
                         }
                     }
                     else {
-                        ant.deployable(type: deployableType.type, file: deployable.file)
+                        ant.deployable(type: deployableType.getType(), file: deployable.getFile().get())
                     }
                 }
             }

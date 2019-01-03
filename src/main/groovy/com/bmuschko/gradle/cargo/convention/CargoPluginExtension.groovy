@@ -16,23 +16,29 @@
 package com.bmuschko.gradle.cargo.convention
 
 import org.gradle.api.Project
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Internal
+
+import java.time.Duration
 
 /**
  * Defines Cargo extension.
  */
 class CargoPluginExtension {
-
-    private final Project project
-
-    String containerId
-    Integer port = 8080
-    Integer timeout
-    def deployables = []
-    CargoRemoteTaskConvention remote = new CargoRemoteTaskConvention()
-    CargoLocalTaskConvention local = new CargoLocalTaskConvention()
+    final Property<String> containerId
+    final Property<Integer> port
+    final Property<Duration> timeout
+    final ListProperty<Deployable> deployables
+    private Project project
 
     CargoPluginExtension(Project project) {
         this.project = project
+        containerId = project.objects.property(String)
+        port = project.objects.property(Integer)
+        port.convention(8080)
+        timeout = project.objects.property(Duration)
+        deployables = project.objects.listProperty(Deployable)
     }
 
     def cargo(Closure closure) {
@@ -40,38 +46,39 @@ class CargoPluginExtension {
         closure()
     }
 
+
     def deployable(Closure closure) {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
         def deployableClosureDelegate = new DeployableClosureDelegate(project)
         closure.delegate = deployableClosureDelegate
-        deployables << deployableClosureDelegate.deployable
-        closure()
-    }
-
-    def remote(Closure closure) {
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = remote
-        closure()
-    }
-
-    def local(Closure closure) {
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = local
+        deployables.add(deployableClosureDelegate.deployable)
         closure()
     }
 
     private static class DeployableClosureDelegate {
 
         @Delegate
-        final Deployable deployable = new Deployable()
+        final Deployable deployable
+
+        @Internal
         private final Project project
 
         DeployableClosureDelegate(Project project) {
             this.project = project
+            this.deployable = new Deployable(project)
         }
 
         void setFile(Object file) {
-            deployable.files = project.files(file)
+            deployable.setFile(project.file(file))
+        }
+
+
+        void setFiles(Object file) {
+            deployable.setConfiguration(project.files(file))
+        }
+
+        void setContext(String context) {
+            deployable.setContext(context)
         }
     }
 

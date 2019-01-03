@@ -23,8 +23,17 @@ import com.bmuschko.gradle.cargo.convention.Deployable
 import com.bmuschko.gradle.cargo.convention.ZipUrlInstaller
 import com.bmuschko.gradle.cargo.tasks.AbstractCargoContainerTask
 import org.gradle.api.InvalidUserDataException
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
+import org.gradle.api.file.RegularFileProperty
+import org.gradle.api.provider.ListProperty
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.*
+
+import java.time.Duration
 
 /**
  * Deploys WAR to local container.
@@ -35,120 +44,127 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
      */
     @Input
     @Optional
-    String logLevel
+    final Property<String> logLevel = project.objects.property(String)
 
     /**
      * JVM args to be used when starting/stopping containers.
      */
     @Input
     @Optional
-    String jvmArgs
+    final Property<String> jvmArgs = project.objects.property(String)
 
     /**
      * The container's installation home directory.
      */
     @Internal
     @Optional
-    File homeDir
+    final DirectoryProperty homeDir
 
     /**
      * The Cargo configuration home directory.
      */
     @Internal
     @Optional
-    File configHomeDir
+    final DirectoryProperty configHomeDir = project.objects.directoryProperty()
 
     /**
      * The Cargo configuration type.
      */
     @Internal
     @Optional
-    String configType
+    final Property<String> configType = project.objects.property(String)
 
     /**
      * The path to a file where container logs are saved.
      */
     @OutputFile
     @Optional
-    File outputFile
+    final RegularFileProperty outputFile = project.objects.fileProperty()
 
     /**
      * The path to a file where Cargo logs are saved.
      */
     @OutputFile
     @Optional
-    File logFile
+    final RegularFileProperty logFile = project.objects.fileProperty()
 
     /**
      * The port to use when communicating with this server.
      */
     @Input
     @Optional
-    Integer rmiPort
+    final Property<Integer> rmiPort = project.objects.property(Integer)
 
     /**
      * Timeout after which the container start/stop is deemed failed.
      */
     @Input
     @Optional
-    Integer timeout
+    final Property<Duration> timeout = project.objects.property(Duration)
 
     /**
      * The system properties passed-on the container.
      */
     @Input
-    Map<String, Object> systemProperties = [:]
+    MapProperty<String, Object> systemProperties = project.objects.mapProperty(String, Object)
 
     /**
      * The list of configuration files.
      */
     @Input
-    List<ConfigFile> configFiles = []
+    ListProperty<ConfigFile> configFiles = project.objects.listProperty(ConfigFile)
 
     /**
      * The list of binary files.
      */
     @Input
-    List<BinFile> files = []
+    ListProperty<BinFile> files = project.objects.listProperty(BinFile)
 
     /**
      * Configurable ZIP URL installer instance for automatically downloading a container.
      */
     @Nested
-    ZipUrlInstaller zipUrlInstaller = new ZipUrlInstaller()
+    Property<ZipUrlInstaller> zipUrlInstaller
 
     /**
      * Additional libraries for your application's classpath that are not exposed to the container.
      */
     @InputFiles
     @Optional
-    FileCollection sharedClasspath
+    ConfigurableFileCollection sharedClasspath = project.layout.configurableFiles()
 
     /**
      * Additional libraries added to the container's classpath.
      */
     @InputFiles
     @Optional
-    FileCollection extraClasspath
+    ConfigurableFileCollection extraClasspath = project.layout.configurableFiles()
+
+    LocalCargoContainerTask() {
+        zipUrlInstaller = project.objects.property(ZipUrlInstaller)
+        zipUrlInstaller.convention(new ZipUrlInstaller(project))
+
+        homeDir = project.objects.directoryProperty()
+    }
 
     @Override
     void validateConfiguration() {
         super.validateConfiguration()
 
-        if(!getDeployables().isEmpty()) {
-            getDeployables().each { deployable ->
-                if(deployable.file && !deployable.file.exists()) {
+        if (getDeployables().isPresent()) {
+            getDeployables().get().each { deployable ->
+                if (deployable.getFile().present && !deployable.getFile().get().exists()) {
                     throw new InvalidUserDataException("Deployable "
-                            + (deployable.file == null ? "null" : deployable.file.canonicalPath)
+                            + (deployable.file == null ? "null" : deployable.getFile().get().canonicalPath)
                             + " does not exist")
                 }
             }
 
-            logger.info "Deployable artifacts = ${getDeployables().collect { it.file.canonicalPath }}"
+            logger.info("Deployable artifacts = ${getDeployables().get().collect { it.file.get().canonicalPath }}")
         }
 
-        if(!getConfigFiles().isEmpty()) {
-            getConfigFiles().each { configFile ->
+        if (getConfigFiles().isPresent()) {
+            getConfigFiles().get().each { configFile ->
                 if(!configFile.file || !configFile.file.exists()) {
                     throw new InvalidUserDataException("Config file "
                     + (configFile.file == null ? "null" : configFile.file.canonicalPath)
@@ -156,92 +172,91 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
                 }
             }
 
-            logger.info "Config files = ${getConfigFiles().collect { it.file.canonicalPath + " -> " + it.toDir }}"
+            logger.info("Config files = ${getConfigFiles().get().collect { it.file.canonicalPath + " -> " + it.toDir }}")
         }
 
-        if (!getFiles().isEmpty()) {
-            getFiles().each { binFile ->
+        if (getFiles().isPresent()) {
+            getFiles().get().each { binFile ->
                 if (!binFile.file || !binFile.file.exists()) {
-                    throw new InvalidUserDataException("Binary File "
+                    throw new InvalidUserDataException("Binary Property<File> "
                     + (binFile.file == null ? "null" : binFile.file.canonicalPath)
                     + " does not exist")
                 }
             }
-            logger.info "Binary files = ${getFiles().collect { it.file.canonicalPath + " -> " + it.toDir }}"
+            logger.info("Binary files = ${getFiles().get().collect { it.file.canonicalPath + " -> " + it.toDir }}")
         }
 
-        if (getConfigType()) {
-            if (!['standalone','existing'].contains(getConfigType())) {
-                throw new InvalidUserDataException("Configuration type " + getConfigType() + " is not supported, use 'standalone' or 'existing'")
+        if (getConfigType().isPresent()) {
+            if (!['standalone', 'existing'].contains(getConfigType().get())) {
+                throw new InvalidUserDataException("Configuration type " + getConfigType().get() + " is not supported, use 'standalone' or 'existing'")
             }
         }
-    }
-
-    @Input
-    @Optional
-    protected String getHomeDirPath() {
-        getHomeDir()?.canonicalPath
     }
 
     @Override
     void runAction() {
         logger.info "Starting action '${getAction()}' for local container '${getContainerId()}'"
 
-        ant.taskdef(resource: AbstractCargoContainerTask.CARGO_TASKS, classpath: getClasspath().asPath)
+        ant.taskdef(resource: CARGO_TASKS, classpath: getClasspath().asPath)
         ant.cargo(getCargoAttributes()) {
             ant.configuration(getConfigurationAttributes()) {
-                property(name: AbstractCargoContainerTask.CARGO_SERVLET_PORT, value: getPort())
+                property(name: AbstractCargoContainerTask.CARGO_SERVLET_PORT, value: getPort().get().toString())
 
-                if(getJvmArgs()) {
-                    ant.property(name: 'cargo.jvmargs', value: getJvmArgs())
+                if (getJvmArgs().present) {
+                    ant.property(name: 'cargo.jvmargs', value: getJvmArgs().get())
                 }
 
-                if(getLogLevel()) {
-                    ant.property(name: 'cargo.logging', value: getLogLevel())
+                if (getLogLevel().present) {
+                    ant.property(name: 'cargo.logging', value: getLogLevel().get())
                 }
 
-                if(getRmiPort()) {
-                    ant.property(name: 'cargo.rmi.port', value: getRmiPort())
+                if (getRmiPort().present) {
+                    ant.property(name: 'cargo.rmi.port', value: getRmiPort().get())
                 }
 
                 setContainerSpecificProperties()
 
-                getDeployables().each { Deployable deployable ->
-                    DeployableType deployableType = DeployableTypeFactory.instance.getType(deployable.file)
+                getDeployables().get().each { Deployable deployable ->
+                    Provider<DeployableType> deployableType = deployable.getFile().map({ File file -> DeployableTypeFactory.instance.getType(file)})
 
-                    if(deployable.context) {
-                        ant.deployable(type: deployableType.type, file: deployable.file) {
-                            ant.property(name: AbstractCargoContainerTask.CARGO_CONTEXT, value: deployable.context)
+
+                    if(deployable.getContext().present) {
+                        logger.debug("Deploying {} with context {} of type {}", deployable.getFile().get().canonicalPath, deployable.getContext().get(), deployableType.get().getType())
+                        ant.deployable(type: deployableType.get().getType(), file: deployable.getFile().get()) {
+                            ant.property(name: CARGO_CONTEXT, value: deployable.context.get())
                         }
-                    }
-                    else {
-                        ant.deployable(type: deployableType.type, file: deployable.file)
+                    } else {
+                        logger.debug("Deploying {} without context with type {}", deployable.getFile().get().canonicalPath, deployableType.get().getType())
+                        ant.deployable(type: deployableType.get().getType(), file: deployable.getFile().get())
                     }
                 }
 
-                getConfigFiles().each { configFile ->
+                getConfigFiles().get().each { configFile ->
                     ant.configfile(file: configFile.file, todir: configFile.toDir)
                 }
 
-                getFiles().each { binFile ->
+                getFiles().get().each { binFile ->
                     ant.file(file: binFile.file, todir: binFile.toDir)
                 }
             }
 
             setSystemProperties()
 
-            if(getZipUrlInstaller().isValid()) {
-                ant.zipUrlInstaller(installUrl: getZipUrlInstaller().configuredInstallUrl, downloadDir: getZipUrlInstaller().downloadDir,
-                        extractDir: getZipUrlInstaller().extractDir)
+            // only url is required.
+            if(getZipUrlInstaller().get().getConfiguredInstallUrl().present) {
+                getZipUrlInstaller().get().with {
+                    ant.zipUrlInstaller(installUrl: configuredInstallUrl.get(), downloadDir: downloadDir.map({it.asFile}).orNull,
+                            extractDir: extractDir.map({it.asFile}).orNull)
+                }
             }
 
-            if(getExtraClasspath()) {
+            if (!getExtraClasspath().empty) {
                 ant.extraClasspath() {
                     getExtraClasspath().addToAntBuilder(ant, 'fileset', FileCollection.AntType.FileSet)
                 }
             }
 
-            if(getSharedClasspath()) {
+            if (!getSharedClasspath().empty) {
                 ant.sharedClasspath() {
                     getSharedClasspath().addToAntBuilder(ant, 'fileset', FileCollection.AntType.FileSet)
                 }
@@ -253,46 +268,48 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
     protected Map<String, String> getConfigurationAttributes() {
         def config = [:]
 
-        if(getConfigHomeDir()) {
-            if(!getConfigHomeDir().exists()) {
-                ant.mkdir(getConfigHomeDir())
+        if (getConfigHomeDir().present) {
+            File homeDir = getConfigHomeDir().get().asFile
+            if (!homeDir.exists()) {
+                ant.mkdir(homeDir)
             }
 
-            config['home'] = getConfigHomeDir().absolutePath
+            config['home'] = homeDir.absolutePath
         }
 
-        if(getConfigType()) {
-            config['type'] = getConfigType()
+        if (getConfigType().present) {
+            config['type'] = getConfigType().get()
         }
 
         return config
     }
 
     private Map<String, String> getCargoAttributes() {
-        def cargoAttributes = ['containerId': getContainerId(), 'action': getAction()]
-        if (getTimeout() >= 0) {
-            cargoAttributes['timeout'] = getTimeout()
+        def cargoAttributes = ['containerId': getContainerId().get(), 'action': getAction()]
+
+        if (getTimeout().present) {
+            cargoAttributes['timeout'] = getTimeout().get()
         }
 
-        if(!getZipUrlInstaller().isValid()) {
-            cargoAttributes['home'] = homeDirPath
+        if(getHomeDir().present) {
+            cargoAttributes['home'] = getHomeDir().get().asFile.canonicalPath
         }
 
-        if(getOutputFile()) {
-            cargoAttributes['output'] = getOutputFile()
+        if (getOutputFile().present) {
+            cargoAttributes['output'] = getOutputFile().get().asFile
         }
 
-        if(getLogFile()) {
-            cargoAttributes['log'] = getLogFile()
+        if (getLogFile().present) {
+            cargoAttributes['log'] = getLogFile().get().asFile
         }
 
         cargoAttributes
     }
 
     void setSystemProperties() {
-        logger.info "System properties = ${getSystemProperties()}"
+        logger.info "System properties = ${getSystemProperties().get()}"
 
-        getSystemProperties().each { key, value ->
+        getSystemProperties().get().each { key, value ->
             ant.sysproperty(key: key, value: value)
         }
     }

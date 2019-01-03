@@ -15,25 +15,57 @@
  */
 package com.bmuschko.gradle.cargo.convention
 
-
+import org.gradle.api.Project
+import org.gradle.api.file.ConfigurableFileCollection
 import org.gradle.api.file.FileCollection
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFile
 import org.gradle.api.tasks.InputFiles
-import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Optional
 
 /**
  * Defines Deployable convention.
  */
 class Deployable implements Serializable {
+    @InputFile
+    @Optional
+    Property<File> file
 
     @InputFiles
-    FileCollection files
+    @Optional
+    ConfigurableFileCollection files
 
     @Input
-    String context
+    @Optional
+    Property<String> context
 
-    @Internal
-    File getFile() {
-        files?.singleFile
+    private final Project project
+
+    @javax.inject.Inject
+    Deployable(Project project) {
+        this.project = project
+        file = project.objects.property(File)
+        files = project.layout.configurableFiles()
+        context = project.objects.property(String)
+    }
+
+    void setConfiguration(FileCollection files) {
+        this.files.setFrom(files)
+        Provider<File> fileProvider = project.providers.provider({this.files.singleFile})
+        file.set(fileProvider)
+    }
+
+    void setFile(Provider<File> file) {
+        this.file.set(file)
+    }
+
+    void setFile(File file) {
+        this.file.set(file)
+    }
+
+    void setContext(String context) {
+        this.context.set(context)
     }
 }

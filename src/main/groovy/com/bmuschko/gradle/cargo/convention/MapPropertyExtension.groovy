@@ -15,14 +15,20 @@
  */
 package com.bmuschko.gradle.cargo.convention
 
+import org.gradle.api.provider.MapProperty
+
 /**
- * Properties that can be passed on to the local container.
+ * Container-specific properties.
  */
-class SystemProperties {
-    Map<String, Object> properties = [:]
+class MapPropertyExtension {
+    MapProperty<String, Object> properties
+
+    MapPropertyExtension(MapProperty<String, Object> properties) {
+        this.properties = properties
+    }
 
     void property(String key, Object value) {
-        properties[key] = value
+        properties.put(key, value)
     }
 
     void properties(Map<String, ?> properties) {

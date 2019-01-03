@@ -21,10 +21,6 @@ package com.bmuschko.gradle.cargo.util
 class DefaultFileUtil implements FileUtil {
     @Override
     String getExtension(File file) {
-        if(!file.exists()) {
-            throw new IllegalArgumentException("File '$file.canonicalPath' does not exist")
-        }
-
         if(file.isDirectory()) {
             return ''
         }

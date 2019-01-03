@@ -15,14 +15,18 @@
  */
 package com.bmuschko.gradle.cargo.convention
 
+import org.gradle.api.Project
+import org.gradle.api.file.ConfigurableFileCollection
+import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.file.FileCollection
+import org.gradle.api.provider.Property
+import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputDirectory
 
-import java.util.function.Supplier
 
 /**
  * ZIP URL installer properties.
@@ -30,43 +34,66 @@ import java.util.function.Supplier
  * @see <a href="http://cargo.codehaus.org/Installer">Installer documentation</a>
  */
 class ZipUrlInstaller {
+    private final String DOWNLOAD_DIR = "javaee/download"
+    private final String EXTRACT_DIR = "javaee/home"
 
-    private Supplier<String> installUrlSupplier = { null }
+    // Object type, it will be given to ant.Zipurlinstaller
+    private Property<Object> installUrlSupplier
 
     @Input
     @Optional
-    String installUrl
+    Property<String> installUrl
 
     @InputFiles
     @Optional
-    FileCollection installConfiguration
+    ConfigurableFileCollection installConfiguration
 
     @OutputDirectory
-    File downloadDir
+    DirectoryProperty downloadDir
 
     @OutputDirectory
-    File extractDir
+    DirectoryProperty extractDir
+    private final Project project
+
+    ZipUrlInstaller(Project project) {
+        this.project = project
+        extractDir = project.objects.directoryProperty()
+        extractDir.convention(project.layout.buildDirectory.dir(EXTRACT_DIR))
+
+        downloadDir = project.objects.directoryProperty()
+        downloadDir.convention(project.layout.buildDirectory.dir(DOWNLOAD_DIR))
+
+        installUrlSupplier = project.objects.property(Object)
+        installUrl = project.objects.property(String)
+        installConfiguration = project.layout.configurableFiles()
+    }
+
+    void setDownloadDir(File file) {
+        downloadDir.set(file)
+    }
+
+    void setExtractDir(File file) {
+        extractDir.set(file)
+    }
 
     @Internal
-    String getConfiguredInstallUrl() {
-        installUrlSupplier.get()
+    Provider<Object> getConfiguredInstallUrl() {
+        installUrlSupplier
     }
 
     @Internal
     boolean isValid() {
-        configuredInstallUrl && downloadDir && extractDir
+        configuredInstallUrl.present && downloadDir.present && extractDir.present
     }
 
     void setInstallUrl(String installUrl) {
-        this.installUrl = installUrl
-        this.installConfiguration = null
-        installUrlSupplier = { installUrl }
+        this.installUrl.set(installUrl)
+        installUrlSupplier.set(this.installUrl) // point to installUrl
     }
 
     void setInstallConfiguration(FileCollection configuration) {
-        this.installUrl = null
-        this.installConfiguration = configuration
-        installUrlSupplier = { configuration.singleFile.toURI().toURL().toString() }
+        this.installConfiguration.setFrom(configuration)
+        installUrlSupplier.set(project.providers.provider({installConfiguration.singleFile.toURI()}))
     }
 
 }

@@ -1,33 +1,20 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
-        classpath 'org.ajoberstar:gradle-git:1.4.2'
-    }
+plugins {
+    id "groovy"
+    id "java-gradle-plugin"
+    id "idea"
+    id "com.jfrog.bintray" version "1.8.4"
+    id "nebula.maven-publish" version "9.4.5"
+    id "nebula.ivy-publish" version "9.4.5"
+    id "nebula.javadoc-jar" version "9.4.5"
+    id "nebula.source-jar" version "9.4.5"
+    id "nebula.integtest" version "5.2.1"
+    id 'org.ajoberstar.git-publish' version "2.0.0"
 }
 
-apply plugin: 'groovy'
-apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'org.ajoberstar.github-pages'
-apply plugin: 'java-gradle-plugin'
-
-def compatibilityVersion = 1.6
-sourceCompatibility = compatibilityVersion
-targetCompatibility = compatibilityVersion
-group = 'com.bmuschko'
 version = '2.4'
 
 repositories {
     mavenCentral()
-}
-
-configurations {
-    integrationTestCompile.extendsFrom testCompile
-    integrationTestRuntime.extendsFrom testRuntime
 }
 
 dependencies {
@@ -38,21 +25,9 @@ dependencies {
         exclude group: 'org.codehaus.groovy'
     }
     testCompile "org.codehaus.cargo:cargo-ant:$cargoVersion"
-    integrationTestCompile "io.github.http-builder-ng:http-builder-ng-core:1.0.3"
+    testCompile gradleTestKit()
+    integTestCompile "io.github.http-builder-ng:http-builder-ng-core:1.0.3"
 }
-
-sourceSets {
-    integrationTest
-}
-
-task integrationTest(type: Test) {
-    shouldRunAfter test
-
-    testClassesDirs = sourceSets.integrationTest.output.classesDirs
-    classpath = sourceSets.integrationTest.runtimeClasspath
-}
-
-check.dependsOn integrationTest
 
 jar {
     manifest {
@@ -65,34 +40,20 @@ jar {
     }
 }
 
-task sourcesJar(type: Jar) {
-    classifier 'sources'
-    from sourceSets.main.allSource
-}
-
 task groovydocJar(type: Jar, dependsOn: groovydoc) {
-    classifier 'groovydoc'
+    getArchiveClassifier().set("groovydoc")
     from groovydoc.destinationDir
 }
 
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier 'javadoc'
-    from javadoc.destinationDir
-}
-
 artifacts {
-    archives sourcesJar
     archives groovydocJar
-    archives javadocJar
 }
 
 publishing {
     publications {
         mavenJava(MavenPublication) {
             from components.java
-            artifact sourcesJar
             artifact groovydocJar
-            artifact javadocJar
 
             pom.withXml {
                 def root = asNode()
@@ -157,10 +118,12 @@ bintray {
     }
 }
 
-githubPages {
+gitPublish {
     repoUri = 'git@github.com:bmuschko/gradle-cargo-plugin.git'
 
-    pages {
+    branch = 'gh-pages'
+
+    contents {
         from(javadoc.outputs.files) {
             into 'docs/javadoc'
         }

@@ -63,7 +63,7 @@ class DeployableIntegrationSpec extends AbstractIntegrationSpec {
         buildScript << """
             cargo {
                 deployable {
-                    file = configurations.war
+                    files = configurations.war
                     context = '$WAR_CONTEXT'
                 }
             }

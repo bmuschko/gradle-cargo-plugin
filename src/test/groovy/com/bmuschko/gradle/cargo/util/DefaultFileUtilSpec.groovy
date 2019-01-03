@@ -29,14 +29,6 @@ class DefaultFileUtilSpec extends Specification {
 
     FileUtil fileUtil = new DefaultFileUtil()
 
-    def "throws exception for non-existent file"() {
-        when:
-        fileUtil.getExtension(new File('unknownfile'))
-
-        then:
-        thrown(IllegalArgumentException)
-    }
-
     @Unroll
     def "get file extension for file with name '#filename'"() {
         when:

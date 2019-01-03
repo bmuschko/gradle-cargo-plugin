@@ -15,19 +15,33 @@
  */
 package com.bmuschko.gradle.cargo.convention
 
+import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.MapProperty
+import org.gradle.api.provider.Property
+
 /**
  * Defines Cargo remote task convention.
  */
 class CargoRemoteTaskConvention {
-    String protocol = 'http'
-    String hostname
-    String username
-    String password
-    ContainerProperties containerProperties = new ContainerProperties()
+    final Property<String> protocol
+    final Property<String> hostname
+    final Property<String> username
+    final Property<String> password
+    final MapProperty<String, Object> containerProperties
+
+    CargoRemoteTaskConvention(ObjectFactory objectFactory) {
+        protocol = objectFactory.property(String)
+        protocol.set("http")
+
+        hostname = objectFactory.property(String)
+        username = objectFactory.property(String)
+        password = objectFactory.property(String)
+        containerProperties = objectFactory.mapProperty(String, Object)
+    }
 
     def containerProperties(Closure closure) {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.delegate = containerProperties
+        closure.delegate = new MapPropertyExtension(containerProperties)
         closure()
     }
 }

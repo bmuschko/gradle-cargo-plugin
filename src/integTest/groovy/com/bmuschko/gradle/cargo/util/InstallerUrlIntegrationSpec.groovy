@@ -36,7 +36,7 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
             
             cargo {
                 deployable {
-                    file = configurations.war
+                    files = configurations.war
                     context = '$WAR_CONTEXT'
                 }
             }
