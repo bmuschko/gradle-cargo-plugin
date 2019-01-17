@@ -8,6 +8,7 @@ class DeployableIntegrationSpec extends AbstractIntegrationSpec {
 
     void setup() {
         servletWarFixture = new ServletWarFixture(testProjectDir.root, ":$WAR_CONTEXT")
+        configureCargoInstaller()
         buildScript << """
             import com.bmuschko.gradle.cargo.tasks.local.LocalCargoContainerTask
 
@@ -17,27 +18,11 @@ class DeployableIntegrationSpec extends AbstractIntegrationSpec {
 
             configurations {
                 war
-                tomcat
             }
 
             dependencies {
                 war project(path: '${servletWarFixture.projectPath}', configuration: 'archives')
-                
-                tomcat "org.apache.tomcat:tomcat:9.0.14@zip"
             }
-
-            cargo {
-                containerId = "tomcat9x"
-                
-                local {
-                    installer {
-                        installConfiguration = configurations.tomcat
-                        downloadDir = file("\$buildDir/download")
-                        extractDir = file("\$buildDir/extract")
-                    }
-                }
-            }
-            
         """
     }
 

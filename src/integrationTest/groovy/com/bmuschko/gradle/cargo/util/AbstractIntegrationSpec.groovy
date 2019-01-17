@@ -23,6 +23,30 @@ abstract class AbstractIntegrationSpec extends Specification {
         """
     }
 
+    void configureCargoInstaller() {
+        buildScript << """
+            configurations {
+                tomcat
+            }
+
+            dependencies {
+                tomcat "org.apache.tomcat:tomcat:9.0.14@zip"
+            }
+
+            cargo {
+                containerId = "tomcat9x"
+                
+                local {
+                    installer {
+                        installConfiguration = configurations.tomcat
+                        downloadDir = file("\$buildDir/download")
+                        extractDir = file("\$buildDir/extract")
+                    }
+                }
+            }
+        """
+    }
+
     BuildResult runBuild(String... arguments) {
         GradleRunner.create()
             .withProjectDir(testProjectDir.root)
