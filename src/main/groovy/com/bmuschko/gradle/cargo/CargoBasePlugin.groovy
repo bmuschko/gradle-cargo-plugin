@@ -21,6 +21,7 @@ import com.bmuschko.gradle.cargo.tasks.daemon.CargoDaemon
 import com.bmuschko.gradle.cargo.util.ProjectInfoHelper
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 
 /**
  * <p>A {@link org.gradle.api.Plugin} that provides custom task types for deploying WAR/EAR files to local and remote web containers.
@@ -83,10 +84,10 @@ class CargoBasePlugin implements Plugin<Project> {
     private List<Deployable> resolveDeployables(Project project) {
         def deployables = []
 
-        File projectDeployable = ProjectInfoHelper.getProjectDeployableFile(project)
+        Task projectDeployable = ProjectInfoHelper.getProjectDeployableTask(project)
 
         if(projectDeployable) {
-            deployables << new Deployable(files: project.files(projectDeployable))
+            deployables << new Deployable(files: projectDeployable.outputs.files)
         }
 
         deployables

@@ -27,6 +27,7 @@ import com.bmuschko.gradle.cargo.util.ProjectInfoHelper
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionGraph
 
 /**
@@ -119,16 +120,16 @@ class CargoPlugin implements Plugin<Project> {
     private List<Deployable> resolveDeployables(Project project, CargoPluginExtension cargoConvention) {
         def deployables = []
 
-        File projectDeployable = ProjectInfoHelper.getProjectDeployableFile(project)
+        Task projectDeployable = ProjectInfoHelper.getProjectDeployableTask(project)
 
         if (cargoConvention.deployables.size() == 0) {
             if (projectDeployable) {
-                deployables << new Deployable(files: project.files(projectDeployable))
+                deployables << new Deployable(files: projectDeployable.outputs.files)
             }
         } else {
             cargoConvention.deployables.each { deployable ->
                 if (!deployable.files && projectDeployable) {
-                    deployable.files = project.files(projectDeployable)
+                    deployable.files = projectDeployable.outputs.files
                 }
 
                 deployables << deployable
