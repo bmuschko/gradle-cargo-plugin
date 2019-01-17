@@ -34,21 +34,11 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
                 }
             }
             
-            task configureCargoDeployable {
-                inputs.files(configurations.war)
-                
-                doLast {
-                    cargo {
-                        deployable {
-                            file = configurations.war.singleFile
-                            context = '$WAR_CONTEXT'
-                        }
-                    }
+            cargo {
+                deployable {
+                    file = configurations.war
+                    context = '$WAR_CONTEXT'
                 }
-            }
-            
-            tasks.withType(LocalCargoContainerTask) {
-                dependsOn configureCargoDeployable
             }
         """
     }
