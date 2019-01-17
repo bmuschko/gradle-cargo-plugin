@@ -177,7 +177,7 @@ The Cargo plugin defines the following convention properties in the `cargo` clos
 Within `cargo` you can define optional properties for the 1..n deployment artifacts in a closure named `deployable`. Each
 deployment artifact would be specified in its own closure:
 
-* `file`: An arbitrary artifact or exploded WAR directory to be deployed to container (defaults to project/module artifact - WAR or EAR file).
+* `file`: Any type that can be passed to [Project.files(Object...)](https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html#files-java.lang.Object...-) and resolves to a single file or a directory including arbitrary artifacts, exploded WAR directories and dependency configurations to be deployed to container (defaults to project/module artifact - WAR or EAR file).
 * `context`: The URL context the container is handling your web application on (defaults to WAR/EAR name).
 
 Keep in mind that you do not have to define the `deployable` closure if you just want to deploy the artifact defined by your

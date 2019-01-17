@@ -39,7 +39,7 @@ class CargoPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.plugins.apply(CargoBasePlugin)
 
-        CargoPluginExtension cargoPluginExtension = project.extensions.create(EXTENSION_NAME, CargoPluginExtension)
+        CargoPluginExtension cargoPluginExtension = project.extensions.create(EXTENSION_NAME, CargoPluginExtension, project)
 
         configureAbstractContainerTask(project, cargoPluginExtension)
         configureRemoteContainerTasks(project, cargoPluginExtension)
@@ -119,13 +119,16 @@ class CargoPlugin implements Plugin<Project> {
     private List<Deployable> resolveDeployables(Project project, CargoPluginExtension cargoConvention) {
         def deployables = []
 
-        if(cargoConvention.deployables.size() == 0) {
-            deployables << new Deployable(file: ProjectInfoHelper.getProjectDeployableFile(project))
-        }
-        else {
+        File projectDeployable = ProjectInfoHelper.getProjectDeployableFile(project)
+
+        if (cargoConvention.deployables.size() == 0) {
+            if (projectDeployable) {
+                deployables << new Deployable(files: project.files(projectDeployable))
+            }
+        } else {
             cargoConvention.deployables.each { deployable ->
-                if(!deployable.file) {
-                    deployable.file = ProjectInfoHelper.getProjectDeployableFile(project)
+                if (!deployable.files && projectDeployable) {
+                    deployable.files = project.files(projectDeployable)
                 }
 
                 deployables << deployable

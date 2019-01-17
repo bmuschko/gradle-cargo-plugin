@@ -15,16 +15,25 @@
  */
 package com.bmuschko.gradle.cargo.convention
 
+import org.gradle.api.Project
+
 /**
  * Defines Cargo extension.
  */
 class CargoPluginExtension {
+
+    private final Project project
+
     String containerId
     Integer port = 8080
     Integer timeout
     def deployables = []
     CargoRemoteTaskConvention remote = new CargoRemoteTaskConvention()
     CargoLocalTaskConvention local = new CargoLocalTaskConvention()
+
+    CargoPluginExtension(Project project) {
+        this.project = project
+    }
 
     def cargo(Closure closure) {
         closure.delegate = this
@@ -33,9 +42,9 @@ class CargoPluginExtension {
 
     def deployable(Closure closure) {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
-        Deployable deployable = new Deployable()
-        closure.delegate = deployable
-        deployables << deployable
+        def deployableClosureDelegate = new DeployableClosureDelegate(project)
+        closure.delegate = deployableClosureDelegate
+        deployables << deployableClosureDelegate.deployable
         closure()
     }
 
@@ -50,4 +59,20 @@ class CargoPluginExtension {
         closure.delegate = local
         closure()
     }
+
+    private static class DeployableClosureDelegate {
+
+        @Delegate
+        final Deployable deployable = new Deployable()
+        private final Project project
+
+        DeployableClosureDelegate(Project project) {
+            this.project = project
+        }
+
+        void setFile(Object file) {
+            deployable.files = project.files(file)
+        }
+    }
+
 }

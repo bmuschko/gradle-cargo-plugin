@@ -1,6 +1,5 @@
 package com.bmuschko.gradle.cargo
 
-import com.bmuschko.gradle.cargo.convention.Deployable
 import com.bmuschko.gradle.cargo.util.DefaultFileUtil
 import com.bmuschko.gradle.cargo.util.FileUtil
 
@@ -8,8 +7,8 @@ import com.bmuschko.gradle.cargo.util.FileUtil
 class DeployableTypeFactory {
     FileUtil fileUtil = new DefaultFileUtil()
 
-    DeployableType getType(Deployable deployable) {
-        String filenameExtension = fileUtil.getExtension(deployable.file)
+    DeployableType getType(File file) {
+        String filenameExtension = fileUtil.getExtension(file)
 
         switch(filenameExtension) {
             case 'war': return DeployableType.WAR

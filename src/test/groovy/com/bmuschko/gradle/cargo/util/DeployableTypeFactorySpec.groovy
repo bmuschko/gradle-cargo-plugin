@@ -2,7 +2,6 @@ package com.bmuschko.gradle.cargo.util
 
 import com.bmuschko.gradle.cargo.DeployableType
 import com.bmuschko.gradle.cargo.DeployableTypeFactory
-import com.bmuschko.gradle.cargo.convention.Deployable
 import spock.lang.Specification
 import spock.lang.Unroll
 
@@ -19,7 +18,7 @@ class DeployableTypeFactorySpec extends Specification {
         File givenFile = new File(givenFilename)
 
         when:
-        DeployableType deployableType = DeployableTypeFactory.instance.getType(new Deployable(file: givenFile))
+        DeployableType deployableType = DeployableTypeFactory.instance.getType(givenFile)
 
         then:
         1 * fileUtil.getExtension(givenFile) >> fileExtension

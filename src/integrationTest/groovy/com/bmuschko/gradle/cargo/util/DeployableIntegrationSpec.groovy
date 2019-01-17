@@ -2,7 +2,7 @@ package com.bmuschko.gradle.cargo.util
 
 import com.bmuschko.gradle.cargo.util.fixture.ServletWarFixture
 
-class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
+class DeployableIntegrationSpec extends AbstractIntegrationSpec {
 
     ServletWarFixture servletWarFixture
 
@@ -17,10 +17,13 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
 
             configurations {
                 war
+                tomcat
             }
 
             dependencies {
                 war project(path: '${servletWarFixture.projectPath}', configuration: 'archives')
+                
+                tomcat "org.apache.tomcat:tomcat:9.0.14@zip"
             }
 
             cargo {
@@ -28,12 +31,23 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
                 
                 local {
                     installer {
+                        installConfiguration = configurations.tomcat
                         downloadDir = file("\$buildDir/download")
                         extractDir = file("\$buildDir/extract")
                     }
                 }
             }
             
+        """
+    }
+
+    void cleanup() {
+        runBuild "cargoStopLocal"
+    }
+
+    def "can use a file as a deployable"() {
+        given:
+        buildScript << """
             task configureCargoDeployable {
                 inputs.files(configurations.war)
                 
@@ -51,23 +65,7 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
                 dependsOn configureCargoDeployable
             }
         """
-    }
 
-    void cleanup() {
-        runBuild "cargoStopLocal"
-    }
-
-    void "url can be used to configure installer source"() {
-        given:
-        buildScript << """
-            cargo {
-                local {
-                    installer {
-                        installUrl = "https://repo1.maven.org/maven2/org/apache/tomcat/tomcat/9.0.14/tomcat-9.0.14.zip"
-                    }
-                }
-            }
-        """
         when:
         runBuild "cargoStartLocal"
 
@@ -75,29 +73,22 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
         requestServletResponseText() == ServletWarFixture.RESPONSE_TEXT
     }
 
-    void "configuration can be used to configure installer source"() {
+    def "can use a file collection as a deployable"() {
         given:
         buildScript << """
-            configurations {
-                tomcat
-            }
-            
-            dependencies {
-                tomcat "org.apache.tomcat:tomcat:9.0.14@zip"
-            }
-            
             cargo {
-                local {
-                    installer {
-                        installConfiguration = configurations.tomcat
-                    }
+                deployable {
+                    file = configurations.war
+                    context = '$WAR_CONTEXT'
                 }
             }
         """
+
         when:
         runBuild "cargoStartLocal"
 
         then:
         requestServletResponseText() == ServletWarFixture.RESPONSE_TEXT
     }
+
 }

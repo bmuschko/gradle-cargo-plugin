@@ -64,7 +64,7 @@ class RemoteCargoContainerTask extends AbstractCargoContainerTask {
                             + " does not exist")
                 }
 
-                if(DeployableType.EXPLODED == DeployableTypeFactory.instance.getType(deployable)) {
+                if(DeployableType.EXPLODED == DeployableTypeFactory.instance.getType(deployable.file)) {
                     throw new InvalidUserDataException("Deployable type: EXPLODED is invalid for remote deployment")
                 }
 
@@ -91,7 +91,7 @@ class RemoteCargoContainerTask extends AbstractCargoContainerTask {
                 }
 
                 getDeployables().each { Deployable deployable ->
-                    DeployableType deployableType = DeployableTypeFactory.instance.getType(deployable)
+                    DeployableType deployableType = DeployableTypeFactory.instance.getType(deployable.file)
 
                     if(deployable.context) {
                         // For the undeploy action do not set a file attribute

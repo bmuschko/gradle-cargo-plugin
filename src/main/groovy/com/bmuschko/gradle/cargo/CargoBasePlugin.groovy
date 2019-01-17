@@ -86,7 +86,7 @@ class CargoBasePlugin implements Plugin<Project> {
         File projectDeployable = ProjectInfoHelper.getProjectDeployableFile(project)
 
         if(projectDeployable) {
-            deployables << new Deployable(file: ProjectInfoHelper.getProjectDeployableFile(project))
+            deployables << new Deployable(files: project.files(projectDeployable))
         }
 
         deployables

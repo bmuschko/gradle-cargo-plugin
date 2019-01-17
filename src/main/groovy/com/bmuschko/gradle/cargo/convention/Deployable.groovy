@@ -15,31 +15,25 @@
  */
 package com.bmuschko.gradle.cargo.convention
 
+
+import org.gradle.api.file.FileCollection
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
+
 /**
  * Defines Deployable convention.
  */
 class Deployable implements Serializable {
-    File file
+
+    @InputFiles
+    FileCollection files
+
+    @Input
     String context
 
-    @Override
-    boolean equals(o) {
-        if (this.is(o)) return true
-        if (getClass() != o.class) return false
-
-        Deployable that = (Deployable) o
-
-        if (context != that.context) return false
-        if (file != that.file) return false
-
-        return true
-    }
-
-    @Override
-    int hashCode() {
-        int result
-        result = (file != null ? file.hashCode() : 0)
-        result = 31 * result + (context != null ? context.hashCode() : 0)
-        return result
+    @Internal
+    File getFile() {
+        files?.singleFile
     }
 }
