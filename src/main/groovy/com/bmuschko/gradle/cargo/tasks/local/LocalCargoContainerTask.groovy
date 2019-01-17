@@ -114,7 +114,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
     /**
      * Configurable ZIP URL installer instance for automatically downloading a container.
      */
-    @Input
+    @Nested
     ZipUrlInstaller zipUrlInstaller = new ZipUrlInstaller()
 
     /**
@@ -231,7 +231,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
             setSystemProperties()
 
             if(getZipUrlInstaller().isValid()) {
-                ant.zipUrlInstaller(installUrl: getZipUrlInstaller().installUrl, downloadDir: getZipUrlInstaller().downloadDir,
+                ant.zipUrlInstaller(installUrl: getZipUrlInstaller().configuredInstallUrl, downloadDir: getZipUrlInstaller().downloadDir,
                         extractDir: getZipUrlInstaller().extractDir)
             }
 

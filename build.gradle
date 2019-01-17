@@ -26,6 +26,11 @@ repositories {
     mavenCentral()
 }
 
+configurations {
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
+}
+
 dependencies {
     compile localGroovy()
     def cargoVersion = '1.6.8'
@@ -34,7 +39,21 @@ dependencies {
         exclude group: 'org.codehaus.groovy'
     }
     testCompile "org.codehaus.cargo:cargo-ant:$cargoVersion"
+    integrationTestCompile "io.github.http-builder-ng:http-builder-ng-core:1.0.3"
 }
+
+sourceSets {
+    integrationTest
+}
+
+task integrationTest(type: Test) {
+    shouldRunAfter test
+
+    testClassesDirs = sourceSets.integrationTest.output.classesDirs
+    classpath = sourceSets.integrationTest.runtimeClasspath
+}
+
+check.dependsOn integrationTest
 
 jar {
     manifest {
@@ -149,5 +168,12 @@ githubPages {
         from(groovydoc.outputs.files) {
             into 'docs/groovydoc'
         }
+    }
+}
+
+idea {
+    module {
+        testSourceDirs += sourceSets.integrationTest.groovy.sourceDirectories.singleFile
+        scopes.TEST.plus += [sourceSets.integrationTest.compileClasspath]
     }
 }

@@ -239,12 +239,30 @@ Local containers can use system properties passed to it. The following example s
 If you decide to use the [ZIP installer](https://codehaus-cargo.github.io/cargo/Installer.html) Cargo will automatically download your container. You can
 define its properties in the closure `installer`. The installer only applies to "local" Cargo tasks.
 
-* `installUrl`: The URL to download the container distribtion from.
+* `installUrl`: The URL to download the container distribution from.
 * `downloadDir`: Target directory to download the container distribution to.
 * `extractDir`: Directory to extract the downloaded container distribution to.
 
 Please refer to the individual configuration properties on the Cargo homepage. All of these properties can be overridden
 by project properties. The name of the project properties is the same as in the Cargo manual.
+
+If you wish to benefit from Gradle dependency cache when resolving container distributions you can use a configuration instead of a url when configuring the installer:
+
+    configurations {
+        tomcat
+    }
+    
+    dependencies {
+        tomcat "org.apache.tomcat:tomcat:9.0.14@zip"
+    }
+    
+    cargo {
+        local {
+            installer {
+                installConfiguration = configurations.tomcat
+            }
+        }
+    }
 
 ### Example
 
