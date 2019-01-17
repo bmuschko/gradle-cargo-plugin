@@ -15,40 +15,58 @@
  */
 package com.bmuschko.gradle.cargo.convention
 
+import org.gradle.api.file.FileCollection
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
+import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Optional
+import org.gradle.api.tasks.OutputDirectory
+
+import java.util.function.Supplier
+
 /**
  * ZIP URL installer properties.
  *
  * @see <a href="http://cargo.codehaus.org/Installer">Installer documentation</a>
  */
-class ZipUrlInstaller implements Serializable {
+class ZipUrlInstaller {
+
+    private Supplier<String> installUrlSupplier = { null }
+
+    @Input
+    @Optional
     String installUrl
+
+    @InputFiles
+    @Optional
+    FileCollection installConfiguration
+
+    @OutputDirectory
     File downloadDir
+
+    @OutputDirectory
     File extractDir
 
+    @Internal
+    String getConfiguredInstallUrl() {
+        installUrlSupplier.get()
+    }
+
+    @Internal
     boolean isValid() {
-        installUrl && downloadDir && extractDir
+        configuredInstallUrl && downloadDir && extractDir
     }
 
-    @Override
-    boolean equals(o) {
-        if (this.is(o)) return true
-        if (getClass() != o.class) return false
-
-        ZipUrlInstaller that = (ZipUrlInstaller) o
-
-        if (downloadDir != that.downloadDir) return false
-        if (extractDir != that.extractDir) return false
-        if (installUrl != that.installUrl) return false
-
-        return true
+    void setInstallUrl(String installUrl) {
+        this.installUrl = installUrl
+        this.installConfiguration = null
+        installUrlSupplier = { installUrl }
     }
 
-    @Override
-    int hashCode() {
-        int result
-        result = (installUrl != null ? installUrl.hashCode() : 0)
-        result = 31 * result + (downloadDir != null ? downloadDir.hashCode() : 0)
-        result = 31 * result + (extractDir != null ? extractDir.hashCode() : 0)
-        return result
+    void setInstallConfiguration(FileCollection configuration) {
+        this.installUrl = null
+        this.installConfiguration = configuration
+        installUrlSupplier = { configuration.singleFile.toURI().toURL().toString() }
     }
+
 }
