@@ -207,7 +207,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
                 setContainerSpecificProperties()
 
                 getDeployables().each { Deployable deployable ->
-                    DeployableType deployableType = DeployableTypeFactory.instance.getType(deployable)
+                    DeployableType deployableType = DeployableTypeFactory.instance.getType(deployable.file)
 
                     if(deployable.context) {
                         ant.deployable(type: deployableType.type, file: deployable.file) {

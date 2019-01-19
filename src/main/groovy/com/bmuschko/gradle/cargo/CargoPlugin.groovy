@@ -27,6 +27,7 @@ import com.bmuschko.gradle.cargo.util.ProjectInfoHelper
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.execution.TaskExecutionGraph
 
 /**
@@ -39,7 +40,7 @@ class CargoPlugin implements Plugin<Project> {
     void apply(Project project) {
         project.plugins.apply(CargoBasePlugin)
 
-        CargoPluginExtension cargoPluginExtension = project.extensions.create(EXTENSION_NAME, CargoPluginExtension)
+        CargoPluginExtension cargoPluginExtension = project.extensions.create(EXTENSION_NAME, CargoPluginExtension, project)
 
         configureAbstractContainerTask(project, cargoPluginExtension)
         configureRemoteContainerTasks(project, cargoPluginExtension)
@@ -119,13 +120,16 @@ class CargoPlugin implements Plugin<Project> {
     private List<Deployable> resolveDeployables(Project project, CargoPluginExtension cargoConvention) {
         def deployables = []
 
-        if(cargoConvention.deployables.size() == 0) {
-            deployables << new Deployable(file: ProjectInfoHelper.getProjectDeployableFile(project))
-        }
-        else {
+        Task projectDeployable = ProjectInfoHelper.getProjectDeployableTask(project)
+
+        if (cargoConvention.deployables.size() == 0) {
+            if (projectDeployable) {
+                deployables << new Deployable(files: projectDeployable.outputs.files)
+            }
+        } else {
             cargoConvention.deployables.each { deployable ->
-                if(!deployable.file) {
-                    deployable.file = ProjectInfoHelper.getProjectDeployableFile(project)
+                if (!deployable.files && projectDeployable) {
+                    deployable.files = projectDeployable.outputs.files
                 }
 
                 deployables << deployable

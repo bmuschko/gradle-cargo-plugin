@@ -16,6 +16,7 @@
 package com.bmuschko.gradle.cargo.util
 
 import org.gradle.api.Project
+import org.gradle.api.Task
 import org.gradle.api.plugins.WarPlugin
 import org.gradle.plugins.ear.EarPlugin
 
@@ -25,12 +26,12 @@ import org.gradle.plugins.ear.EarPlugin
 final class ProjectInfoHelper {
     private ProjectInfoHelper() {}
 
-    static File getProjectDeployableFile(Project project) {
+    static Task getProjectDeployableTask(Project project) {
         if(project.plugins.hasPlugin(WarPlugin.WAR_TASK_NAME)) {
-            return project.tasks.getByName(WarPlugin.WAR_TASK_NAME).archivePath
+            return project.tasks.getByName(WarPlugin.WAR_TASK_NAME)
         }
         else if(project.plugins.hasPlugin(EarPlugin.EAR_TASK_NAME)) {
-            return project.tasks.getByName(EarPlugin.EAR_TASK_NAME).archivePath
+            return project.tasks.getByName(EarPlugin.EAR_TASK_NAME)
         }
     }
 }

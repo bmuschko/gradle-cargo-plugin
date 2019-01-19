@@ -1,32 +1,16 @@
 package com.bmuschko.gradle.cargo.util
 
 import com.bmuschko.gradle.cargo.util.fixture.ServletWarFixture
-import groovyx.net.http.HttpBuilder
-import org.gradle.testkit.runner.BuildResult
-import org.gradle.testkit.runner.GradleRunner
-import org.junit.Rule
-import org.junit.rules.TemporaryFolder
-import spock.lang.Specification
 
-class InstallerUrlIntegrationSpec extends Specification {
-
-    final static String WAR_CONTEXT = 'hello-world'
-
-    @Rule
-    TemporaryFolder testProjectDir
+class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
 
     ServletWarFixture servletWarFixture
-    File buildScript
 
     void setup() {
         servletWarFixture = new ServletWarFixture(testProjectDir.root, ":$WAR_CONTEXT")
-        buildScript = testProjectDir.newFile('build.gradle') << """
+        buildScript << """
             import com.bmuschko.gradle.cargo.tasks.local.LocalCargoContainerTask
 
-            plugins {
-                id 'com.bmuschko.cargo'
-            }
-            
             repositories {
                 mavenCentral()
             }
@@ -50,21 +34,11 @@ class InstallerUrlIntegrationSpec extends Specification {
                 }
             }
             
-            task configureCargoDeployable {
-                inputs.files(configurations.war)
-                
-                doLast {
-                    cargo {
-                        deployable {
-                            file = configurations.war.singleFile
-                            context = '$WAR_CONTEXT'
-                        }
-                    }
+            cargo {
+                deployable {
+                    file = configurations.war
+                    context = '$WAR_CONTEXT'
                 }
-            }
-            
-            tasks.withType(LocalCargoContainerTask) {
-                dependsOn configureCargoDeployable
             }
         """
     }
@@ -115,20 +89,5 @@ class InstallerUrlIntegrationSpec extends Specification {
 
         then:
         requestServletResponseText() == ServletWarFixture.RESPONSE_TEXT
-    }
-
-    private BuildResult runBuild(String... arguments) {
-        GradleRunner.create()
-            .withProjectDir(testProjectDir.root)
-            .withArguments("-s", *arguments)
-            .withPluginClasspath()
-            .forwardOutput()
-            .build()
-    }
-
-    private String requestServletResponseText() {
-        HttpBuilder.configure {
-            request.uri = "http://localhost:8080/$WAR_CONTEXT"
-        }.get()
     }
 }

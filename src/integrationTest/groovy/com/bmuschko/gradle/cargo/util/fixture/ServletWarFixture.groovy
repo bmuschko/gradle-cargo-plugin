@@ -20,7 +20,7 @@ class ServletWarFixture {
     }
 
     private File getProjectDir() {
-        new File(rootProjectDir, projectPathSegments.join('/'))
+        projectPathSegments ? new File(rootProjectDir, projectPathSegments.join('/')) : rootProjectDir
     }
 
     private void configure() {
@@ -55,9 +55,7 @@ class ServletWarFixture {
 
     private void writeBuild() {
         new File(projectDir, "build.gradle") << """
-            plugins {
-                id 'war'
-            }
+            apply plugin: 'war'
             
             repositories {
                 mavenCentral()
