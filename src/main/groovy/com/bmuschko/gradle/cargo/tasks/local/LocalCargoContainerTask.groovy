@@ -102,7 +102,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
     /**
      * The list of configuration files.
      */
-    @Input
+    @Nested
     List<ConfigFile> configFiles = []
 
     /**
@@ -149,14 +149,14 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
 
         if(!getConfigFiles().isEmpty()) {
             getConfigFiles().each { configFile ->
-                if(!configFile.file || !configFile.file.exists()) {
-                    throw new InvalidUserDataException("Config file "
-                    + (configFile.file == null ? "null" : configFile.file.canonicalPath)
-                    + " does not exist")
+                configFile.files.each { file ->
+                    if (!file.exists()) {
+                        throw new InvalidUserDataException("Config file " + file.canonicalPath + " does not exist")
+                    }
                 }
             }
 
-            logger.info "Config files = ${getConfigFiles().collect { it.file.canonicalPath + " -> " + it.toDir }}"
+            logger.info "Config files = ${getConfigFiles().collect { it.files*.canonicalPath + " -> " + it.toDir }}"
         }
 
         if (!getFiles().isEmpty()) {
@@ -220,7 +220,9 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
                 }
 
                 getConfigFiles().each { configFile ->
-                    ant.configfile(file: configFile.file, todir: configFile.toDir)
+                    configFile.files.each { file ->
+                        ant.configfile(file: file, todir: configFile.toDir)
+                    }
                 }
 
                 getFiles().each { binFile ->

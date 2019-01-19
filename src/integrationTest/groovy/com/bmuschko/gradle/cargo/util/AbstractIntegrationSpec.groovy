@@ -9,7 +9,8 @@ import spock.lang.Specification
 
 abstract class AbstractIntegrationSpec extends Specification {
 
-    protected final static String WAR_CONTEXT = 'hello-world'
+    protected final static String WAR_CONTEXT = 'test-servlet'
+
     @Rule
     TemporaryFolder testProjectDir
 

@@ -1,13 +1,13 @@
 package com.bmuschko.gradle.cargo.util
 
-import com.bmuschko.gradle.cargo.util.fixture.ServletWarFixture
+import com.bmuschko.gradle.cargo.util.fixture.HelloWorldServletWarFixture
 
 class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
 
-    ServletWarFixture servletWarFixture
+    HelloWorldServletWarFixture servletWarFixture
 
     void setup() {
-        servletWarFixture = new ServletWarFixture(testProjectDir.root, ":$WAR_CONTEXT")
+        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir.root, ":$WAR_CONTEXT")
         buildScript << """
             import com.bmuschko.gradle.cargo.tasks.local.LocalCargoContainerTask
 
@@ -62,7 +62,7 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
         runBuild "cargoStartLocal"
 
         then:
-        requestServletResponseText() == ServletWarFixture.RESPONSE_TEXT
+        requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
     }
 
     void "configuration can be used to configure installer source"() {
@@ -88,6 +88,6 @@ class InstallerUrlIntegrationSpec extends AbstractIntegrationSpec {
         runBuild "cargoStartLocal"
 
         then:
-        requestServletResponseText() == ServletWarFixture.RESPONSE_TEXT
+        requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
     }
 }

@@ -29,10 +29,11 @@ class CargoPluginExtension {
     Integer timeout
     def deployables = []
     CargoRemoteTaskConvention remote = new CargoRemoteTaskConvention()
-    CargoLocalTaskConvention local = new CargoLocalTaskConvention()
+    CargoLocalTaskConvention local
 
     CargoPluginExtension(Project project) {
         this.project = project
+        this.local = new CargoLocalTaskConvention(project)
     }
 
     def cargo(Closure closure) {
