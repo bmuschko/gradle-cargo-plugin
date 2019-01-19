@@ -13,7 +13,6 @@ apply plugin: 'groovy'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'org.ajoberstar.github-pages'
-apply plugin: 'idea'
 apply plugin: 'java-gradle-plugin'
 
 def compatibilityVersion = 1.6
@@ -168,12 +167,5 @@ githubPages {
         from(groovydoc.outputs.files) {
             into 'docs/groovydoc'
         }
-    }
-}
-
-idea {
-    module {
-        testSourceDirs += sourceSets.integrationTest.groovy.sourceDirectories.singleFile
-        scopes.TEST.plus += [sourceSets.integrationTest.compileClasspath]
     }
 }
