@@ -200,8 +200,8 @@ Within `cargo` you can define properties for local containers in a closure named
 * `configHomeDir`: The home directory of your local container's configuration.
 * `configFile`: The [configuration files](https://codehaus-cargo.github.io/cargo/Configuration+files+option.html) you want to add to your
 container's configuration. The `configFile` is a closure itself and requires you to provide the attributes `files` and `toDir`.
-Any type that can be passed to [Project.files(Object...)](https://docs.gradle.org/current/javadoc/org/gradle/api/Project.html#files-java.lang.Object...-) can be used as `files` attribute and `toDir` should be a `String`.
-Multiple configuration file destinations be defined by creating more than one `configFile` closure.
+A [`FileCollection`](http://www.gradle.org/docs/current/javadoc/org/gradle/api/file/FileCollection.html) should be used as `files` attribute and `toDir` should be a `String`.
+Multiple configuration file destinations can be defined by creating more than one `configFile` closure.
 * `rmiPort`: The port to use when communicating with this server, for example to start and stop it.
 * `timeout`: The timeout (in ms) in which to determine if the container is successfully started or stopped (defaults to 120000ms).
 * `extraClasspath`: A [`FileCollection`](http://www.gradle.org/docs/current/javadoc/org/gradle/api/file/FileCollection.html)
@@ -386,17 +386,12 @@ to use the file from at runtime. If you need to copy files into more than one de
 
         local {
             configFile {
-                files = file('src/main/jboss5/login-config.xml')
+                files = project.files('src/main/jboss5/login-config.xml')
                 toDir = 'conf'
             }
 
             configFile {
-                files = file('src/main/jboss5/sample-roles.properties')
-                toDir = 'conf/props'
-            }
-
-            configFile {
-                files = file('src/main/jboss5/sample-users.properties')
+                files = project.files('src/main/jboss5/login-config.xml', 'src/main/jboss5/sample-users.properties')
                 toDir = 'conf/props'
             }
         }

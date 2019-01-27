@@ -15,15 +15,12 @@
  */
 package com.bmuschko.gradle.cargo.convention
 
-import org.gradle.api.Project
 import org.gradle.api.file.FileCollection
 
 /**
  * Defines Cargo local task convention.
  */
 class CargoLocalTaskConvention {
-
-    private final Project project
 
     String jvmArgs
     String logLevel
@@ -41,10 +38,6 @@ class CargoLocalTaskConvention {
     FileCollection extraClasspath
     FileCollection sharedClasspath
 
-    CargoLocalTaskConvention(Project project) {
-        this.project = project
-    }
-
     def installer(Closure closure) {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
         closure.delegate = zipUrlInstaller
@@ -53,9 +46,9 @@ class CargoLocalTaskConvention {
 
     def configFile(Closure closure) {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
-        ConfigFileClosureDelegate configFileClosureDelegate = new ConfigFileClosureDelegate(project)
-        closure.delegate = configFileClosureDelegate
-        configFiles << configFileClosureDelegate.configFile
+        ConfigFile configFile = new ConfigFile()
+        closure.delegate = configFile
+        configFiles << configFile
         closure()
     }
 
@@ -77,25 +70,5 @@ class CargoLocalTaskConvention {
         closure.resolveStrategy = Closure.DELEGATE_FIRST
         closure.delegate = systemProperties
         closure()
-    }
-
-    private static class ConfigFileClosureDelegate {
-
-        @Delegate
-        final ConfigFile configFile = new ConfigFile()
-
-        private final Project project
-
-        ConfigFileClosureDelegate(Project project) {
-            this.project = project
-        }
-
-        void setFile(Object file) {
-            configFile.files = project.files(file)
-        }
-
-        void setFiles(Object file) {
-            configFile.files = project.files(file)
-        }
     }
 }

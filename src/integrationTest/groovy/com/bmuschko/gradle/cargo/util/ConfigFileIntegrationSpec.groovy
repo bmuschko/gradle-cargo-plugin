@@ -67,35 +67,13 @@ class ConfigFileIntegrationSpec extends AbstractIntegrationSpec {
         runBuild "cargoStopLocal"
     }
 
-    void "can use a file as a config file source"() {
-        given:
-        buildScript << """
-            cargo {
-                local {
-                    configFile {
-                        file = writeContextXml.outputs.files.singleFile
-                        toDir = "conf"
-                    }
-                }
-            }
-            
-            cargoStartLocal.dependsOn writeContextXml
-        """
-
-        when:
-        runBuild "cargoStartLocal"
-
-        then:
-        requestTextResourceValue(TEXT_RESOURCE_NAME) == TEXT_RESOURCE_VALUE
-    }
-
     void "can use a file collection as a config files source"() {
         given:
         buildScript << """
             cargo {
                 local {
                     configFile {
-                        files = writeContextXml
+                        files = writeContextXml.outputs.files
                         toDir = "conf"
                     }
                 }
