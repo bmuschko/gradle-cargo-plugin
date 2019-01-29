@@ -1,3 +1,9 @@
+### Version 2.5 (January 29, 2018)
+
+* Support using a configuration as a source of the container for ZIP installer - [Pull request 176](https://github.com/bmuschko/gradle-cargo-plugin/pull/176).
+* Allow using outputs and configurations as deployables - [Pull request 178](https://github.com/bmuschko/gradle-cargo-plugin/pull/178).
+* **Breaking Change!** Support using task outputs and configurations as config files - [Pull request 180](https://github.com/bmuschko/gradle-cargo-plugin/pull/180).
+
 ### Version 2.4 (July 29, 2018)
 
 * Allow setting timeout to 0 - [Pull request 169](https://github.com/bmuschko/gradle-cargo-plugin/pull/169).
