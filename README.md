@@ -199,8 +199,9 @@ Within `cargo` you can define properties for local containers in a closure named
 * `homeDir`: The home directory of your local container installation.
 * `configHomeDir`: The home directory of your local container's configuration.
 * `configFile`: The [configuration files](https://codehaus-cargo.github.io/cargo/Configuration+files+option.html) you want to add to your
-container's configuration. The `configFile` is a closure itself and requires you to provide the attributes `file` and `todir`.
-Multiple configuration file be defined by creating more than one `configFile` closure.
+container's configuration. The `configFile` is a closure itself and requires you to provide the attributes `files` and `toDir`.
+A [`FileCollection`](http://www.gradle.org/docs/current/javadoc/org/gradle/api/file/FileCollection.html) should be used as `files` attribute and `toDir` should be a `String`.
+Multiple configuration file destinations can be defined by creating more than one `configFile` closure.
 * `rmiPort`: The port to use when communicating with this server, for example to start and stop it.
 * `timeout`: The timeout (in ms) in which to determine if the container is successfully started or stopped (defaults to 120000ms).
 * `extraClasspath`: A [`FileCollection`](http://www.gradle.org/docs/current/javadoc/org/gradle/api/file/FileCollection.html)
@@ -377,25 +378,20 @@ do is to specify the `installer` closure. The following code snippet downloads, 
 
 **I'd like to add a configuration file to my local container. How do I do that?**
 
-For local containers a closure named `configFile` can be used that defines the source file and directory you would like
-to use the file from at runtime. If you need more than one just create multiple `configFile` closures.
+For local containers a closure named `configFile` can be used that defines the source files and directory you would like
+to use the file from at runtime. If you need to copy files into more than one destinations just create multiple `configFile` closures.
 
     cargo {
         containerId = 'jboss5x'
 
         local {
             configFile {
-                file = file('src/main/jboss5/login-config.xml')
+                files = project.files('src/main/jboss5/login-config.xml')
                 toDir = 'conf'
             }
 
             configFile {
-                file = file('src/main/jboss5/sample-roles.properties')
-                toDir = 'conf/props'
-            }
-
-            configFile {
-                file = file('src/main/jboss5/sample-users.properties')
+                files = project.files('src/main/jboss5/login-config.xml', 'src/main/jboss5/sample-users.properties')
                 toDir = 'conf/props'
             }
         }

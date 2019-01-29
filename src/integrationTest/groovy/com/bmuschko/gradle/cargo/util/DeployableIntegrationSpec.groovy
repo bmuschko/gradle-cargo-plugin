@@ -1,13 +1,13 @@
 package com.bmuschko.gradle.cargo.util
 
-import com.bmuschko.gradle.cargo.util.fixture.ServletWarFixture
+import com.bmuschko.gradle.cargo.util.fixture.HelloWorldServletWarFixture
 
 class DeployableIntegrationSpec extends AbstractIntegrationSpec {
 
-    ServletWarFixture servletWarFixture
+    HelloWorldServletWarFixture servletWarFixture
 
     void setup() {
-        servletWarFixture = new ServletWarFixture(testProjectDir.root, ":$WAR_CONTEXT")
+        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir.root, ":$WAR_CONTEXT")
         configureCargoInstaller()
         buildScript << """
             import com.bmuschko.gradle.cargo.tasks.local.LocalCargoContainerTask
@@ -55,7 +55,7 @@ class DeployableIntegrationSpec extends AbstractIntegrationSpec {
         runBuild "cargoStartLocal"
 
         then:
-        requestServletResponseText() == ServletWarFixture.RESPONSE_TEXT
+        requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
     }
 
     def "can use a file collection as a deployable"() {
@@ -73,7 +73,7 @@ class DeployableIntegrationSpec extends AbstractIntegrationSpec {
         runBuild "cargoStartLocal"
 
         then:
-        requestServletResponseText() == ServletWarFixture.RESPONSE_TEXT
+        requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
     }
 
 }

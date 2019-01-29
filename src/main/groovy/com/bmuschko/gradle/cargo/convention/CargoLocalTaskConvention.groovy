@@ -21,6 +21,7 @@ import org.gradle.api.file.FileCollection
  * Defines Cargo local task convention.
  */
 class CargoLocalTaskConvention {
+
     String jvmArgs
     String logLevel
     File homeDir

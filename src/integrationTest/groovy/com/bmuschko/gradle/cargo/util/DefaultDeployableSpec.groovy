@@ -1,13 +1,13 @@
 package com.bmuschko.gradle.cargo.util
 
-import com.bmuschko.gradle.cargo.util.fixture.ServletWarFixture
+import com.bmuschko.gradle.cargo.util.fixture.HelloWorldServletWarFixture
 
 class DefaultDeployableSpec extends AbstractIntegrationSpec {
 
-    ServletWarFixture servletWarFixture
+    HelloWorldServletWarFixture servletWarFixture
 
     void setup() {
-        servletWarFixture = new ServletWarFixture(testProjectDir.root, ":")
+        servletWarFixture = new HelloWorldServletWarFixture(testProjectDir.root, ":")
         configureCargoInstaller()
     }
 
@@ -29,7 +29,7 @@ class DefaultDeployableSpec extends AbstractIntegrationSpec {
         runBuild "cargoStartLocal"
 
         then:
-        requestServletResponseText() == ServletWarFixture.RESPONSE_TEXT
+        requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
     }
 
 

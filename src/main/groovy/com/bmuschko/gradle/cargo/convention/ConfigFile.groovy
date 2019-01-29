@@ -15,40 +15,25 @@
  */
 package com.bmuschko.gradle.cargo.convention
 
+import org.gradle.api.file.FileCollection
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.InputFiles
+
 /**
- * Defines Deployable convention.
+ * Defines ConfigFile convention.
  */
-class ConfigFile implements Serializable {
+class ConfigFile {
 
     /**
-     * This specifies the path to the file that should be used.
-     * Can also specify a directory path if a whole directory needs to be copied over.
+     * This specifies the files that should be copied over.
+     * Can also specify directories if whole directories need to be copied over.
      */
-    File file
+    @InputFiles
+    FileCollection files
 
     /**
      * This specified the name the directory that the file should be copied to relative to the configurations home.
      */
+    @Input
     String toDir
-
-    @Override
-    boolean equals(o) {
-        if (this.is(o)) return true
-        if (getClass() != o.class) return false
-
-        ConfigFile that = (ConfigFile) o
-
-        if (file != that.file) return false
-        if (toDir != that.toDir) return false
-
-        return true
-    }
-
-    @Override
-    int hashCode() {
-        int result
-        result = (file != null ? file.hashCode() : 0)
-        result = 31 * result + (toDir != null ? toDir.hashCode() : 0)
-        return result
-    }
 }
