@@ -203,7 +203,7 @@ container's configuration. The `configFile` is a closure itself and requires you
 A [`FileCollection`](http://www.gradle.org/docs/current/javadoc/org/gradle/api/file/FileCollection.html) should be used as `files` attribute and `toDir` should be a `String`.
 Multiple configuration file destinations can be defined by creating more than one `configFile` closure.
 * `rmiPort`: The port to use when communicating with this server, for example to start and stop it.
-* `timeout`: The timeout (in ms) in which to determine if the container is successfully started or stopped (defaults to 120000ms).
+* `startStopTimeout`: The timeout (in ms) in which to determine if the container is successfully started or stopped (defaults to 120000ms).
 * `extraClasspath`: A [`FileCollection`](http://www.gradle.org/docs/current/javadoc/org/gradle/api/file/FileCollection.html)
 that provides extra elements to the local [container classpath](http://cargo.codehaus.org/Container+Classpath) (optional).
 * `sharedClasspath`: A [`FileCollection`](http://www.gradle.org/docs/current/javadoc/org/gradle/api/file/FileCollection.html)
@@ -284,7 +284,7 @@ If you wish to benefit from Gradle dependency cache when resolving container dis
         local {
             homeDir = file('/home/user/dev/tools/apache-tomcat-6.0.32')
             outputFile = file('build/output.log')
-            timeout = 60000
+            startStopTimeout = 60000
 
             containerProperties {
                 property 'cargo.tomcat.ajp.port', 9099

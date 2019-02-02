@@ -26,7 +26,7 @@ class CargoPluginExtension {
 
     String containerId
     Integer port = 8080
-    Integer timeout
+    Integer startStopTimeout
     def deployables = []
     CargoRemoteTaskConvention remote = new CargoRemoteTaskConvention()
     CargoLocalTaskConvention local = new CargoLocalTaskConvention()

@@ -66,7 +66,7 @@ class CargoPlugin implements Plugin<Project> {
             conventionMapping.map('outputFile') { cargoPluginExtension.local.outputFile }
             conventionMapping.map('logFile') { cargoPluginExtension.local.logFile }
             conventionMapping.map('rmiPort') { cargoPluginExtension.local.rmiPort }
-            conventionMapping.map('timeout') { cargoPluginExtension.timeout }
+            conventionMapping.map('startStopTimeout') { cargoPluginExtension.startStopTimeout }
             conventionMapping.map('zipUrlInstaller') { cargoPluginExtension.local.zipUrlInstaller }
             conventionMapping.map('configFiles') { cargoPluginExtension.local.configFiles }
             conventionMapping.map('files') { cargoPluginExtension.local.files }
