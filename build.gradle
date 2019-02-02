@@ -1,19 +1,10 @@
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
-        classpath 'org.ajoberstar:gradle-git:1.4.2'
-    }
+plugins {
+    id "groovy"
+    id "java-gradle-plugin"
+    id "maven-publish"
+    id "com.jfrog.bintray" version "1.8.4"
+    id "org.ajoberstar.git-publish" version "2.0.0"
 }
-
-apply plugin: 'groovy'
-apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
-apply plugin: 'org.ajoberstar.github-pages'
-apply plugin: 'java-gradle-plugin'
 
 def compatibilityVersion = 1.6
 sourceCompatibility = compatibilityVersion
@@ -157,10 +148,12 @@ bintray {
     }
 }
 
-githubPages {
+gitPublish {
     repoUri = 'git@github.com:bmuschko/gradle-cargo-plugin.git'
 
-    pages {
+    branch = 'gh-pages'
+
+    contents {
         from(javadoc.outputs.files) {
             into 'docs/javadoc'
         }
