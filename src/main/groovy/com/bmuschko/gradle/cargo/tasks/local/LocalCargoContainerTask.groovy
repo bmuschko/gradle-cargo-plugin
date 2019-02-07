@@ -91,7 +91,7 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
      */
     @Input
     @Optional
-    Integer timeout
+    Integer startStopTimeout
 
     /**
      * The system properties passed-on the container.
@@ -272,8 +272,8 @@ class LocalCargoContainerTask extends AbstractCargoContainerTask {
 
     private Map<String, String> getCargoAttributes() {
         def cargoAttributes = ['containerId': getContainerId(), 'action': getAction()]
-        if (getTimeout() >= 0) {
-            cargoAttributes['timeout'] = getTimeout()
+        if (getStartStopTimeout() >= 0) {
+            cargoAttributes['timeout'] = getStartStopTimeout()
         }
 
         if(!getZipUrlInstaller().isValid()) {
