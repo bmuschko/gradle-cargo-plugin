@@ -42,9 +42,11 @@ class ZipUrlInstaller {
     FileCollection installConfiguration
 
     @OutputDirectory
+    @Optional
     File downloadDir
 
     @OutputDirectory
+    @Optional
     File extractDir
 
     @Internal
