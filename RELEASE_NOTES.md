@@ -1,3 +1,8 @@
+### Version 2.6 (February 10, 2019)
+
+* Allow use of use of locally installed container - [Pull request 191](https://github.com/bmuschko/gradle-cargo-plugin/pull/191).
+* **Breaking Change!** Rename timeout parameter to ensure compatibility with Gradle's built-in timeout - [Pull request 188](https://github.com/bmuschko/gradle-cargo-plugin/pull/188).
+
 ### Version 2.5 (January 29, 2018)
 
 * Support using a configuration as a source of the container for ZIP installer - [Pull request 176](https://github.com/bmuschko/gradle-cargo-plugin/pull/176).
