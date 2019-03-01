@@ -31,7 +31,7 @@ class Deployable implements Serializable {
     FileCollection files
 
     @Input
-	@Optional
+    @Optional
     String context
 
     @Internal
