@@ -1,3 +1,7 @@
+### Version 2.6.1 (March 6, 2019)
+
+* Deployable should be declarable without a context - [Pull request 193](https://github.com/bmuschko/gradle-cargo-plugin/pull/193).
+
 ### Version 2.6 (February 10, 2019)
 
 * Allow use of use of locally installed container - [Pull request 191](https://github.com/bmuschko/gradle-cargo-plugin/pull/191).
