@@ -76,4 +76,21 @@ class DeployableIntegrationSpec extends AbstractIntegrationSpec {
         requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
     }
 
+    def "can deploy without context parameter"() {
+        given:
+        buildScript << """
+            cargo {
+                deployable {
+                    file = configurations.war
+                }
+            }
+        """
+
+        when:
+        runBuild "cargoStartLocal"
+
+        then:
+        requestServletResponseText() == HelloWorldServletWarFixture.RESPONSE_TEXT
+    }
+
 }
