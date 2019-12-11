@@ -17,13 +17,13 @@ repositories {
 }
 
 configurations {
-    integrationTestCompile.extendsFrom testImplementation
-    integrationTestRuntime.extendsFrom testRuntimeOnly
+    integrationTestCompile.extendsFrom testCompile
+    integrationTestRuntime.extendsFrom testRuntime
 }
 
 dependencies {
     compile localGroovy()
-    def cargoVersion = '1.7.7' // don't forget to reflect changes in com.bmuschko.gradle.cargo.CargoBasePlugin.CARGO_DEFAULT_VERSION
+    def cargoVersion = '1.7.7'
     compile "org.codehaus.cargo:cargo-daemon-client:$cargoVersion"
     testCompile('org.spockframework:spock-core:1.3-groovy-2.4') {
         exclude group: 'org.codehaus.groovy'
