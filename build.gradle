@@ -37,8 +37,9 @@ sourceSets {
 }
 
 task integrationTest(type: Test) {
-    shouldRunAfter test
-
+    description = 'Runs the integration tests'
+    group = 'verification'
+    mustRunAfter test
     testClassesDirs = sourceSets.integrationTest.output.classesDirs
     classpath = sourceSets.integrationTest.runtimeClasspath
 }
