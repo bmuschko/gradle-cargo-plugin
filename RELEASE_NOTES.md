@@ -1,3 +1,7 @@
+### Version 2.6.2 (December 12, 2019)
+
+* Upgrade to Cargo Ant tasks version 1.7.9 to ensure Gradle 6.0-compatibility - [Issue 196](https://github.com/bmuschko/gradle-cargo-plugin/issues/196).
+
 ### Version 2.6.1 (March 6, 2019)
 
 * Deployable should be declarable without a context - [Pull request 193](https://github.com/bmuschko/gradle-cargo-plugin/pull/193).
