@@ -56,6 +56,7 @@ class CargoBasePlugin implements Plugin<Project> {
                 if(config.dependencies.empty) {
                     project.dependencies {
                         cargo "org.codehaus.cargo:cargo-core-uberjar:$CARGO_DEFAULT_VERSION",
+                              "org.codehaus.cargo:cargo-licensed-dtds:$CARGO_DEFAULT_VERSION",
                               "org.codehaus.cargo:cargo-ant:$CARGO_DEFAULT_VERSION"
                     }
                 }
