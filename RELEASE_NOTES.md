@@ -1,3 +1,7 @@
+### Version 2.7.0 (December 14, 2019)
+
+* Add cargo-licensed-dtds to the dependencies and documentation - [Pull request 198](https://github.com/bmuschko/gradle-cargo-plugin/pull/198).
+
 ### Version 2.6.2 (December 12, 2019)
 
 * Upgrade to Cargo Ant tasks version 1.7.9 to ensure Gradle 6.0-compatibility - [Issue 196](https://github.com/bmuschko/gradle-cargo-plugin/issues/196).
