@@ -23,7 +23,7 @@ configurations {
 
 dependencies {
     compile localGroovy()
-    def cargoVersion = '1.7.9'
+    def cargoVersion = '1.7.10'
     compile "org.codehaus.cargo:cargo-daemon-client:$cargoVersion"
     testCompile('org.spockframework:spock-core:1.3-groovy-2.4') {
         exclude group: 'org.codehaus.groovy'
