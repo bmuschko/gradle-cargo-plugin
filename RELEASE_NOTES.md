@@ -1,3 +1,7 @@
+### Version 2.7.1 (February 5, 2020)
+
+* Upgrade to Codehaus Cargo 1.7.10 - [Pull request 199](https://github.com/bmuschko/gradle-cargo-plugin/pull/199).
+
 ### Version 2.7.0 (December 14, 2019)
 
 * Add cargo-licensed-dtds to the dependencies and documentation - [Pull request 198](https://github.com/bmuschko/gradle-cargo-plugin/pull/198).
