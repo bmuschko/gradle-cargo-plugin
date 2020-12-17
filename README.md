@@ -94,10 +94,10 @@ The `com.bmuschko.cargo-base` plugin already sets up the dependencies for Cargo.
 version of the libraries. Alternatively, you can define a custom version of the Cargo libraries. To do so, please use
 the `cargo` configuration name in your `dependencies` closure. Remote deployment functionality will only work with a Cargo
 version >= 1.1.0 due to a bug in the library. Please see [CARGO-962](https://codehaus-cargo.atlassian.net/browse/CARGO-962) for more information.
-The following example demonstrates how to use the version 1.7.10 of the Cargo libraries:
+The following example demonstrates how to use the version 1.8.3 of the Cargo libraries:
 
     dependencies {
-        def cargoVersion = '1.7.10'
+        def cargoVersion = '1.8.3'
         cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion",
               "org.codehaus.cargo:cargo-licensed-dtds:$cargoVersion",
               "org.codehaus.cargo:cargo-ant:$cargoVersion"
