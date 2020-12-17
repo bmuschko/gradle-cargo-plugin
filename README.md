@@ -1,4 +1,4 @@
-# Gradle Cargo plugin [![Build Status](https://travis-ci.org/bmuschko/gradle-cargo-plugin.svg?branch=master)](https://travis-ci.org/bmuschko/gradle-cargo-plugin)
+# Gradle Cargo plugin ![Build [Linux]](https://github.com/bmuschko/gradle-cargo-plugin/workflows/Build%20%5BLinux%5D/badge.svg)
 
 ![Cargo Logo](https://codehaus-cargo.github.io/cargo/attachments/cargo-banner-left.png)
 
