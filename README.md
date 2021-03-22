@@ -1,4 +1,4 @@
-# Gradle Cargo plugin ![Build [Linux]](https://github.com/bmuschko/gradle-cargo-plugin/workflows/Build%20%5BLinux%5D/badge.svg)
+# Gradle Cargo plugin [![Build Status](https://github.com/bmuschko/gradle-cargo-plugin/workflows/Build%20and%20Release%20%5BLinux%5D/badge.svg)](https://github.com/bmuschko/gradle-cargo-plugin/actions?query=workflow%3A%22Build+and+Release+%5BLinux%5D%22)
 
 ![Cargo Logo](https://codehaus-cargo.github.io/cargo/attachments/cargo-banner-left.png)
 
@@ -39,11 +39,11 @@ the plugin.
 
 The plugin JAR needs to be defined in the classpath of your build script. It is directly available on
 [Bintray](https://bintray.com/bmuschko/gradle-plugins/com.bmuschko%3Agradle-cargo-plugin/). The following code snippet 
-shows an example on how to retrieve it from Bintray:
+shows an example on how to retrieve it from Maven Central:
 
     buildscript {
         repositories {
-            jcenter()
+            mavenCentral()
         }
 
         dependencies {
