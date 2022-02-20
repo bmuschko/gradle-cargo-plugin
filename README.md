@@ -43,7 +43,7 @@ shows an example on how to retrieve it from Maven Central:
 
     buildscript {
         repositories {
-            mavenCentral()
+            gradlePluginPortal()
         }
 
         dependencies {
