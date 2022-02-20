@@ -88,6 +88,7 @@ pluginBundle {
 
 gitPublish {
     repoUri = 'git@github.com:bmuschko/gradle-cargo-plugin.git'
+    branch = 'gh-pages'
 
     contents {
         from(javadoc.outputs.files) {
