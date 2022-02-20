@@ -37,9 +37,8 @@ the plugin.
 
 ### Adding the plugin binary to the build
 
-The plugin JAR needs to be defined in the classpath of your build script. It is directly available on
-[Bintray](https://bintray.com/bmuschko/gradle-plugins/com.bmuschko%3Agradle-cargo-plugin/). The following code snippet 
-shows an example on how to retrieve it from Maven Central:
+The plugin JAR needs to be defined in the classpath of your build script. It is available on the Gradle plugin portal. The following code snippet 
+shows an example on how to retrieve it with the `buildscript` syntax:
 
     buildscript {
         repositories {
@@ -97,12 +96,14 @@ the `cargo` configuration name in your `dependencies` closure, and keep the belo
 * Setting configuration properties will only work with a Cargo version >= 1.9.10 due to missing feature in the library (see [CARGO-1578](https://codehaus-cargo.atlassian.net/browse/CARGO-1578) for more information).
 The following example demonstrates how to use the version 1.9.10 of the Cargo libraries:
 
-    dependencies {
-        def cargoVersion = '1.9.10'
-        cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion",
-              "org.codehaus.cargo:cargo-licensed-dtds:$cargoVersion",
-              "org.codehaus.cargo:cargo-ant:$cargoVersion"
-    }
+```
+dependencies {
+    def cargoVersion = '1.9.10'
+    cargo "org.codehaus.cargo:cargo-core-uberjar:$cargoVersion",
+          "org.codehaus.cargo:cargo-licensed-dtds:$cargoVersion",
+          "org.codehaus.cargo:cargo-ant:$cargoVersion"
+}
+```
 
 ## Tasks
 
