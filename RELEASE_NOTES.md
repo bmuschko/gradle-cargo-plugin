@@ -1,3 +1,7 @@
+### Version 2.9.0 (February 19, 2022)
+
+* Upgrade to Codehaus Cargo 1.9.10 - [Pull request 205](https://github.com/bmuschko/gradle-cargo-plugin/pull/205).
+* 
 ### Version 2.8.0 (December 17, 2020)
 
 * Version upgrades for Codehaus Cargo and Java - [Pull request 204](https://github.com/bmuschko/gradle-cargo-plugin/pull/204).

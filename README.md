@@ -47,7 +47,7 @@ shows an example on how to retrieve it from Maven Central:
         }
 
         dependencies {
-            classpath 'com.bmuschko:gradle-cargo-plugin:2.8.0'
+            classpath 'com.bmuschko:gradle-cargo-plugin:2.9.0'
         }
     }
 
